@@ -1,0 +1,9 @@
+{
+  "name": "beacon_schemas",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "mongoose": "^6.4.0"
+  }
+}

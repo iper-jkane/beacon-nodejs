@@ -1,0 +1,3 @@
+[submodule "schema/openapi/beacon-v2"]
+	path = schema/openapi/ga4gh-beacon/beacon-v2
+	url = https://github.com/ga4gh-beacon/beacon-v2/

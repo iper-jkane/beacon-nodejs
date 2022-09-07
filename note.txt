@@ -1,0 +1,20 @@
+for bulk / high-vol / large-datasets / WGS:
+  - could be:
+     - a separate server / tech-stack 
+     - a redirect in the srv / or route in the ui / probs both:
+  - uris: 
+      - beacon.<dept>.<inst>.es/api/v2/bulk/g_variants
+      - beacon.<dept>.<inst>.es/api/v2/g_variants?bulk=true
+      - beacon.<dept>.<inst>.es:<bulk-data-port>/api/v2/g_variants
+      - ingest.beacon.<dept>.<inst>.es/api/v2/g_variants:
+      - bulk.beacon.<dept>.<inst>.es/api/v2/g_variants
+
+
+ ajv-openapi: 
+  validate openapi / json schema 
+  part of attempt to auto parse openapi into POJO:
+    probs going to be part of the build process:
+      i.e., convert paths in beacon.yaml  -> mongoose schema
+                                          -> hapi routes + handler
+                                          -> vue routes
+
