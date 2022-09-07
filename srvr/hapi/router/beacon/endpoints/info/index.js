@@ -1,14 +1,6 @@
 import mongoose from 'mongoose'
 import { beaconInfoResponseSchema } from '../../../../../../schema/mongoose/beacon/framework/responses/beaconInfoResponse.js'
 
-/*
- import + instantiate schema
- instantiate model
- retrieve document / values from db
- create hapi-route-handler
- export route object
-*/
-
 const getBeaconInfoRoot = async function(req){
 
   // use existing mongoose / mongodb connection
@@ -61,14 +53,6 @@ const beaconInfoResponseRoute = {
       path:    '/info',
       handler: beaconInfoResponseRouteHandler
 }
-
-/* might use this later?
-const beaconInfoResponse = {
-	schema: beaconInfoResponseSchema,
-	model:  beaconInfoResponseModel,
-	route:  beaconInfoResponseRoute
-}
-*/
 
 export { beaconInfoResponseRoute, beaconInfoResponseSchema }
 

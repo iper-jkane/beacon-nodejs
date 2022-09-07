@@ -13,12 +13,6 @@ import { rootRoute }                        from '../endpoints/root.js'
 import { beaconInfoResponseRoute }          from '../endpoints/info/index.js'
 import { beaconConfigurationResponseRoute } from '../endpoints/configuration/index.js' 
 
-// console.log( glob.sync( '../endpoints/index.js' ) )
-//.forEach( function( file ) {
-//  require( file );
-//});
-
-
 const defaultOptions = {
   route: {
     method:  ['*'],
@@ -55,20 +49,8 @@ const BeaconRouter = {
       throw("...aaaAAAARRRRGH")
     }
     
-		// console.log(server)
-		// await server.register( { plugin: HapiAutoRoute, options: {
-						// routes_dir: Path.join(__dirname, '../endpoints')
-					// }})
-		// server.dependency('hapi-auto-route', async (server, next) => { 
-		// 	await server.register( { plugin: HapiAutoRoute } )
-		// 	next() 
-		// });
-
-
     const opts = { ...defaultOptions, ...options } 
 
-    // add beacon routes
-    // try to use glob, or even db?
     server.route( rootRoute ) 
     server.route( beaconInfoResponseRoute )
     server.route( beaconConfigurationResponseRoute )
