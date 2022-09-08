@@ -1,0 +1,35 @@
+version: "0.1"
+name: beacon-nodejs
+services:
+
+  vue:
+    image: dept/beacon-nodejs
+    command: [ "vue" ]
+    build: .
+    networks: 
+      beacon-v2-net:
+        ipv4_address: 10.128.0.2
+
+  hapi:
+    image: dept/beacon-nodejs
+    command: [ "hapi" ]
+    build: .
+    networks: 
+      beacon-v2-net:
+        ipv4_address: 10.128.0.3
+
+  mongodb:
+    image: "library/mongo"
+    networks:
+      beacon-v2-net:
+          ipv4_address: 10.128.0.4
+
+networks:
+  beacon-v2-net:
+    name: "beacon-v2-net"
+    driver_opts: 
+      com.docker.network.bridge.name: "beacon-v2-net"
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.128.0.0/29"
