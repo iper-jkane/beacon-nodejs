@@ -21,6 +21,9 @@ WORKDIR ${beaconRoot}
 COPY --chown=${beaconUser}:${beaconUser} ./schema ${beaconRoot}/schema 
 COPY --chown=${beaconUser}:${beaconUser} ./srvr   ${beaconRoot}/srvr
 COPY --chown=${beaconUser}:${beaconUser} ./uix    ${beaconRoot}/uix
+COPY --chown=${beaconUser}:${beaconUser} ./beacon-entrypoint.sh ${beaconRoot}/
 
 EXPOSE 9001 8080
 
+USER ${beaconUser}
+ENTRYPOINT [ "/opt/beacon/beacon-entrypoint.sh" ]
