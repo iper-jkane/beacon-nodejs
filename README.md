@@ -280,7 +280,7 @@ const returnedSchemas = mongoose.Schema({
 
 ```
 
-We can almost see that there is an isomorphism between json-schema.properties and mongoose.Schema
+We can see that there is almost an isomorphism between json-schema.properties and mongoose.Schema
 
 In psudo-code:
  > - json-schema.properties.key(foo) == mongoose.Schema.key(foo)
