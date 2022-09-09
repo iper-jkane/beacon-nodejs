@@ -13,6 +13,8 @@ services:
     image: dept/beacon-nodejs
     command: [ "hapi" ]
     build: .
+    depends_on:
+      - "mongodb"
     networks: 
       beacon-v2-net:
         ipv4_address: 10.128.0.3
