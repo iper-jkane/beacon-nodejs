@@ -31,14 +31,7 @@ Should give output similar to:
 
 Test this worked:
 
-`docker compose ls`:
-
-```
-NAME                STATUS              CONFIG FILES
-beacon-nodejs       running(3)          /var/tmp/beacon-nodejs/docker-compose.yml
-```
-
-`docker compose ps`:
+`docker compose status`:
 
 ```
 NAME                      COMMAND                  SERVICE             STATUS              PORTS
