@@ -26,9 +26,6 @@ COPY --chown=${beaconUser}:${beaconUser} ./srvr   ${beaconRoot}/srvr
 COPY --chown=${beaconUser}:${beaconUser} ./uix    ${beaconRoot}/uix
 COPY --chown=${beaconUser}:${beaconUser} ./beacon-entrypoint.sh ${beaconRoot}/
 
-WORKDIR ${beaconRoot}/schema/mongoose
-RUN yarn install
-
 WORKDIR ${beaconRoot}/srvr/hapi
 RUN yarn install
 
