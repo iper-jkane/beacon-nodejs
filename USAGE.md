@@ -19,7 +19,7 @@ or perhaps, install httpie into virtual python env,
 to test the api server:
 
 ```
-pip3 -m venv ~/Pyvirts/httpie
+python3 -m venv ~/Pyvirts/httpie
 source ~/Pyvirts/httpie/bin/activate
-https https://10.128.0.3:9001/info
+https --verify=no https://10.128.0.3:9001/info
 ```
