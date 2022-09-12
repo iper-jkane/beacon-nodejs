@@ -32,13 +32,16 @@ COPY --chown=${beaconUser}:${beaconUser} ./uix    ${beaconRoot}/uix
 # COPY --chown=${beaconUser}:${beaconUser} ./beacon-entrypoint.sh ${beaconRoot}/
 
 WORKDIR ${beaconRoot}/schema/mongoose
+RUN yarn config set enableTelemetry 0
 RUN yarn install
 
 WORKDIR ${beaconRoot}/srvr/hapi
+RUN yarn config set enableTelemetry 0
 RUN yarn install
 
 WORKDIR ${beaconRoot}/uix/vue
 RUN yarn config set pnpEnableEsmLoader false
+RUN yarn config set enableTelemetry 0
 RUN yarn plugin import plugin-interactive-tools
 RUN yarn install
 
