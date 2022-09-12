@@ -50,4 +50,4 @@ beacon-nodejs-vue-1       "/opt/beacon/beacon-…"   vue                 running
 
 Further Testing / Usage:
   
-  see USAGE.md
+  see [USAGE.md](USAGE.md)
