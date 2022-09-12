@@ -1,13 +1,16 @@
-
 ## A Node.js Beacon-v2 Implementation. 
+
+  == Warning: Proof of Concept / Work In Progress :D ==
   
   This Beacon is Lit!⁽™⁾ 
 
   Written mostly in javascript, for Node.js.  
   Using: Hapi, Mongoose, and Vue.
 
- == Warning: Proof of Concept / Work In Progress :D ==
+ - [INSTALL.md](INSTALL.md)
+ - [USAGE.md](USAGE.md)
 
+ ---
 ### Overview 
 
 What is a Beacon in principle?
