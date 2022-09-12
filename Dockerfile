@@ -1,4 +1,4 @@
-FROM library/archlinux 
+FROM library/archlinux as base
 
 ARG beaconUser=beacon
 ARG beaconRoot=/opt/beacon
@@ -13,10 +13,15 @@ RUN mkdir ${beaconRoot}
 RUN chown ${beaconUser}:${beaconUser} ${beaconRoot}
 # RUN chmod 0755 ${beaconRoot}
 
-RUN pacman --noconfirm -Sy python3 python-pip nodejs httpie tree vim base-devel
+RUN pacman --noconfirm -Sy python3 python-pip nodejs httpie tree vim
 RUN corepack enable
 RUN corepack prepare yarn@stable --activate
 RUN yarn config set --home enableTelemetry 0
+
+#---
+FROM base as build
+
+RUN pacman --noconfirm -Sy base-devel
 
 USER ${beaconUser}
 WORKDIR ${beaconRoot}
@@ -24,7 +29,7 @@ WORKDIR ${beaconRoot}
 COPY --chown=${beaconUser}:${beaconUser} ./schema ${beaconRoot}/schema 
 COPY --chown=${beaconUser}:${beaconUser} ./srvr   ${beaconRoot}/srvr
 COPY --chown=${beaconUser}:${beaconUser} ./uix    ${beaconRoot}/uix
-COPY --chown=${beaconUser}:${beaconUser} ./beacon-entrypoint.sh ${beaconRoot}/
+# COPY --chown=${beaconUser}:${beaconUser} ./beacon-entrypoint.sh ${beaconRoot}/
 
 WORKDIR ${beaconRoot}/schema/mongoose
 RUN yarn install
@@ -37,7 +42,16 @@ RUN yarn config set pnpEnableEsmLoader false
 RUN yarn plugin import plugin-interactive-tools
 RUN yarn install
 
-EXPOSE 9001 8080
+#---
+FROM base as final
 
 USER ${beaconUser}
+WORKDIR ${beaconRoot}
+
+COPY --from=build --chown=${beaconUser}:${beaconUser} ${beaconRoot}/schema ${beaconRoot}/schema
+COPY --from=build --chown=${beaconUser}:${beaconUser} ${beaconRoot}/srvr   ${beaconRoot}/srvr
+COPY --from=build --chown=${beaconUser}:${beaconUser} ${beaconRoot}/uix    ${beaconRoot}/uix
+COPY --chown=${beaconUser}:${beaconUser} ./beacon-entrypoint.sh ${beaconRoot}/
+
+EXPOSE 9001 8080
 ENTRYPOINT [ "/opt/beacon/beacon-entrypoint.sh" ]
