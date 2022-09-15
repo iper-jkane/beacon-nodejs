@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { beaconInfoResponseSchema } from '../../../../../../schema/mongoose/beacon/framework/responses/beaconInfoResponse.js'
 
-const getBeaconInfoRoot = async function(req){
+const getBeaconInfoResponse = async function(req){
 
   // use existing mongoose / mongodb connection
   const mdb = req.server.plugins.BeaconRouter.mdb
@@ -40,7 +40,7 @@ const getBeaconInfoRoot = async function(req){
 
 const beaconInfoResponseRouteHandler = async function( req, res ){
 	if(req.method == "get"){
-    return res.response( await getBeaconInfoRoot(req) )
+    return res.response( await getBeaconInfoResponse(req) )
   }else{  
     //post?
     // updateDB
