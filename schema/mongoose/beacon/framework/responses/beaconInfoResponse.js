@@ -4,8 +4,8 @@ import { beaconInformationalResponseMetaSchema } from './sections/beaconInformat
 import { beaconInfoResultsSchema }               from './sections/beaconInfoResults.js'
 
 const beaconInfoResponseSchema = new mongoose.Schema({
- response: { type: beaconInfoResultsSchema,               default: {} },
-     meta: { type: beaconInformationalResponseMetaSchema, default: {} },
+  response: { type: beaconInfoResultsSchema,               default: {} },
+      meta: { type: beaconInformationalResponseMetaSchema, default: {} },
 }, { collection: 'config.beaconInfoResponse' })
 
 export { beaconInfoResponseSchema }
