@@ -1,5 +1,75 @@
 import mongoose from 'mongoose'
 
+const beaconEntryTypesSchema = new mongoose.Schema({
+
+  defaultEntryType: { 
+    default: {},
+    type: new mongoose.Schema({
+
+      id: {
+        type: String,
+        default: "A (unique) identifier of the element.",
+      },
+
+      name: {
+        type: String,
+        default: "A distinctive name for the element.",
+      },
+
+      partOfSpecification: {
+        type: String,
+        default: "Beacon v2.0.0-draft.4",
+      },
+
+      ontologyTermForThisType: {
+        default: {},
+        type: new mongoose.Schema({
+
+          //CURIE
+          id: {
+            type: String,
+            default: "EXA:ONTOLOGICAL.F00",
+            // validate: /^\\w[^:]+:.+$/
+            validate: /^\w[^:]+:.+$/
+          },
+
+          label: {
+            type: String,
+            default: "Example Ontology"
+          },
+
+
+        }, { _id: false })
+      },
+      
+      defaultSchema: {
+        default: {},
+        type: new mongoose.Schema({
+          id: {
+            type: String,
+            default: "ga4gh-beacon-dataset-v2.0.0-draft.4",
+          },
+
+          name: { 
+            type: String,
+            default: "Default schema for datasets",
+          },
+
+          referenceToSchemaDefinition: { 
+            type: String, 
+            default: "./datasets/defaultSchema.json",
+          },
+
+          schemaVersion: {
+            type: String, 
+            default: "v2.0.0-draft.4"
+          },
+        }, { _id: false }),
+      },
+    }, { _id: false }) 
+  }
+}, { _id: false})
+
 const beaconConfigurationSchema = mongoose.Schema({
 
   "$schema": {
@@ -52,53 +122,11 @@ const beaconConfigurationSchema = mongoose.Schema({
       // }
     },
 
-    entryTypes: {
-      type: Object,
-      required: true,
-      default: {
-        // something not right here...confused: meta-schemas / from db? 
-        // literally the models-dirs?
-        dataset: { 
-          id: { type: String, default: "datasets" },
-          name: { type: String, default: "Datasets" },
-          description: { type: String, default: "A Dataset is a collection of records, like rows in a database or cards in a cardholder." },
-          ontologyTermForThisType: { type: String, default: "NCIT:C47824" }, 
-          partOfSpecification: { type: String, default: "beacon-v2.0" },
-          defaultSchema: { 
-            id: { type: String, default: "beacon-dataset-v2.0" },
-            name: { type: String, default: "Dataset Default Schema" },
-            referenceToSchemaDefinition: { type: String, default: "./datasets/defaultSchema.json" },
-            schemaVersion: { type: String, default: "v2.0" }
-          }
-        }
-      }
-    }
+  entryTypes: {
+      default: {},
+      type: beaconEntryTypesSchema 
   }
 
 }, { _id: false })
 
-/*
-     required: true,
-     default: {
-       // something not right here...confused: meta-schemas / from db? 
-       // literally the models-dirs?
-       dataset: { 
-         id: { type: String, default: "datasets" },
-         name: { type: String, default: "Datasets" },
-         description: { type: String, default: "A Dataset is a collection of records, like rows in a database or cards in a cardholder." },
-         ontologyTermForThisType: { type: String, default: "NCIT:C47824" }, 
-         partOfSpecification: { type: String, default: "beacon-v2.0" },
-         defaultSchema: { 
-           id: { type: String, default: "beacon-dataset-v2.0" },
-           name: { type: String, default: "Dataset Default Schema" },
-           referenceToSchemaDefinition: { type: String, default: "./datasets/defaultSchema.json" },
-           schemaVersion: { type: String, default: "v2.0" }
-         }
-       }
-     }
-   }
- }
-})
-}, { _id: false })
-*/
 export { beaconConfigurationSchema }
