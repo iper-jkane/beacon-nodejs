@@ -14,7 +14,7 @@ cd beacon-nodejs
 
 Ensure the docker compose plugin is installed:
 
-```
+```shell
 DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
 mkdir -p $DOCKER_CONFIG/cli-plugins
 curl -SL https://github.com/docker/compose/releases/download/v2.11.1/docker-compose-linux-x86_64 -o 
