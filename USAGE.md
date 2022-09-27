@@ -38,6 +38,16 @@ cargo install beacon-verifier
 
 Run: `beacon-verifier --ssl-no-verify https://10.128.0.3:9001 2>/dev/null | jq '.entities[][] | select( .valid == true )'`
 
+You may need our patched version of the verifier, to be able to verify against the tls/ssl endpoint:
+
+```
+git clone https://github.com/iper-jkane/beacon-verifier.git
+cd beacon-verifier
+git switch tls-self-certs-override
+cargo install --root ~/.cargo --path . # add ~/.cargo/bin to PATH
+
+```
+
 ```json
 {
   "name": "Inst-Dept Beacon",
