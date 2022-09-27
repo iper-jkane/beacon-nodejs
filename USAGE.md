@@ -29,6 +29,13 @@ You can test the endpoints using the official client:
 
   - [beacon-verifier](https://github.com/ga4gh-beacon/beacon-verifier): official beacon endpoint tester :D
 
+Install:
+
+```shell
+curl -sSf https://sh.rustup.rs | sh # YOLO DevOps Shenanigans 
+cargo install beacon-verifier
+```
+
 Run: `beacon-verifier --ssl-no-verify https://10.128.0.3:9001 2>/dev/null | jq '.entities[][] | select( .valid == true )'`
 
 ```json
