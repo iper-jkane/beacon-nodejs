@@ -21,6 +21,7 @@ to test the api server:
 ```
 python3 -m venv ~/Pyvirts/httpie
 source ~/Pyvirts/httpie/bin/activate
+pip install httpie
 https --verify=no https://10.128.0.3:9001/info
 ```
 
