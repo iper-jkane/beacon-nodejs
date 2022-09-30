@@ -1,5 +1,6 @@
 <script setup>
 
+  import JsonEditor from 'json-editor-vue'
 	// import { beaconInfoResponseSchema } from '../../../../schema/mongoose/beacon/framework/responses/beaconInfoResponse.js'
   // eslint-disable-next-line
   import { schemaToProps } from '../composables/schema/mongoose/utils.js'
@@ -31,9 +32,11 @@
 
 <style>
   div,pre { color: #42b983; }
+  @import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 </style>
 
 <template>
+<JsonEditor class="jse-theme-dark" v-model="beaconInfoResponse" />
 <pre>
   {{ beaconInfoResponse }}
 </pre>
