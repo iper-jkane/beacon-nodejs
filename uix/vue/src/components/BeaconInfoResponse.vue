@@ -3,6 +3,7 @@
   import JsonEditor from 'json-editor-vue'
 	// import { beaconInfoResponseSchema } from '../../../../schema/mongoose/beacon/framework/responses/beaconInfoResponse.js'
   // eslint-disable-next-line
+  import { ref } from 'vue'
   import { schemaToProps } from '../composables/schema/mongoose/utils.js'
   import { axiosWrapper } from '@/composables/api/apiClient.js'
 
@@ -22,7 +23,7 @@
 
   }
  
-  const beaconInfoResponse = await fetchBeaconInfo()
+  const beaconInfoResponse = ref( await fetchBeaconInfo() )
   // // eslint-disable-next-line
   // const props = defineProps(
   //   schemaToProps(beaconInfoResponseSchema)
@@ -31,13 +32,28 @@
 </script>
 
 <style>
+  .horiz {
+    display: flex;
+  }
+
   div,pre { color: #42b983; }
-  @import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
+  @import '../assets/jse-theme-dark.css'
 </style>
 
 <template>
+<div class="horiz">
+<div>
 <JsonEditor class="jse-theme-dark" v-model="beaconInfoResponse" />
+<div class="spacer">
+
+</div>
+</div>
+</div>
+<div>
 <pre>
-  {{ beaconInfoResponse }}
+
+{{ beaconInfoResponse }}
 </pre>
+</div>
 </template>
+
