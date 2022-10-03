@@ -317,15 +317,9 @@ Software:
         - is: plugins based
 
 - > Specifications
-    - [OpenAPI/Swagger](https://swagger.io/specification/): used to define the framework/models that make up the beacon implentation
+    - [OpenAPI/Swagger](https://swagger.io/specification/): used to define the structure of the framework/models within the beacon-v2 spec
     - [json-schema](https://json-schema.org/): ditto
-    - [beacon-spec](...):  the actual beacon specs
-        one of:
-         > - https://github.com/ga4gh-beacon/specification-v2.git
-         > - https://github.com/ga4gh-beacon/beacon-v2/
-         > - https://github.com/MrRobb/beacon-framework-v2
-         > - https://github.com/ga4gh-beacon/beacon-v2-Models
-         > - https://github.com/ga4gh-beacon/beacon-framework-v2
+    - [beacon-spec](https://github.com/ga4gh-beacon/beacon-v2/): the most recent beacon specs
 
 - > DB 
     - [mongoose](https://mongoosejs.com/docs/guide.html): MongoDB object modeling for NodeJS
