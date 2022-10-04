@@ -43,17 +43,13 @@
 <template>
 <div class="horiz">
 <div>
-<JsonEditor class="jse-theme-dark" v-model="beaconInfoResponse" />
-<div class="spacer">
-
-</div>
-</div>
+  <JsonEditor class="jse-theme-dark" v-model="beaconInfoResponse" />
 </div>
 <div>
 <pre>
-
 {{ beaconInfoResponse }}
 </pre>
+</div>
 </div>
 </template>
 
