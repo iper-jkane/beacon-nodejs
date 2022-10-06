@@ -3,7 +3,7 @@
 Docker Compose
 --------------
 
-A docker compose environment is available for testing the implentation
+A docker compose environment is available for testing the implementation
 
 Clone the repo and cd into the root directory:
 
