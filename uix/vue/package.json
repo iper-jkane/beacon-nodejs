@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --https",
+    "dev": "vue-cli-service serve --https --env.NODE_TLS_REJECT_UNAUTHORIZED=0",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
