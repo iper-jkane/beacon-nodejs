@@ -9,6 +9,7 @@
 
  - [INSTALL.md](INSTALL.md)
  - [USAGE.md](USAGE.md)
+ - [HACKING.md](HACKING.md)
 
  ---
 ### Overview 
