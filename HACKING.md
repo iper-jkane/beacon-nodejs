@@ -30,7 +30,7 @@ cd beacon-nodejs
 
 ##### Prepare environments
 
-###### Mongoose schemas
+###### Mongoose schemas (required for the other two sub-projects)
 
 - yarn / node
   
