@@ -3,7 +3,7 @@ FROM archlinux:base-devel-20240101.0.204074 as base
 ARG beaconUser=beacon
 ARG beaconRoot=/opt/beacon
 
-RUN pacman --noconfirm -Syu
+RUN pacman --noconfirm -Sy
 
 RUN groupadd -g 1000 ${beaconUser}
 RUN useradd  -g 1000 -u 1000 -s /bin/bash -m ${beaconUser}
