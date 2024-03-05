@@ -1,4 +1,4 @@
-FROM archlinux:base-devel-20230716.0.165339 as base
+FROM archlinux:base-devel-20240101.0.204074 as base 
 
 ARG beaconUser=beacon
 ARG beaconRoot=/opt/beacon
