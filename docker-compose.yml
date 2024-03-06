@@ -6,6 +6,8 @@ services:
     image: "dept/beacon-nodejs"
     command: [ "vue" ]
     build: .
+    ports: 
+      - "8080:8080"
     networks: 
       beacon-v2-net:
         ipv4_address: 10.128.0.2
@@ -16,12 +18,16 @@ services:
     build: .
     depends_on:
       - "mongodb"
+    ports: 
+      - "9001:9001"
     networks: 
       beacon-v2-net:
         ipv4_address: 10.128.0.3
 
   mongodb:
     image: "library/mongo"
+    ports: 
+      - "27017:27017"
     networks:
       beacon-v2-net:
           ipv4_address: 10.128.0.4
