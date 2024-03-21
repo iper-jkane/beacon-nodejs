@@ -23,8 +23,15 @@ chmod 750 docker-compose
 
 Then use the docker compose commands to build / run the containers;<br/>
 (this also creates a bride network using subnet: 10.128.0.0/29 ).
+
 ```
 docker compose up -d 
+```
+
+or if you wish to have host-port-mapping:
+
+```
+docker compose -f docker-compose.yml -f dc-map-host-ports.yml up -d 
 ```
 
 Should give output similar to:
