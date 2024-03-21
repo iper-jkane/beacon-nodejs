@@ -1,0 +1,11 @@
+name: beacon-nodejs
+services:
+  vue:
+    ports: 
+      - "8080:8080"
+  hapi:
+    ports: 
+      - "9001:9001"
+  mongodb:
+    ports: 
+      - "27017:27017"
