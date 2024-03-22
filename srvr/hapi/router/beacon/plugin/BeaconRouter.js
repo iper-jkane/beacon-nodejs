@@ -61,7 +61,6 @@ const BeaconRouter = {
         handler: opts.route.handler 
     });
 
-
   }
 
 };
