@@ -56,6 +56,14 @@ const BeaconRouter = {
     server.route( beaconConfigurationResponseRoute )
 
     server.route({
+      method: ['post','get'],
+      path: '/auth/{path*}',
+      handler: function( req, res ) {
+        return res.response({ msg: 'Not Actually An Error, Boom!', statusCode: 201, madeUp: "stuff" }).code(201);
+      }
+    })
+
+    server.route({
         method:  opts.route.method,
         path:    opts.route.path,
         handler: opts.route.handler 
