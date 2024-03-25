@@ -51,6 +51,9 @@ const beaconInfoResponseRouteHandler = async function( req, res ){
 const beaconInfoResponseRoute = { 
       method:  ['GET','POST'],
       path:    '/info',
+      options: {
+        auth: false // 'basic'
+      },
       handler: beaconInfoResponseRouteHandler
 }
 
