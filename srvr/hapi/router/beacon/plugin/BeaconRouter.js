@@ -99,8 +99,8 @@ const BeaconRouter = {
     server.auth.strategy('basic', 'basic', { validate: validateCreds });
     // server.auth.default('basic');
 
- 
-    const mdbOptions = { connectTimeoutMS: 1000, serverSelectionTimeoutMS: 1000, socketTimeoutMS: 500 } 
+
+    const mdbOptions = { connectTimeoutMS: 10000, serverSelectionTimeoutMS: 1000, socketTimeoutMS: 500 }
 
     // using dotenv whilst open-sourcing this first attempt
     dotenv.config({ path: __dirname + "/.env" })
