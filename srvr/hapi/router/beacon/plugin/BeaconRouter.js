@@ -85,8 +85,13 @@ const BeaconRouter = {
       console.log("req.auth: " + JSON.stringify(req.auth, null, 2));
       console.log("user: " + user);
       console.log("pass: " + pass);
-      if ( Hoek.contain(authDb.users, { user: user } )){ 
-      return { isValid: true, credentials: { jwt: "Foo" } }
+      console.log(JSON.stringify(authDb.users,null, 2))
+      console.log(Hoek.reach(authDb.users,null));
+      if( Hoek.contain(authDb.users, { "user": user }, { deep: true, part: true } ) ){
+        // switch over to node-argon2id
+        const bpass = await bcrypt.compare(authDb[0].pass, "$2b$12$O9oo7dWbDgAPikRY8gAogeh7TRJ9ZctihsckEBKwVUexoGfjsAW1K");
+      // return { response: res.redirect("/models") }
+      return { isValid: true, credentials: { jwt: "foo" } }
       }
       return { isValid: false }  
     } 
