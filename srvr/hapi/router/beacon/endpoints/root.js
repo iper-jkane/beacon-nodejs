@@ -7,6 +7,9 @@ const rootRoute = [
   {
     method:  ['GET','POST'],
     path:    '/',
+    options: {
+      auth: false
+    },
     handler: async function( req, res ) {
       // return Boom.notAcceptable('(root) You have offended this api server!');
       // return Vue client code as god intended...
