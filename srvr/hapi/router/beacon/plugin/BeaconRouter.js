@@ -46,12 +46,13 @@ const BeaconRouter = {
   register: async function (server, options) {
  
     // register hapi basic auth plugin
-    await server.register(hapiBasic); 
-    
-    // basic auth structure for development; migrate to file, db, or turnkey solution 
+    await server.register(hapiBasic);
+
+    // basic auth structure for development; migrate to file, db, or turnkey solution
     // initially a simple user/pass combo + jwt / iana nomenclature: https://www.iana.org/assignments/jwt/jwt.xhtml
     // this so it can provide authN + authZ data 
     // to follow the beacon reference implementation would be to eventually align oauth scopes and beacon granularities
+    // clients MIGHT need secret keys handing out + config stage.
     const authDb = {
       clients: [ 
                  { 
