@@ -19,6 +19,10 @@ const hbsrv= new Hapi.Server({
   routes: {
     cors: true,
   },
+  router: { 
+    isCaseSensitive: true, 
+    stripTrailingSlash: true 
+  },
   debug: { request: ['*'] }
 })
 
