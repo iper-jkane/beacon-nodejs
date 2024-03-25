@@ -34,7 +34,7 @@ const getBeaconInfoResponse = async function(req){
 
   }
 
-  return JSON.stringify( infoDoc )
+  return infoDoc 
   
 }
 
