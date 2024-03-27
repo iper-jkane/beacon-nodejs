@@ -15,7 +15,7 @@ import { beaconConfigurationResponseRoute } from '../endpoints/configuration/ind
 
 const defaultOptions = {
   route: {
-    method:  ['*'],
+    method:  ['GET'],
     path:    '/{path*}',
     handler: function( req, res ) {
 
