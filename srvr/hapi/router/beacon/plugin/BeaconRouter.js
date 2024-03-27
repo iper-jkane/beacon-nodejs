@@ -20,14 +20,14 @@ const defaultOptions = {
     handler: function( req, res ) {
 
       // separate path?
-      if (req.path == "/favicon.ico"){ 
+      if (req.path == "/favicon.ico"){
         return res.response()
         .type('image/x-icon')
         .code(StatusCode.SuccessNoContent);
       }
-  
+
       return Boom.notAcceptable('You have offended this api server! ' + req.path);
-  
+
     }
   }
 }
