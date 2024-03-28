@@ -37,9 +37,7 @@ const BeaconAuth = {
                    client_id: 900, 
                    client_name: "BioInst1", 
                    client_secret: "c20fd1ae-8eb8-49d3-9a17-56c617546616", // uuid returned as jti (jwt id) 
-                   // remote address
-                   // X-Forwarded-For
-                   // X-Real-Ip
+                   // remoteAddress, X-Forwarded-For, X-Real-Ip
                    ips_allowed: [ "10.10.10.1/32", "127.0.0.1/24", "10.128.0.0/24" ]
                  }
      ],
