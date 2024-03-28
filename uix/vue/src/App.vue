@@ -3,6 +3,7 @@
 </script>
 
 <template>
+  <router-link to="/auth/login">Login</router-link>
   <nav>
     <router-link to="/">BeaconRoot</router-link> |
     <router-link to="/info">BeaconInfo</router-link> |

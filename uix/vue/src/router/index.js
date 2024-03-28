@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
+import { AuthRoute } from './endpoints/auth/AuthRoute.js'
 import { RootRoute } from './endpoints/RootRoute.js'
 import { InfoRoute } from './endpoints/info/InfoRoute.js'
 import { ModelsRoute } from './endpoints/models/ModelsRoute.js'
@@ -8,6 +9,7 @@ import { ModelsRoute } from './endpoints/models/ModelsRoute.js'
 const beaconRoutes =
 [
 
+  AuthRoute,
   RootRoute,
   InfoRoute,
   ModelsRoute
