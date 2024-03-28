@@ -1,5 +1,6 @@
 import Boom from '@hapi/boom' 
 import { BeaconAuth } from './BeaconAuth.js'
+import { StatusCode } from 'status-code-enum'
 import glob from 'glob'
 import mongoose from 'mongoose'
 import HapiAutoRoute from 'hapi-auto-route'
@@ -13,24 +14,6 @@ import { rootRoute }                        from '../endpoints/root.js'
 import { beaconInfoResponseRoute }          from '../endpoints/info/index.js'
 import { beaconConfigurationResponseRoute } from '../endpoints/configuration/index.js' 
 
-const defaultOptions = {
-  route: {
-    method:  ['GET'],
-    path:    '/{path*}',
-    handler: function( req, res ) {
-
-      // separate path?
-      if (req.path == "/favicon.ico"){
-        return res.response()
-        .type('image/x-icon')
-        .code(StatusCode.SuccessNoContent);
-      }
-
-      return Boom.notAcceptable('You have offended this api server! ' + req.path);
-
-    }
-  }
-}
 
 const BeaconRouter = {
 
@@ -69,9 +52,26 @@ const BeaconRouter = {
     server.route( beaconInfoResponseRoute )
     server.route( beaconConfigurationResponseRoute )
 
-  }
+    // catchall -- pending tidyup ;)
+    server.route({
+      method:  ['GET'],
+      path:    '/{path*}',
+      handler: function( req, res ) {
 
-};
+        // separate path -- make use of @hapi/inert 
+        if (req.path == "/favicon.ico"){
+          // return res.response("icon")
+          return res.response()
+          .type('image/x-icon')
+          .code(StatusCode.SuccessNoContent);
+        }
+
+        return Boom.notAcceptable('You have offended this api server! ' + req.path);
+      }
+    })
+
+  } // register
+}; // plugin
 
 
 export { BeaconRouter }
