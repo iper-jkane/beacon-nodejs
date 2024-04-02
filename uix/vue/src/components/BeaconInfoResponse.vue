@@ -17,10 +17,10 @@
         console.log(sessionStorage)
         return await axiosWrapper({
           /* url: 'https://localhost:9001/api/v2/info', */
-          url: 'https://localhost:9001/info',
-            auth: {
-              username: sessionStorage.getItem('auth.username'),
-              password: sessionStorage.getItem('auth.password')
+          url: '/info',
+          auth: {
+            username: sessionStorage.getItem('auth.username'),
+            password: sessionStorage.getItem('auth.password')
           }
         })
         .then( (resp) => { console.log(resp.data); return resp.data } )

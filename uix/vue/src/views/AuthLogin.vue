@@ -18,7 +18,7 @@
     sessionStorage.setItem('auth.password', authDataUnref.password)
 
     const axiosReq = axiosWrapper({
-      url: 'https://localhost:9001/auth/login',
+      url: '/auth/login',
       auth: authDataUnref 
     }).then( (r) => { console.log("resp: ", r); authResp.value = r.data } ).catch( (e) => { console.log("error: ", e); authResp.value = e.message })
     return axiosReq
