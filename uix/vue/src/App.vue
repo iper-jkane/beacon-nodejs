@@ -4,6 +4,7 @@
 
 <template>
   <router-link to="/auth/login">Login</router-link>
+  <router-view name="AuthLogin"></router-view>
   <nav>
     <router-link to="/">BeaconRoot</router-link> |
     <router-link to="/info">BeaconInfo</router-link> |
