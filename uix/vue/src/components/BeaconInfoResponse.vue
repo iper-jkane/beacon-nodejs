@@ -14,9 +14,14 @@
           axiosWrapper.__removeFilter(/info/)
         }
 
+        console.log(sessionStorage)
         return await axiosWrapper({
-          //url: 'http://localhost:9001/info'
-          url: 'https://10.128.0.3:9001/info'
+          /* url: 'https://localhost:9001/api/v2/info', */
+          url: 'https://localhost:9001/info',
+            auth: {
+              username: sessionStorage.getItem('auth.username'),
+              password: sessionStorage.getItem('auth.password')
+          }
         })
         .then( (resp) => { console.log(resp.data); return resp.data } )
         .catch( (err) => { console.log(err); return { } } )
