@@ -118,8 +118,25 @@ const BeaconAuth = {
     })
 
     // authN
+    // fixes CORS pre-flight checks in firefox
+    // possible bug with hapi-basic + hapi-cors interaction?
     server.route({
-      method: ['POST','GET','OPTIONS'],
+      method: [ 'OPTIONS' ],
+      options: {
+        auth: false
+      },
+      path: '/auth/login',
+      handler: function( req, res ) {
+        const r = res.response()
+        r.header('Access-Control-Allow-Headers', 'Accept,Authorization,Content-Type,If-None-Match')
+        r.header('Access-Control-Allow-Methods', 'POST,GET')
+        r.code(204)
+        return r
+      }
+    })
+
+    server.route({
+      method: [ 'POST', 'GET' ],
       path: '/auth/login',
       options: {
         auth: {
@@ -128,9 +145,7 @@ const BeaconAuth = {
         },
        },
       handler: function( req, res ) {
-          console.log(req.auth)
-          return req.auth    
-          //return res.response("AuthN Not Required To Login...");
+          return req.auth
       }
     })
 
