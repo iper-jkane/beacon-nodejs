@@ -10,7 +10,6 @@ const __dirname = Path.dirname(fileURLToPath(import.meta.url));
 
 const hbsrv= new Hapi.Server({
   port: 9001,
-  // host: 'localhost',
   host: '0.0.0.0',
   tls: {
     key:  fs.readFileSync(__dirname + '/tls/server-key.pem'),
