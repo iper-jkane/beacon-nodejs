@@ -19,9 +19,8 @@ const BeaconAuth = {
 
   register: async function (server, options) {
 
+    // register this plugin
     console.log("Registering: BeaconAuth")
-    console.log("realm: " + inspect(server))
-    // console.log("mdb: " + inspect(server.plugins.BeaconRouter.mdb))
     
     // register hapi basic auth plugin, and/or others perhaps, depending on node.ENV / config, etc...
     await server.register(HapiBasic);
@@ -91,7 +90,6 @@ const BeaconAuth = {
       method:  ['POST'],
       path:    '/auth/signup',
       handler: function( req, res ) {
-        // console.log("req.payload: ", req.payload)
         return req.payload
       },
       options: {
