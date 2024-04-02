@@ -71,31 +71,47 @@ const BeaconAuth = {
     } 
 
     server.auth.strategy('basic', 'basic', { validate: validateCreds });
-    server.auth.default('basic');
+    //server.auth.default('basic');
+
+    const authLoginPayload = Joi.object({
+                                          user:  Joi.string().min(4).max(9).required(),
+                                          // pass:  Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+                                          pass:  Joi.string().pattern(/^foo$/).required().messages({ 'string.pattern.base': 'Error: Bad username or password'}) //|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$/,{invert: true}).required().messages({ 'string.pattern.invert.base': 'Error: Bad username or password'})
+          }).label("auth-login-payload")
+
+    // console.log( authLoginPayload.validate({ user: "foob", pass: "foo" }) )
+    const authSignUpPayload = authLoginPayload.append({
+                                          email: Joi.string().email({
+                                                   tlds: false // for testing only
+                                                 }).required() 
+                                        }).label("auth-signup-payload")
+    // console.log(authSignUpPayload.validate({ user: "foob", pass: "foo", email: "foo@dev.null" }))
 
     server.route({
-      method:  ['POST'], // GET for testing
+      method:  ['POST'],
       path:    '/auth/signup',
       handler: function( req, res ) {
-        //return res.response("You betcha...! Just fill in the fields: " + req.auth)
-        console.log(req.payload)
+        // console.log("req.payload: ", req.payload)
         return req.payload
       },
       options: {
         auth: false,  
         validate: {
           options: {
-            abortEarly: false
+            abortEarly: false,
+            errors: { escapeHtml: true },
+            debug: false
           },
-          payload: Joi.object({
-            user:  Joi.string().min(4).max(9),
-            email: Joi.string().email({
-              tlds: false // for testing only
-            }).required() 
-          }),
+          payload: authSignUpPayload,
           failAction: async function (req, res, err) {
-            console.log(err.details)
-            return Boom.badRequest("srx: " + err.output.payload.message)
+            // # possible bug / feature; wont return message about validating subkeys without this
+            if ( req.payload === null ){ 
+              console.log("fail:" , authSignUpPayload._ids)
+              const authErr = authSignUpPayload.validate({},{ abortEarly: false }).error
+              console.log("authErr: ", authErr) 
+              return Boom.badRequest(authErr)
+            }
+            return Boom.badRequest("fa: " + err.output.payload.message)
           }
         }
       }
@@ -103,25 +119,28 @@ const BeaconAuth = {
 
     // authN
     server.route({
-      method: ['post','get'],
+      method: ['POST','GET','OPTIONS'],
       path: '/auth/login',
-      options: { 
-        auth: false
-      },      
+      options: {
+        auth: {
+           strategy: 'basic',  
+           mode: 'required'
+        },
+       },
       handler: function( req, res ) {
           console.log(req.auth)
-          return res.response("AuthN Not Required To Login...");
+          return req.auth    
+          //return res.response("AuthN Not Required To Login...");
       }
     })
 
     server.route({
       method: ['post','get'],
-      path: '/scope',
+      path: '/auth/scope',
       options: {
         auth: {
           strategies: ['basic'],
           mode: 'required',
-          payload: false
         }
       },
       handler: function( req, res ) {
