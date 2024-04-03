@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 import HapiAutoRoute from 'hapi-auto-route'
 import Path from 'path'
 import * as dotenv from 'dotenv'
+import Inert from '@hapi/inert'
 
 import { fileURLToPath } from 'url';
 const __dirname = Path.dirname(fileURLToPath(import.meta.url));
@@ -47,6 +48,7 @@ const BeaconRouter = {
 
     // sub-plugin called after mdb instance, but before routes, can use existing connection; lazy
     await server.register(BeaconAuth)
+    await server.register(Inert)
 
     server.route( rootRoute )
     server.route( beaconInfoResponseRoute )
