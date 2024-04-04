@@ -39,13 +39,13 @@
 </style>
 
 <template>
-  {{ authData }}<br/>
+<div id="AuthLogin">
   {{ authResp }}
-  <p>Login:</p>
   <form>
     <input v-model="authData.username" placeholder="username" /><br/>
     <input v-model="authData.password" placeholder="password" type="password"/>
     <button type="button" @click="requestAuth">Login</button>
   </form>
+</div>
 </template>
 
