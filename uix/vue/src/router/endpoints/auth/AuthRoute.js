@@ -1,6 +1,6 @@
 import AuthLogin from '../../../views/AuthLogin.vue'
 
-const AuthRoute =  {
+const AuthLoginRoute = {
   path: '/auth/login',
   name: 'authLogin',
   components: {
@@ -12,4 +12,4 @@ const AuthRoute =  {
   // }
 }
 
-export { AuthRoute } 
+export { AuthLoginRoute }
