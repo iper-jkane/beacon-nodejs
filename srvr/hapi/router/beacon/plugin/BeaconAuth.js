@@ -191,7 +191,7 @@ const BeaconAuth = {
     })
 
     server.route({
-      method: [ 'POST', 'GET' ],
+      method: [ 'POST' ],
       path: '/auth/login',
       options: {
         auth: {
