@@ -218,8 +218,11 @@ const BeaconAuth = {
         }
       },
       handler: function( req, res ) {
-          console.log(req.auth)
-          return res.response("AuthN Success: just because it's you");
+        console.log("aS.rh: ", req.headers)
+        return res.response({ 
+            msg: "AuthN Success: just because it's you",
+            rap: req.auth.artifacts.decoded 
+        })
       }
     })
   }
