@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 import { AuthLoginRoute } from './endpoints/auth/AuthRoute.js'
+import { AuthScopeRoute } from './endpoints/auth/ScopeRoute.js'
 import { RootRoute } from './endpoints/RootRoute.js'
 import { InfoRoute } from './endpoints/info/InfoRoute.js'
 import { ModelsRoute } from './endpoints/models/ModelsRoute.js'
