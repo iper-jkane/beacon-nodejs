@@ -8,7 +8,7 @@
     // isAuthenticated: false
   })
 
-  const authResp = ref({ isAuthenticated: false, credentials: {} })
+  const authResp = ref()
 
   const requestAuth = function(){
     console.log(authData)
