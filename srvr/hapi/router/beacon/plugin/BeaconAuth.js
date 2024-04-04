@@ -213,7 +213,7 @@ const BeaconAuth = {
       path: '/auth/scope',
       options: {
         auth: {
-          strategies: ['basic'],
+          strategies: ['jwt'],
           mode: 'required',
         }
       },
