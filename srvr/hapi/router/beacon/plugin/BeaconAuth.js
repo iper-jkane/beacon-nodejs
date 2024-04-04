@@ -53,8 +53,18 @@ const BeaconAuth = {
                  family_name:    "Gist",
                  email:          "null@dev.null",
                  email_verified: true,
+                 enabled:        true, 
                  user:           "bgist",
-                 pass:           "$2b$12$O9oo7dWbDgAPikRY8gAogeh7TRJ9ZctihsckEBKwVUexoGfjsAW1K", // foo
+                 pass:           "$2b$12$O9oo7dWbDgAPikRY8gAogeh7TRJ9ZctihsckEBKwVUexoGfjsAW1K", // foo,
+                 jwt: { // abusing jwts for fun and...
+                   key: 'foobar', // each user is it's own jwt-auth server. haha.
+                   algorithms: ['HS512'],
+                    aud: 'urn:audience:bioinfo',
+                    iss: 'urn:issuer:reverseBeaconUri', // + req.server.info,
+                    sub: 'urn:subject:<email>',
+                    scope: "boolean count"
+                 }
+
                }
              ]
     }
