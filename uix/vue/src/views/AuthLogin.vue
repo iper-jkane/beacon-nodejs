@@ -19,9 +19,18 @@
 
     const axiosReq = axiosWrapper({
       url: '/auth/login',
-      auth: authDataUnref 
-    }).then( (r) => { console.log("resp: ", r); authResp.value = r.data } ).catch( (e) => { console.log("error: ", e); authResp.value = e.message })
-    return axiosReq
+      auth: authDataUnref
+    }).then( (r) => { 
+
+           console.log("resp: ", r); 
+           authResp.value = r.data ? "Login Successful" : "OtherWeirdness";
+           sessionStorage.setItem( 'jwt', JSON.stringify(r.data) )
+
+      }).catch( (e) => { 
+           console.log("error: ", e); authResp.value = e.response.data.message 
+        })
+
+      return axiosReq
   }
 
 </script>
