@@ -2,7 +2,7 @@ import HapiBasic from '@hapi/basic'
 
 import HapiJwt from '@hapi/jwt'
 import * as Hoek from '@hapi/hoek'
-import Boom from '@hapi/boom' 
+import Boom from '@hapi/boom'
 import Joi from 'joi'
 import { StatusCode } from 'status-code-enum'
 import bcrypt from 'bcrypt'
@@ -23,29 +23,29 @@ const BeaconAuth = {
 
     // register this plugin
     console.log("Registering: BeaconAuth")
-    
+
     // register hapi basic auth plugin, and/or others perhaps, depending on node.ENV / config, etc...
     await server.register(HapiBasic)
     await server.register(HapiJwt)
 
     // basic auth structure for development; migrate to file, db, or turnkey solution
     // initially a simple user/pass combo + jwt / iana nomenclature: https://www.iana.org/assignments/jwt/jwt.xhtml
-    // this so it can provide authN + authZ data 
+    // this so it can provide authN + authZ data
     // to follow the beacon reference implementation would be to eventually align oauth scopes and beacon granularities
     // clients MIGHT need secret keys handing out + config stage.
     const authDb = {
-      clients: [ 
-                 { 
-                   client_id: 900, 
-                   client_name: "BioInst1", 
-                   client_secret: "c20fd1ae-8eb8-49d3-9a17-56c617546616", // uuid returned as jti (jwt id) 
+      clients: [
+                 {
+                   client_id: 900,
+                   client_name: "BioInst1",
+                   client_secret: "c20fd1ae-8eb8-49d3-9a17-56c617546616", // uuid returned as jti (jwt id)
                    // remoteAddress, X-Forwarded-For, X-Real-Ip
                    ips_allowed: [ "10.10.10.1/32", "127.0.0.1/24", "10.128.0.0/24" ]
                  }
      ],
 
       users: [
-               { 
+               {
                  uid: 1000,
                  gid: 1000,
                  client_id: 900,
@@ -73,10 +73,10 @@ const BeaconAuth = {
         if ( bpass ){
           return { isValid: true, credentials: { jwt: "jwtoken" } }
         }
-        
+
       }
-      return { isValid: false }  
-    } 
+      return { isValid: false }
+    }
 
     server.auth.strategy('basic', 'basic', { validate: validateCreds });
     //server.auth.default('basic');
@@ -91,7 +91,7 @@ const BeaconAuth = {
     const authSignUpPayload = authLoginPayload.append({
                                           email: Joi.string().email({
                                                    tlds: false // for testing only
-                                                 }).required() 
+                                                 }).required()
                                         }).label("auth-signup-payload")
     // console.log(authSignUpPayload.validate({ user: "foob", pass: "foo", email: "foo@dev.null" }))
 
@@ -102,7 +102,7 @@ const BeaconAuth = {
         return req.payload
       },
       options: {
-        auth: false,  
+        auth: false,
         validate: {
           options: {
             abortEarly: false,
@@ -112,10 +112,10 @@ const BeaconAuth = {
           payload: authSignUpPayload,
           failAction: async function (req, res, err) {
             // # possible bug / feature; wont return message about validating subkeys without this
-            if ( req.payload === null ){ 
+            if ( req.payload === null ){
               console.log("fail:" , authSignUpPayload._ids)
               const authErr = authSignUpPayload.validate({},{ abortEarly: false }).error
-              console.log("authErr: ", authErr) 
+              console.log("authErr: ", authErr)
               return Boom.badRequest(authErr)
             }
             return Boom.badRequest("fa: " + err.output.payload.message)
