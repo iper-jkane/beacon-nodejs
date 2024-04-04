@@ -57,7 +57,13 @@ const BeaconAuth = {
                  pass:           "$2b$12$O9oo7dWbDgAPikRY8gAogeh7TRJ9ZctihsckEBKwVUexoGfjsAW1K", // foo
                }
              ]
-    };
+    }
+
+    const jwtClaims = {
+      aud: 'urn:audience:bioinfo',
+      iss: 'urn:issuer:thisServer', // + req.server.info,
+      sub: 'urn:subject:<uuid>'
+    }
 
     const validateCreds = async (req, user, pass, res) => {
       if( Hoek.contain(authDb.users, { "user": user }, { deep: true, part: true } ) ){
