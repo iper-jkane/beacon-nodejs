@@ -9,8 +9,8 @@ import bcrypt from 'bcrypt'
 import Path from 'path'
 import {inspect} from 'util'
 
-import { fileURLToPath } from 'url';
-const __dirname = Path.dirname(fileURLToPath(import.meta.url));
+import { fileURLToPath } from 'url'
+const __dirname = Path.dirname(fileURLToPath(import.meta.url))
 
 const BeaconAuth = {
 
@@ -171,6 +171,6 @@ const BeaconAuth = {
       }
     })
   }
-};
+}
 
-export { BeaconAuth };
+export { BeaconAuth }
