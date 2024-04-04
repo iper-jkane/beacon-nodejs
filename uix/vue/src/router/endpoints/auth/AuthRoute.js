@@ -6,8 +6,8 @@ const AuthRoute =  {
   components: {
     AuthLogin: AuthLogin,
   },
-  // beforeEnter: async (to, from, next) => { 
-    // if( $isAuthenticated === true ){} 
+  // beforeEnter: async (to, from, next) => {
+    // if( $isAuthenticated === true ){}
     // return next('/models')
   // }
 }

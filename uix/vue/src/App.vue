@@ -28,11 +28,11 @@
 
 <style>
 
-  body { 
-    background-color: #0f0f0f; 
+  body {
+    background-color: #0f0f0f;
     color: #f0f0ff;
   }
- 
+
 div {
     color: #2c3e50;
 }

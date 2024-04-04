@@ -12,7 +12,7 @@ const beaconRoutes =
   AuthRoute,
   RootRoute,
   InfoRoute,
-  ModelsRoute
+  ModelsRoute,
 
   // ,{
   //   path: '/about',
@@ -28,5 +28,4 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: beaconRoutes
 })
-
 export default router

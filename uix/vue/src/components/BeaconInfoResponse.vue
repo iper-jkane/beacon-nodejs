@@ -23,11 +23,16 @@
             password: sessionStorage.getItem('auth.password')
           }
         })
-        .then( (resp) => { console.log(resp.data); return resp.data } )
+        .then( (resp) => {
+
+            console.log(resp.data);
+            return resp.data
+
+        })
         .catch( (err) => { console.log(err); return { } } )
 
   }
- 
+
   const beaconInfoResponse = ref( await fetchBeaconInfo() )
   // // eslint-disable-next-line
   // const props = defineProps(
