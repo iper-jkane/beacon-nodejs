@@ -1,4 +1,6 @@
 import HapiBasic from '@hapi/basic'
+
+import HapiJwt from '@hapi/jwt'
 import * as Hoek from '@hapi/hoek'
 import Boom from '@hapi/boom' 
 import Joi from 'joi'
@@ -23,7 +25,8 @@ const BeaconAuth = {
     console.log("Registering: BeaconAuth")
     
     // register hapi basic auth plugin, and/or others perhaps, depending on node.ENV / config, etc...
-    await server.register(HapiBasic);
+    await server.register(HapiBasic)
+    await server.register(HapiJwt)
 
     // basic auth structure for development; migrate to file, db, or turnkey solution
     // initially a simple user/pass combo + jwt / iana nomenclature: https://www.iana.org/assignments/jwt/jwt.xhtml
