@@ -11,6 +11,7 @@ const beaconRoutes =
 [
 
   AuthLoginRoute,
+  AuthScopeRoute,
   RootRoute,
   InfoRoute,
   ModelsRoute,

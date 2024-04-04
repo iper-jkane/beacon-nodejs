@@ -9,6 +9,16 @@
     <router-link to="/">BeaconRoot</router-link> |
     <router-link to="/info">BeaconInfo</router-link> |
     <router-link to="/models">Models</router-link>
+    <router-link to="/auth/scope">AuthScope</router-link>
+
+<Suspense>
+<router-view name="AuthScope" v-slot="{ Component }">
+  <keep-alive>
+    <component :is="Component" />
+  </keep-alive>
+</router-view>
+</Suspense>
+
   </nav>
 
 <Suspense>
