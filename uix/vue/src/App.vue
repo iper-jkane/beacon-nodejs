@@ -8,7 +8,7 @@
   <nav>
     <router-link to="/">BeaconRoot</router-link> |
     <router-link to="/info">BeaconInfo</router-link> |
-    <router-link to="/models">Models</router-link>
+    <router-link to="/models">Models</router-link> |
     <router-link to="/auth/scope">AuthScope</router-link>
 
 <Suspense>
