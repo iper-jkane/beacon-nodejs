@@ -198,9 +198,13 @@ const BeaconAuth = {
            strategy: 'basic',  
            mode: 'required'
         },
+        plugins: {
+          jwt: false
+        }
        },
       handler: function( req, res ) {
-          return req.auth
+          //console.log("aL.rac: ", req.auth.credentials)
+          return res.response({ access_token: req.auth.credentials.jwt, token_type: 'Bearer' })
       }
     })
 
