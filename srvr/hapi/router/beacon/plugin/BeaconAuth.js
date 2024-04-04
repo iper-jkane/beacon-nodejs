@@ -81,15 +81,53 @@ const BeaconAuth = {
         // switch over to node-argon2id
         const bpass = await bcrypt.compare(pass, authDb.users[0].pass )
         if ( bpass ){
-          return { isValid: true, credentials: { jwt: "jwtoken" } }
+          const jwt = HapiJwt.token.generate(
+                {
+                    user: user,
+                    aud: jwtClaims.aud,
+                    iss: jwtClaims.iss,
+                    sub: jwtClaims.sub,
+                    scope: authDb.users[0].jwt.scope,
+                    group: 'bioinfos'
+                },
+                {
+                    key: authDb.users[0].jwt.key,
+                    algorithms: authDb.users[0].jwt.algorithms
+                },
+                {
+                    ttlSec: 10 //3600*3 // 4 hours
+                }
+            )
+
+          return { isValid: true, credentials: { jwt: jwt } }
         }
 
       }
       return { isValid: false }
     }
 
-    server.auth.strategy('basic', 'basic', { validate: validateCreds });
-    //server.auth.default('basic');
+
+    const validateJwt = async function(art,req,res){
+      // happens post token decode; we can do AuthZ (aka payload validation) here.
+      // MUST check user 
+      return { isValid: true, credentials: { tokenPayload: art.decoded.payload } }
+    }
+
+    // as we're using the inbuilt jwt "plugin" and simultaneously abusing jwt tokens as session authorizers
+    // we have to compile an array of enabled accounts:
+    const validJwtKeys = authDb.users.map( (user) => { if (user.enabled) { return { key: user.jwt.key, algorithms: user.jwt.algorithms, kid: `${user.uid}` } } } )
+    validJwtKeys.push({ key: 'foo', algorithms: ['HS512'], kid: 'hostJwtKid' })
+    console.log(validJwtKeys)
+
+    server.auth.strategy('basic', 'basic', { validate: validateCreds })
+    server.auth.strategy('jwt', 'jwt', { keys: validJwtKeys,
+      // verify: false,
+                                         verify: {
+                                          aud: jwtClaims.aud,
+                                          iss: jwtClaims.iss,
+                                          sub: jwtClaims.sub
+                                         },
+                                         validate: validateJwt })    //server.auth.default('basic')
 
     const authLoginPayload = Joi.object({
                                           user:  Joi.string().min(4).max(9).required(),
