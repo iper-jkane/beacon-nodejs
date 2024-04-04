@@ -69,7 +69,7 @@ const BeaconAuth = {
       if( Hoek.contain(authDb.users, { "user": user }, { deep: true, part: true } ) ){
 
         // switch over to node-argon2id
-        const bpass = await bcrypt.compare(pass, authDb.users[0].pass );
+        const bpass = await bcrypt.compare(pass, authDb.users[0].pass )
         if ( bpass ){
           return { isValid: true, credentials: { jwt: "jwtoken" } }
         }
