@@ -19,7 +19,7 @@ const BeaconRouter = {
 
   pkg: {
     name: 'BeaconRouter',
-    version: '0.2.0'
+    version: '0.3.0'
   },
 
   register: async function (server, options) {
