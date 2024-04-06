@@ -95,7 +95,7 @@ const BeaconAuth = {
                     algorithms: authDb.users[0].jwt.algorithms
                 },
                 {
-                    ttlSec: 10 //3600*3 // 4 hours
+                    ttlSec: 3*3600 // 3-hours should be enough for anybody...
                 }
             )
 
