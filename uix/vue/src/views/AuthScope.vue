@@ -50,6 +50,7 @@ const clearSessionStorage = function(){
   <br />
   {{scopeResp}}
   <button type="button" @click="requestScope">Authorize</button>
+  <button type="button" @click="clearSessionStorage()">ClearSessionStorage</button>
 </div>
 </template>
 
