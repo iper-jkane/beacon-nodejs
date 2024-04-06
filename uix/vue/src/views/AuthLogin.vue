@@ -42,6 +42,7 @@
     max-width: 350px;
     min-width: 35px;
     border: 1px solid #ce8e60; /*#b97342;*/
+    background: #0f0f0f;
     padding: 22px 32px;
     overflow: clip;
   }
