@@ -14,12 +14,11 @@ import { rootRoute }                        from '../endpoints/root.js'
 import { beaconInfoResponseRoute }          from '../endpoints/info/index.js'
 import { beaconConfigurationResponseRoute } from '../endpoints/configuration/index.js' 
 
-
 const BeaconRouter = {
 
   pkg: {
     name: 'BeaconRouter',
-    version: '0.3.0'
+    version: '0.4.0'
   },
 
   register: async function (server, options) {
