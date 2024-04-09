@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt'
+
 const authDb = {
 
   clients: [
@@ -67,4 +69,12 @@ const authFetchCreds = function( server, user, opts = {} ){
   }
 }
 
-export { authDb, authFetchCreds } 
+// todo: joi payload validation of authUser
+const authValidateUser = async function( authUser, user, pass ){
+  if( authUser.isValid && authUser.enabled ) {
+    return await bcrypt.compare(pass, authUser.pass )
+  }
+  return false
+}
+
+export { authDb, authFetchCreds, authValidateUser } 

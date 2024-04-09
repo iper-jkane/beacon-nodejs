@@ -4,7 +4,6 @@ import * as Hoek from '@hapi/hoek'
 import Boom from '@hapi/boom'
 import Joi from 'joi'
 import { StatusCode } from 'status-code-enum'
-import bcrypt from 'bcrypt'
 import Path from 'path'
 import {inspect} from 'util'
 
