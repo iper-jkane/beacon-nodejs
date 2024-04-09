@@ -9,6 +9,9 @@ import bcrypt from 'bcrypt'
 import Path from 'path'
 import {inspect} from 'util'
 
+// incremental steps toward db integration...
+import { authDb } from './authDb.js' 
+
 import { fileURLToPath } from 'url'
 const __dirname = Path.dirname(fileURLToPath(import.meta.url))
 
@@ -27,47 +30,6 @@ const BeaconAuth = {
     // register hapi basic auth plugin, and/or others perhaps, depending on node.ENV / config, etc...
     await server.register(HapiBasic)
     await server.register(HapiJwt)
-
-    // basic auth structure for development; migrate to file, db, or turnkey solution
-    // initially a simple user/pass combo + jwt / iana nomenclature: https://www.iana.org/assignments/jwt/jwt.xhtml
-    // this so it can provide authN + authZ data
-    // to follow the beacon reference implementation would be to eventually align oauth scopes and beacon granularities
-    // clients MIGHT need secret keys handing out + config stage.
-    const authDb = {
-      clients: [
-                 {
-                   client_id: 900,
-                   client_name: "BioInst1",
-                   client_secret: "c20fd1ae-8eb8-49d3-9a17-56c617546616", // uuid returned as jti (jwt id)
-                   // remoteAddress, X-Forwarded-For, X-Real-Ip
-                   ips_allowed: [ "10.10.10.1/32", "127.0.0.1/24", "10.128.0.0/24" ]
-                 }
-     ],
-
-      users: [
-               {
-                 uid: 1000,
-                 gid: 1000,
-                 client_id: 900,
-                 given_name:     "Biolo",
-                 family_name:    "Gist",
-                 email:          "null@dev.null",
-                 email_verified: true,
-                 enabled:        true, 
-                 user:           "bgist",
-                 pass:           "$2b$12$O9oo7dWbDgAPikRY8gAogeh7TRJ9ZctihsckEBKwVUexoGfjsAW1K", // foo,
-                 jwt: { // abusing jwts for fun and...
-                   key: 'foobar', // each user is it's own jwt-auth server. haha.
-                   algorithms: ['HS512'],
-                    aud: 'urn:audience:bioinfo',
-                    iss: 'urn:issuer:reverseBeaconUri', // + req.server.info,
-                    sub: 'urn:subject:<email>',
-                    scope: "boolean count"
-                 }
-
-               }
-             ]
-    }
 
     const jwtClaims = {
       aud: 'urn:audience:bioinfo',
