@@ -12,6 +12,8 @@
     "@apidevtools/swagger-parser": "^10.1.0",
     "@hapi/basic": "^7.0.2",
     "@hapi/boom": "^10.0.0",
+    "@hapi/catbox": "^12.1.1",
+    "@hapi/catbox-memory": "^6.0.1",
     "@hapi/crumb": "^9.0.1",
     "@hapi/hapi": "^20.2.2",
     "@hapi/hoek": "^11.0.4",

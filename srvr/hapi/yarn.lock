@@ -154,6 +154,14 @@
     "@hapi/boom" "9.x.x"
     "@hapi/hoek" "9.x.x"
 
+"@hapi/catbox-memory@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@hapi/catbox-memory/-/catbox-memory-6.0.1.tgz#8f6b04c0cf2ce25da470324df360bd4e8d68b6ec"
+  integrity sha512-sVb+/ZxbZIvaMtJfAbdyY+QJUQg9oKTwamXpEg/5xnfG5WbJLTjvEn4kIGKz9pN3ENNbIL/bIdctmHmqi/AdGA==
+  dependencies:
+    "@hapi/boom" "^10.0.1"
+    "@hapi/hoek" "^11.0.2"
+
 "@hapi/catbox-object@^3.0.0":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@hapi/catbox-object/-/catbox-object-3.0.1.tgz#5b71b7567755732ffc587b7649190ac5f9d57fde"
@@ -171,6 +179,16 @@
     "@hapi/hoek" "9.x.x"
     "@hapi/podium" "4.x.x"
     "@hapi/validate" "1.x.x"
+
+"@hapi/catbox@^12.1.1":
+  version "12.1.1"
+  resolved "https://registry.yarnpkg.com/@hapi/catbox/-/catbox-12.1.1.tgz#9339dca0a5b18b3ca0a825ac5dfc916dbc5bab83"
+  integrity sha512-hDqYB1J+R0HtZg4iPH3LEnldoaBsar6bYp0EonBmNQ9t5CO+1CqgCul2ZtFveW1ReA5SQuze9GPSU7/aecERhw==
+  dependencies:
+    "@hapi/boom" "^10.0.1"
+    "@hapi/hoek" "^11.0.2"
+    "@hapi/podium" "^5.0.0"
+    "@hapi/validate" "^2.0.1"
 
 "@hapi/content@^5.0.2":
   version "5.0.2"
@@ -339,6 +357,15 @@
     "@hapi/teamwork" "5.x.x"
     "@hapi/validate" "1.x.x"
 
+"@hapi/podium@^5.0.0":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@hapi/podium/-/podium-5.0.1.tgz#f292b4c0ca3118747394a102c6c3340bda96662f"
+  integrity sha512-eznFTw6rdBhAijXFIlBOMJJd+lXTvqbrBIS4Iu80r2KTVIo4g+7fLy4NKp/8+UnSt5Ox6mJtAlKBU/Sf5080TQ==
+  dependencies:
+    "@hapi/hoek" "^11.0.2"
+    "@hapi/teamwork" "^6.0.0"
+    "@hapi/validate" "^2.0.1"
+
 "@hapi/shot@^5.0.5":
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/@hapi/shot/-/shot-5.0.5.tgz#a25c23d18973bec93c7969c51bf9579632a5bebd"
@@ -385,6 +412,11 @@
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@hapi/teamwork/-/teamwork-5.1.1.tgz#4d2ba3cac19118a36c44bf49a3a47674de52e4e4"
   integrity sha512-1oPx9AE5TIv+V6Ih54RP9lTZBso3rP8j4Xhb6iSVwPXtAM+sDopl5TFMv5Paw73UnpZJ9gjcrTE1BXrWt9eQrg==
+
+"@hapi/teamwork@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@hapi/teamwork/-/teamwork-6.0.0.tgz#b3a173cf811ba59fc6ee22318a1b51f4561f06e0"
+  integrity sha512-05HumSy3LWfXpmJ9cr6HzwhAavrHkJ1ZRCmNE2qJMihdM5YcWreWPfyN0yKT2ZjCM92au3ZkuodjBxOibxM67A==
 
 "@hapi/topo@3.x.x":
   version "3.1.6"
