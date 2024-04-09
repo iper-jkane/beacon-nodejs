@@ -40,4 +40,31 @@ const authDb = {
   ]
 }
 
-export { authDb }  
+// hapi plugin helper methods; it makes sense they have access to `server`
+const authFetchCreds = function( server, user, opts = {} ){
+
+  // check authCache and conditionally pull from db (and fill cache), then null, or error
+  try {
+    const foundUser = authDb.users.find( (u) => { return u.user == user } )
+    if( foundUser !== undefined ){
+
+      foundUser.isValid = true
+      console.log(foundUser)
+      return foundUser
+
+    }else{
+
+      console.log("Couldn't Find User: ", user)
+      return { isValid: false }
+
+    }
+
+  }catch(err){
+
+    console.log("authFetchCredsError: ", err)
+    throw(err) // if auth is broken, the app is broken!
+
+  }
+}
+
+export { authDb, authFetchCreds } 

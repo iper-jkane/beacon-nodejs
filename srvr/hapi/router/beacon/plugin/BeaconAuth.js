@@ -10,7 +10,7 @@ import Path from 'path'
 import {inspect} from 'util'
 
 // incremental steps toward db integration...
-import { authDb } from './authDb.js' 
+import { authDb, authFetchCreds } from './utils/authDb.js' 
 
 import { fileURLToPath } from 'url'
 const __dirname = Path.dirname(fileURLToPath(import.meta.url))
