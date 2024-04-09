@@ -1,5 +1,4 @@
 import HapiBasic from '@hapi/basic'
-
 import HapiJwt from '@hapi/jwt'
 import * as Hoek from '@hapi/hoek'
 import Boom from '@hapi/boom'
@@ -38,11 +37,13 @@ const BeaconAuth = {
     }
 
     const validateCreds = async (req, user, pass, res) => {
+
       if( Hoek.contain(authDb.users, { "user": user }, { deep: true, part: true } ) ){
 
         // switch over to node-argon2id
         const bpass = await bcrypt.compare(pass, authDb.users[0].pass )
         if ( bpass ){
+
           const jwt = HapiJwt.token.generate(
                 {
                     user: user,
@@ -62,10 +63,13 @@ const BeaconAuth = {
             )
 
           return { isValid: true, credentials: { jwt: jwt } }
+
         }
 
       }
+
       return { isValid: false }
+
     }
 
 
