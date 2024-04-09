@@ -8,7 +8,7 @@ import Path from 'path'
 import {inspect} from 'util'
 
 // incremental steps toward db integration...
-import { authDb, authFetchCreds } from './utils/authDb.js' 
+import { authDb, authFetchCreds, authValidateUser } from './utils/authDb.js' 
 
 import { fileURLToPath } from 'url'
 const __dirname = Path.dirname(fileURLToPath(import.meta.url))
@@ -37,11 +37,10 @@ const BeaconAuth = {
 
     const validateCreds = async (req, user, pass, res) => {
 
-      if( Hoek.contain(authDb.users, { "user": user }, { deep: true, part: true } ) ){
-
-        // switch over to node-argon2id
-        const bpass = await bcrypt.compare(pass, authDb.users[0].pass )
-        if ( bpass ){
+      // server knows best...
+      const authData = authFetchCreds( server, user )
+      // Guinness...good things, etc...
+      if( await authValidateUser( authData, user, pass ) ) {
 
           const jwt = HapiJwt.token.generate(
                 {
