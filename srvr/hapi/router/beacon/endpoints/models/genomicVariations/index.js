@@ -1,56 +1,73 @@
 import mongoose from 'mongoose'
-import { beaconInfoResponseSchema } from '../../../../../../schema/mongoose/beacon/framework/responses/beaconInfoResponse.js'
+import Joi from 'joi'
 
-const getBeaconInfoResponse = async function(req){
+// import { beaconGenomicVariationsResponseSchema } from '../../../../../../schema/mongoose/beacon/framework/responses/beaconGenomicVariationsResponse.js'
+
+const beaconGenomicVariationsParamsPayload = Joi.object({
+
+  alternateBases:             Joi.string(),
+  aminoacidChange:            Joi.string(),
+  assemblyId:                 Joi.string(),
+  end:                        Joi.array().items( Joi.number().integer().min(0) ).min(0).max(2), //could technically be Joi.ref['start'], but wouldn't be official spec?
+  entryId:                    Joi.string(), // strictly .required() by spec, but not by reference implementation?
+  filters:                    Joi.array().items( Joi.string() ),
+  geneId:                     Joi.string(),
+  genomicAlleleShortForm:     Joi.string(),
+  includeResultsetResponses:  Joi.string().valid('ALL','HIT','MISS','NONE'), 
+  limit:                      Joi.number().integer().min(0).default(10),
+  referenceBases:             Joi.string(),
+  referenceName:              Joi.string(),
+  requestedSchema:            Joi.string(),
+  skip:                       Joi.number().integer().min(0).default(0),
+  start:                      Joi.array().items( Joi.number().integer().required().min(0) ).min(1).max(2).optional(),
+  variantMaxLength:           Joi.number().integer().min(0),
+  variantMinLength:           Joi.number().integer().min(0)
+
+}) 
+
+const getBeaconGenomicVariationsResponse = async function(req){
 
   // use existing mongoose / mongodb connection
   const mdb = req.server.plugins.BeaconRouter.mdb
   
-  // use existing model; or create one if not found in this connection 
-  var beaconInfoResponseModel = mdb.models['beaconInfoResponseModel']
-  if ( ! beaconInfoResponseModel ){
-    // possible bug in Schema; have to pass in 'beaconInfoResponseSchema.options.collection'
-    beaconInfoResponseModel = mdb.model('beaconInfoResponseModel', beaconInfoResponseSchema, beaconInfoResponseSchema.options.collection) 
-  }
-
-  // find existing config; first one that returns is fine, as this is a single beacon server
-  var infoDoc = await beaconInfoResponseModel.findOne({}) //, { _id: false })
-
-  // if not, create a new model, and save
-  // and fetch; this is for testing / my learning
-  if( !infoDoc ){
-    infoDoc = new beaconInfoResponseModel()
-    infoDoc.save() // .then( doc => { return doc } )
-    // infoDoc = await beaconInfoResponseModel.findOne({})
-  }else{
-    // aggregate test in prep for POSTs, etc...
-    //console.log( await beaconInfoResponseModel.aggregate([ { $match: { _id: infoDoc._id } }, { $set: { x: 'xxx' } }, { $merge: { into: beaconInfoResponseSchema.options.collection, on: '_id' } } ] ))
-
-    // const extendedBeaconInfoResponseSchema = beaconInfoResponseSchema.add( { x: {type: String }, default: 'xxx' } )
-    // console.log( await beaconInfoResponseModel.updateOne( { _id: infoDoc._id }, { "response.id": "newField" } ) )
-    //
-    // infoDoc.response.x = 'xxx' 
-    // infoDoc.save()
-
-  }
+  var infoDoc = await beaconGenomicVariationsResponseModel.findOne({}) //, { _id: false })
 
   return infoDoc 
   
 }
 
-const beaconInfoResponseRouteHandler = async function( req, res ){
-    return res.response( await getBeaconInfoResponse(req) )
+const beaconGenomicVariationsRouteHandler = async function( req, res ){
+    // return res.response( await getBeaconGenomicVariationsResponse(req) )
+    console.log( req.payload, req.query )
+    return res.response( { payload: req.payload, query: req.query } )
 }
 
-const beaconInfoResponseRoute = { 
-      method:  ['GET','POST'],
-      path:    '/info',
+const beaconGenomicVariationsRoute = [ 
+{ 
+      method:  ['POST'],
+      path:    '/g_variants',
       options: {
-        auth: 'basic'
+        auth: 'basic',
+        validate: {
+          payload: beaconGenomicVariationsParamsPayload
+        }
       },
-      handler: beaconInfoResponseRouteHandler
+      handler: beaconGenomicVariationsRouteHandler
+},
+{ 
+      method:  ['GET'],
+      path:    '/g_variants',
+      options: {
+        auth: 'basic',
+        validate: {
+          query:   beaconGenomicVariationsParamsPayload 
+        }
+      },
+      handler: beaconGenomicVariationsRouteHandler
 }
+]
 
-export { beaconInfoResponseRoute, beaconInfoResponseSchema }
+
+export { beaconGenomicVariationsRoute } //, beaconGenomicVariationsSchema }
 
 

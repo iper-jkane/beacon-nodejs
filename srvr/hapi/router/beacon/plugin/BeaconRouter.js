@@ -13,6 +13,7 @@ const __dirname = Path.dirname(fileURLToPath(import.meta.url));
 import { rootRoute }                        from '../endpoints/root.js'
 import { beaconInfoResponseRoute }          from '../endpoints/info/index.js'
 import { beaconConfigurationResponseRoute } from '../endpoints/configuration/index.js' 
+import { beaconGenomicVariationsRoute }     from '../endpoints/models/genomicVariations/index.js'
 
 
 const BeaconRouter = {
@@ -51,6 +52,7 @@ const BeaconRouter = {
     server.route( rootRoute )
     server.route( beaconInfoResponseRoute )
     server.route( beaconConfigurationResponseRoute )
+    server.route( beaconGenomicVariationsRoute )
 
     // catchall -- pending tidyup ;)
     server.route({
