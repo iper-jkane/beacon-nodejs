@@ -52,10 +52,10 @@ const beaconGenomicVariationsSchema = mongoose.Schema({
                     type: {
                       type: String,
                       default: "Number",
-                      match: /^Number$/, // enum might be quicker in principle 
+                      match: /^Number$/, // enum might be quicker in principle
                       required: true
                     },
-                  
+
                     value: {
                       type: Number,
                       required: true
@@ -69,10 +69,10 @@ const beaconGenomicVariationsSchema = mongoose.Schema({
                     type: {
                       type: String,
                       default: "Number",
-                      match: /^Number$/, // enum might be quicker in principle 
+                      match: /^Number$/, // enum might be quicker in principle
                       required: true
                     },
-                  
+
                     value: {
                       type: Number,
                       required: true
@@ -107,4 +107,5 @@ const beaconGenomicVariationsSchema = mongoose.Schema({
     }
 
 }, { collection: 'genomicVariations' })
+
 export { beaconGenomicVariationsSchema }
