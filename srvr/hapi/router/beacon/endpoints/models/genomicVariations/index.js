@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import Joi from 'joi'
 
-// import { beaconGenomicVariationsResponseSchema } from '../../../../../../schema/mongoose/beacon/framework/responses/beaconGenomicVariationsResponse.js'
+import { beaconGenomicVariationsSchema } from '../../../../../../../schema/mongoose/beacon/models/genomicVariations/defaultSchema.js'
 
 const beaconGenomicVariationsParamsPayload = Joi.object({
 
@@ -30,16 +30,23 @@ const getBeaconGenomicVariationsResponse = async function(req){
   // use existing mongoose / mongodb connection
   const mdb = req.server.plugins.BeaconRouter.mdb
   
-  var infoDoc = await beaconGenomicVariationsResponseModel.findOne({}) //, { _id: false })
+  var beaconGenomicVariationsModel = mdb.models['beaconGenomicVariationsModel']
+  // move to top-lvl; i.e., register the models at srvr startup
+  if ( ! beaconGenomicVariationsModel ){
+    beaconGenomicVariationsModel = mdb.model('beaconGenomicVariationsModel', beaconGenomicVariationsSchema, beaconGenomicVariationsSchema.options.collection) 
+  }
 
-  return infoDoc 
+  var gVariants = await beaconGenomicVariationsModel.findOne({}, { _id: false })
+  console.log( await gVariants.validate() )
+
+  return gVariants 
   
 }
 
 const beaconGenomicVariationsRouteHandler = async function( req, res ){
-    // return res.response( await getBeaconGenomicVariationsResponse(req) )
+    const gVariants = await getBeaconGenomicVariationsResponse(req)
     console.log( req.payload, req.query )
-    return res.response( { payload: req.payload, query: req.query } )
+    return res.response( { payload: req.payload, query: req.query, gvars: gVariants } )
 }
 
 const beaconGenomicVariationsRoute = [ 
