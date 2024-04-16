@@ -49,6 +49,7 @@ const beaconGenomicVariationsRouteHandler = async function( req, res ){
     return res.response( { payload: req.payload, query: req.query, gvars: gVariants } )
 }
 
+// requires methods be split, because of hapi validation logic
 const beaconGenomicVariationsRoute = [ 
 { 
       method:  ['POST'],
