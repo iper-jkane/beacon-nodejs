@@ -31,6 +31,11 @@ const beaconGenomicVariationsParamsPayload = Joi.object({
 
 const getBeaconGenomicVariations = async function(req){
 
+  // make function mergeRequestParameters(...)
+  const reqPayload = req.payload ? req.payload : {}
+  const reqQuery   = req.query ? req.query : {}
+  const reqParams = Hoek.applyToDefaults( reqPayload, reqQuery )
+
   // use existing mongoose / mongodb connection
   const mdb = req.server.plugins.BeaconRouter.mdb
   
