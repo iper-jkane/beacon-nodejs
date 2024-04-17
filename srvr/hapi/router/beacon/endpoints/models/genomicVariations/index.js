@@ -50,8 +50,8 @@ const getBeaconGenomicVariations = async function(req){
 
   var genomicVariationsQuery = beaconGenomicVariationsModel.find( queryFilter )
   
-  genomicVariationsQuery.select( publicFieldsProjection )
-  // genomicVariationsQuery.count() 
+  // genomicVariationsQuery.select( publicFieldsProjection )
+  genomicVariationsQuery.count() 
 
   
   const gVariants = await genomicVariationsQuery.exec()
