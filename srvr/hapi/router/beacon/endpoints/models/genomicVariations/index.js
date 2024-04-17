@@ -2,7 +2,6 @@ import mongoose from 'mongoose'
 import Joi from 'joi'
 import * as Hoek from '@hapi/hoek'
 
-
 import { beaconGenomicVariationsSchema } from '../../../../../../../schema/mongoose/beacon/models/genomicVariations/defaultSchema.js'
 
 const beaconGenomicVariationsParamsPayload = Joi.object({
@@ -15,7 +14,7 @@ const beaconGenomicVariationsParamsPayload = Joi.object({
   filters:                    Joi.array().items( Joi.string() ),
   geneId:                     Joi.string(),
   genomicAlleleShortForm:     Joi.string(),
-  includeResultsetResponses:  Joi.string().valid('ALL','HIT','MISS','NONE'), 
+  includeResultsetResponses:  Joi.string().valid('ALL','HIT','MISS','NONE'),
   limit:                      Joi.number().integer().min(0).default(10).max(10).failover(10), // .max( beaconConfig.maxLimit )
   mateName:                   Joi.string(),
   referenceBases:             Joi.string().pattern(/^([ACGTUNRYSWKMBDHV\-\.]*)$/),
@@ -27,7 +26,7 @@ const beaconGenomicVariationsParamsPayload = Joi.object({
   variantMinLength:           Joi.number().integer().min(0),
   variantType:                Joi.string()
 
-}) 
+})
 
 const getBeaconGenomicVariations = async function(req){
 
@@ -42,7 +41,7 @@ const getBeaconGenomicVariations = async function(req){
   var beaconGenomicVariationsModel = mdb.models['beaconGenomicVariationsModel']
   // move to top-lvl; i.e., register the models at srvr startup
   if ( ! beaconGenomicVariationsModel ){
-    beaconGenomicVariationsModel = mdb.model('beaconGenomicVariationsModel', beaconGenomicVariationsSchema, beaconGenomicVariationsSchema.options.collection) 
+    beaconGenomicVariationsModel = mdb.model('beaconGenomicVariationsModel', beaconGenomicVariationsSchema, beaconGenomicVariationsSchema.options.collection)
   }
 
   const queryFilter = {}
@@ -51,13 +50,13 @@ const getBeaconGenomicVariations = async function(req){
   var genomicVariationsQuery = beaconGenomicVariationsModel.find( queryFilter )
   
   // genomicVariationsQuery.select( publicFieldsProjection )
-  genomicVariationsQuery.count() 
+  genomicVariationsQuery.count()
 
-  
+
   const gVariants = await genomicVariationsQuery.exec()
   // if( beaconConfig.strictMode ){ await gVariants.validate() }
-  return gVariants 
-  
+  return gVariants
+
 }
 
 const beaconGenomicVariationsRouteHandler = async function( req, res ){
@@ -67,8 +66,8 @@ const beaconGenomicVariationsRouteHandler = async function( req, res ){
 }
 
 // requires methods be split, because of hapi validation logic
-const beaconGenomicVariationsRoute = [ 
-{ 
+const beaconGenomicVariationsRoute = [
+{
       method:  ['POST'],
       path:    '/g_variants',
       options: {
@@ -79,7 +78,7 @@ const beaconGenomicVariationsRoute = [
       },
       handler: beaconGenomicVariationsRouteHandler
 },
-{ 
+{
       method:  ['GET'],
       path:    '/g_variants',
       options: {
