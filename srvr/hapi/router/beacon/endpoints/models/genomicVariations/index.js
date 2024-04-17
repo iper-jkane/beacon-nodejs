@@ -29,7 +29,7 @@ const beaconGenomicVariationsParamsPayload = Joi.object({
 
 }) 
 
-const getBeaconGenomicVariationsResponse = async function(req){
+const getBeaconGenomicVariations = async function(req){
 
   // use existing mongoose / mongodb connection
   const mdb = req.server.plugins.BeaconRouter.mdb
@@ -48,7 +48,7 @@ const getBeaconGenomicVariationsResponse = async function(req){
 }
 
 const beaconGenomicVariationsRouteHandler = async function( req, res ){
-    const gVariants = await getBeaconGenomicVariationsResponse(req)
+    const gVariants = await getBeaconGenomicVariations(req)
     console.log( req.payload, req.query )
     return res.response( { payload: req.payload, query: req.query, gvars: gVariants } )
 }
