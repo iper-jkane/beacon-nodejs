@@ -45,9 +45,17 @@ const getBeaconGenomicVariations = async function(req){
     beaconGenomicVariationsModel = mdb.model('beaconGenomicVariationsModel', beaconGenomicVariationsSchema, beaconGenomicVariationsSchema.options.collection) 
   }
 
-  var gVariants = await beaconGenomicVariationsModel.findOne({}, { _id: false })
-  console.log( await gVariants.validate() )
+  const queryFilter = {}
+  const publicFieldsProjection = { _id: 0, variantInternalId: 1, variation: 1 }
 
+  var genomicVariationsQuery = beaconGenomicVariationsModel.find( queryFilter )
+  
+  genomicVariationsQuery.select( publicFieldsProjection )
+  // genomicVariationsQuery.count() 
+
+  
+  const gVariants = await genomicVariationsQuery.exec()
+  // if( beaconConfig.strictMode ){ await gVariants.validate() }
   return gVariants 
   
 }
