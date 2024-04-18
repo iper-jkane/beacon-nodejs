@@ -4,7 +4,21 @@ import * as Hoek from '@hapi/hoek'
 
 import { beaconGenomicVariationsSchema } from '../../../../../../../schema/mongoose/beacon/models/genomicVariations/defaultSchema.js'
 
-const beaconGenomicVariationsParamsPayload = Joi.object({
+// hardcoded for now
+const beaconConfig = { 
+        // maxGranularity: 'boolean',
+        // maxGranularity: 'count',
+        maxGranularity: 'record',
+        maxResultsLimit: 10
+      }
+
+const enumBeaconGranularities = {
+  boolean:    0,
+  count:      1,
+  aggregated: 2,
+  record:     3
+}
+
 
   alternateBases:             Joi.string().pattern(/^([ACGTUNRYSWKMBDHV\-\.]*)$/),
   aminoacidChange:            Joi.string(),
