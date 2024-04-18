@@ -186,28 +186,29 @@ const beaconGenomicVariationsRouteHandler = async function( req, res ){
 
 // requires methods be split, because of hapi validation logic
 const beaconGenomicVariationsRoute = [
-{
-      method:  ['POST'],
-      path:    '/g_variants',
-      options: {
-        auth: 'basic',
-        validate: {
-          payload: beaconGenomicVariationsParamsPayload
-        }
-      },
-      handler: beaconGenomicVariationsRouteHandler
-},
-{
-      method:  ['GET'],
-      path:    '/g_variants',
-      options: {
-        auth: 'basic',
-        validate: {
-          query:   beaconGenomicVariationsParamsPayload 
-        }
-      },
-      handler: beaconGenomicVariationsRouteHandler
-}
+  {
+        method:  ['POST'],
+        path:    '/g_variants',
+        options: {
+          auth: 'basic',
+          validate: {
+            payload: genomicVariationsPostParamsPayload
+          }
+        },
+        handler: beaconGenomicVariationsRouteHandler
+  },
+
+  {
+        method:  ['GET'],
+        path:    '/g_variants',
+        options: {
+          auth: 'basic',
+          validate: {
+            query: genomicVariationsParamsPayload
+          }
+        },
+        handler: beaconGenomicVariationsRouteHandler
+  }
 ]
 
 
