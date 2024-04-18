@@ -102,6 +102,7 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
     beaconGenomicVariationsModel = mdb.model('beaconGenomicVariationsModel', beaconGenomicVariationsSchema, beaconGenomicVariationsSchema.options.collection)
   }
 
+  // todo: make function + sort out variable passing for reqParams
   var requestedGranularity = enumBeaconGranularities[reqParams.requestedGranularity]
   // const authedGranularity = enumBeaconGranularities[req.auth.artifacts.decoded.jwt.allowedGranularity]
   const maxGranularity = enumBeaconGranularities[beaconConfig.maxGranularity]
@@ -115,6 +116,7 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
 
   const endpointParams = reqParams.requestParameters
   const queryFilter = {}
+
   const publicFieldsProjection = { _id: 0, variantInternalId: 1, variation: 1 }
 
 
