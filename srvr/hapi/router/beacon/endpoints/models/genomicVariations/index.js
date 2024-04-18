@@ -66,7 +66,29 @@ const genomicVariationsPostParamsPayload = Joi.object({
   })
 })
 
-const getBeaconGenomicVariations = async function(req){
+// simplify access to request parameters across GET / POST queries
+// set returnedGranularity here
+// todo: memory usage considerations ;)
+const parseRequestParams = function( req ){
+
+    var retParams = {}
+    if( req.method == "post" ){
+      // needed for the receivedRequestSummary
+      retParams.orig = req.payload.query 
+      // clone the payload query ( shallow copy the sub-property ) into our "api"
+      retParams.api  = Hoek.clone( req.payload.query, { shallow: [ 'requestParameters' ] } )
+      delete( retParams.api.requestParameters )
+      // merge sub-property contents into our "api" version
+      Hoek.merge( retParams.api, Hoek.reach( req, 'payload.query.requestParameters', { default: {} } ) )
+    }
+
+    // already flattened `so-to-speak`
+    if( req.method == "get" ){
+      retParams.orig = Hoek.reach(req, 'query', { default: {} })
+      retParams.api  = Hoek.clone(retParams.orig)
+    }
+    
+    return retParams
 
   // make function mergeRequestParameters(...)
   const reqPayload = req.payload ? req.payload : {}
