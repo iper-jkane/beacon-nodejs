@@ -5,7 +5,7 @@ import * as Hoek from '@hapi/hoek'
 import { beaconGenomicVariationsSchema } from '../../../../../../../schema/mongoose/beacon/models/genomicVariations/defaultSchema.js'
 
 // hardcoded for now
-const beaconConfig = { 
+const beaconConfig = {
         // maxGranularity: 'boolean',
         // maxGranularity: 'count',
         maxGranularity: 'record',
@@ -25,13 +25,13 @@ const genomicVariationsParamsPayload = Joi.object({
   alternateBases:             Joi.string().pattern( /^([ACGTUNRYSWKMBDHV\-\.]*)$/ ),
   aminoacidChange:            Joi.string(),
   assemblyId:                 Joi.string(),
-  end:                        Joi.array().items( Joi.number().integer().min( 0 ) ).min( 0 ).max( 2 ), 
-  entryId:                    Joi.string(), 
+  end:                        Joi.array().items( Joi.number().integer().min( 0 ) ).min( 0 ).max( 2 ),
+  entryId:                    Joi.string(),
   filters:                    Joi.array().items( Joi.string() ).default( [] ),
   geneId:                     Joi.string(),
   genomicAlleleShortForm:     Joi.string(),
   includeResultsetResponses:  Joi.string().valid( 'ALL', 'HIT', 'MISS', 'NONE' ),
-  limit:                      Joi.number().integer().min( 0 ).default( 10 ).max( beaconConfig.maxResultsLimit ).failover( beaconConfig.maxResultsLimit ), 
+  limit:                      Joi.number().integer().min( 0 ).default( 10 ).max( beaconConfig.maxResultsLimit ).failover( beaconConfig.maxResultsLimit ),
   mateName:                   Joi.string(),
   referenceBases:             Joi.string().pattern( /^([ACGTUNRYSWKMBDHV\-\.]*)$/ ),
   referenceName:              Joi.string(),
@@ -42,7 +42,7 @@ const genomicVariationsParamsPayload = Joi.object({
   variantMinLength:           Joi.number().integer().min( 0 ),
   variantType:                Joi.string()
 
-}) 
+})
 
 
 const genomicVariationsPostParamsPayload = Joi.object({
@@ -70,7 +70,7 @@ const parseRequestParams = function( req ){
     var retParams = {}
     if( req.method == "post" ){
       // needed for the receivedRequestSummary
-      retParams.orig = req.payload.query 
+      retParams.orig = req.payload.query
       // clone the payload query ( shallow copy the sub-property ) into our "api"
       retParams.api  = Hoek.clone( req.payload.query, { shallow: [ 'requestParameters' ] } )
       delete( retParams.api.requestParameters )
@@ -83,7 +83,7 @@ const parseRequestParams = function( req ){
       retParams.orig = Hoek.reach(req, 'query', { default: {} })
       retParams.api  = Hoek.clone(retParams.orig)
     }
-    
+
     return retParams
 
 }
@@ -111,10 +111,10 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
     reqParams.returnedGranularity = beaconConfig.maxGranularity
   }else{
     reqParams.returnedGranularity = reqParams.requestedGranularity
-  } 
+  }
 
   const endpointParams = reqParams.requestParameters
-  const queryFilter = {} 
+  const queryFilter = {}
   const publicFieldsProjection = { _id: 0, variantInternalId: 1, variation: 1 }
 
 
@@ -137,7 +137,7 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
       break
   }
 
-  const gVariants = await genomicVariationsQuery.exec() 
+  const gVariants = await genomicVariationsQuery.exec()
   // if( beaconConfig.strictMode ){ // Query.exec().cursor().asyncEach( doc.validate() ) }
   return gVariants
 
@@ -148,13 +148,13 @@ const beaconGenomicVariationsRouteHandler = async function( req, res ){
     const reqParams = parseRequestParams(req)
     const gVariants = await getBeaconGenomicVariations( req, reqParams.api )
 
-    var beaconGenomicVariationsResponse = { 
-          meta: { 
+    var beaconGenomicVariationsResponse = {
+          meta: {
             receivedRequestSummary: reqParams.orig,
             returnedGranularity: reqParams.api.returnedGranularity
           }
         }
- 
+
     switch ( reqParams.api.returnedGranularity ){
       case 'boolean':
         beaconGenomicVariationsResponse.responseSummary = { exists: ( gVariants !== null ) }
@@ -164,13 +164,13 @@ const beaconGenomicVariationsRouteHandler = async function( req, res ){
         break
       case 'aggregated':
         beaconGenomicVariationsResponse.responseSummary = { schemaUndocumented: true }
-        break 
+        break
       case 'record':
         beaconGenomicVariationsResponse.response = { resultSets: [ { id: "CINECA", results: gVariants } ] }
         break
     }
 
-    return res.response( beaconGenomicVariationsResponse ) 
+    return res.response( beaconGenomicVariationsResponse )
 }
 
 // requires methods be split, because of hapi validation logic
