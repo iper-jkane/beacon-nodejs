@@ -153,9 +153,35 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
 }
 
 const beaconGenomicVariationsRouteHandler = async function( req, res ){
-    const gVariants = await getBeaconGenomicVariations(req)
-    console.log( req.payload, req.query )
-    return res.response( { payload: req.payload, query: req.query, gvars: gVariants } )
+
+    const reqParams = parseRequestParams(req)
+    const gVariants = await getBeaconGenomicVariations( req, reqParams.api )
+
+    var beaconGenomicVariationsResponse = { 
+          meta: { 
+            receivedRequestSummary: reqParams.orig,
+            returnedGranularity: reqParams.api.returnedGranularity
+          }
+        }
+ 
+    switch ( reqParams.api.returnedGranularity ){
+      case 'boolean':
+        beaconGenomicVariationsResponse.responseSummary = { exists: ( gVariants !== null ) }
+        break
+      case 'count':
+        beaconGenomicVariationsResponse.responseSummary = { exists: ( gVariants > 0 ), numTotalResults: gVariants }
+        break
+      case 'aggregated':
+        beaconGenomicVariationsResponse.responseSummary = { schemaUndocumented: true }
+        break 
+      case 'record':
+        beaconGenomicVariationsResponse.response = { resultSets: [ { id: "CINECA", results: gVariants } ] }
+        break
+    }
+
+    // console.log( req.payload, req.query )
+    // return res.response( { payload: req.payload, query: req.query, gvars: gVariants } )
+    return res.response( beaconGenomicVariationsResponse ) //, requestSummary: reqParams.orig } ) //, gVariants: gVariants } )
 }
 
 // requires methods be split, because of hapi validation logic
