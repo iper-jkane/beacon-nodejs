@@ -19,6 +19,9 @@ const enumBeaconGranularities = {
   record:     3
 }
 
+// actually should be JOI although, might be good for when the config is migrated to the db?
+// also a side-effect of considering mongoose-as-middleware; most of this would be handled by the imagined code-autogeneration framework
+// import { beaconRequestBodyQuerySchema } from '../../../../../../../schema/mongoose/beacon/framework/requests/beaconRequestBody.js'
 
   alternateBases:             Joi.string().pattern(/^([ACGTUNRYSWKMBDHV\-\.]*)$/),
   aminoacidChange:            Joi.string(),
