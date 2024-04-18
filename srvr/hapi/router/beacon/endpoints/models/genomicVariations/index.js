@@ -19,23 +19,19 @@ const enumBeaconGranularities = {
   record:     3
 }
 
-// actually should be JOI although, might be good for when the config is migrated to the db?
-// also a side-effect of considering mongoose-as-middleware; most of this would be handled by the imagined code-autogeneration framework
-// import { beaconRequestBodyQuerySchema } from '../../../../../../../schema/mongoose/beacon/framework/requests/beaconRequestBody.js'
-
 // endpoint specific query params (also the GET params)
 const genomicVariationsParamsPayload = Joi.object({
 
   alternateBases:             Joi.string().pattern( /^([ACGTUNRYSWKMBDHV\-\.]*)$/ ),
   aminoacidChange:            Joi.string(),
   assemblyId:                 Joi.string(),
-  end:                        Joi.array().items( Joi.number().integer().min( 0 ) ).min( 0 ).max( 2 ), //could technically be Joi.ref['start'], but wouldn't be official spec?
-  entryId:                    Joi.string(), // strictly .required() by spec, but not by reference implementation?
+  end:                        Joi.array().items( Joi.number().integer().min( 0 ) ).min( 0 ).max( 2 ), 
+  entryId:                    Joi.string(), 
   filters:                    Joi.array().items( Joi.string() ).default( [] ),
   geneId:                     Joi.string(),
   genomicAlleleShortForm:     Joi.string(),
   includeResultsetResponses:  Joi.string().valid( 'ALL', 'HIT', 'MISS', 'NONE' ),
-  limit:                      Joi.number().integer().min( 0 ).default( 10 ).max( beaconConfig.maxResultsLimit ).failover( beaconConfig.maxResultsLimit ), // .max( beaconConfig.maxLimit )
+  limit:                      Joi.number().integer().min( 0 ).default( 10 ).max( beaconConfig.maxResultsLimit ).failover( beaconConfig.maxResultsLimit ), 
   mateName:                   Joi.string(),
   referenceBases:             Joi.string().pattern( /^([ACGTUNRYSWKMBDHV\-\.]*)$/ ),
   referenceName:              Joi.string(),
@@ -46,7 +42,7 @@ const genomicVariationsParamsPayload = Joi.object({
   variantMinLength:           Joi.number().integer().min( 0 ),
   variantType:                Joi.string()
 
-}) // .concat(beaconRequestBodyPayload)
+}) 
 
 
 const genomicVariationsPostParamsPayload = Joi.object({
@@ -99,7 +95,7 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
 
   // use existing mongoose / mongodb connection
   const mdb = req.server.plugins.BeaconRouter.mdb
-  
+
   var beaconGenomicVariationsModel = mdb.models['beaconGenomicVariationsModel']
   // move to top-lvl; i.e., register the models at srvr startup
   if ( ! beaconGenomicVariationsModel ){
@@ -110,25 +106,20 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
   // const authedGranularity = enumBeaconGranularities[req.auth.artifacts.decoded.jwt.allowedGranularity]
   const maxGranularity = enumBeaconGranularities[beaconConfig.maxGranularity]
 
-  console.log("mG: ", maxGranularity)
-  console.log("rGp: ", requestedGranularity)
   // if ( requestedGranularity <= req.auth.authUser.allowedGranularity <= maxGranularity ) ){
   if( requestedGranularity > maxGranularity ) {
     reqParams.returnedGranularity = beaconConfig.maxGranularity
-    console.log("oi: ", reqParams.requestedGranularity )
   }else{
     reqParams.returnedGranularity = reqParams.requestedGranularity
-  } // or return invalid query / beaconErrorResponse ? 
+  } 
 
-  // console.log("rGo: ", requestedGranularity)
   const endpointParams = reqParams.requestParameters
   const queryFilter = {} 
   const publicFieldsProjection = { _id: 0, variantInternalId: 1, variation: 1 }
 
 
-  var genomicVariationsQuery //.find( queryFilter )
+  var genomicVariationsQuery
 
-  // reconvert to if/else
   switch ( reqParams.returnedGranularity ){
     case 'boolean':
       genomicVariationsQuery = beaconGenomicVariationsModel.findOne( queryFilter )
@@ -179,9 +170,7 @@ const beaconGenomicVariationsRouteHandler = async function( req, res ){
         break
     }
 
-    // console.log( req.payload, req.query )
-    // return res.response( { payload: req.payload, query: req.query, gvars: gVariants } )
-    return res.response( beaconGenomicVariationsResponse ) //, requestSummary: reqParams.orig } ) //, gVariants: gVariants } )
+    return res.response( beaconGenomicVariationsResponse ) 
 }
 
 // requires methods be split, because of hapi validation logic
@@ -213,5 +202,3 @@ const beaconGenomicVariationsRoute = [
 
 
 export { beaconGenomicVariationsRoute } //, beaconGenomicVariationsSchema }
-
-
