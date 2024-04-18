@@ -23,26 +23,47 @@ const enumBeaconGranularities = {
 // also a side-effect of considering mongoose-as-middleware; most of this would be handled by the imagined code-autogeneration framework
 // import { beaconRequestBodyQuerySchema } from '../../../../../../../schema/mongoose/beacon/framework/requests/beaconRequestBody.js'
 
-  alternateBases:             Joi.string().pattern(/^([ACGTUNRYSWKMBDHV\-\.]*)$/),
+// endpoint specific query params (also the GET params)
+const genomicVariationsParamsPayload = Joi.object({
+
+  alternateBases:             Joi.string().pattern( /^([ACGTUNRYSWKMBDHV\-\.]*)$/ ),
   aminoacidChange:            Joi.string(),
   assemblyId:                 Joi.string(),
-  end:                        Joi.array().items( Joi.number().integer().min(0) ).min(0).max(2), //could technically be Joi.ref['start'], but wouldn't be official spec?
+  end:                        Joi.array().items( Joi.number().integer().min( 0 ) ).min( 0 ).max( 2 ), //could technically be Joi.ref['start'], but wouldn't be official spec?
   entryId:                    Joi.string(), // strictly .required() by spec, but not by reference implementation?
-  filters:                    Joi.array().items( Joi.string() ),
+  filters:                    Joi.array().items( Joi.string() ).default( [] ),
   geneId:                     Joi.string(),
   genomicAlleleShortForm:     Joi.string(),
-  includeResultsetResponses:  Joi.string().valid('ALL','HIT','MISS','NONE'),
-  limit:                      Joi.number().integer().min(0).default(10).max(10).failover(10), // .max( beaconConfig.maxLimit )
+  includeResultsetResponses:  Joi.string().valid( 'ALL', 'HIT', 'MISS', 'NONE' ),
+  limit:                      Joi.number().integer().min( 0 ).default( 10 ).max( beaconConfig.maxResultsLimit ).failover( beaconConfig.maxResultsLimit ), // .max( beaconConfig.maxLimit )
   mateName:                   Joi.string(),
-  referenceBases:             Joi.string().pattern(/^([ACGTUNRYSWKMBDHV\-\.]*)$/),
+  referenceBases:             Joi.string().pattern( /^([ACGTUNRYSWKMBDHV\-\.]*)$/ ),
   referenceName:              Joi.string(),
   requestedSchema:            Joi.string(),
-  skip:                       Joi.number().integer().min(0).default(0),
-  start:                      Joi.array().items( Joi.number().integer().required().min(0) ).min(1).max(2).optional(),
-  variantMaxLength:           Joi.number().integer().min(0),
-  variantMinLength:           Joi.number().integer().min(0),
+  skip:                       Joi.number().integer().min( 0 ).default( 0 ),
+  start:                      Joi.array().items( Joi.number().integer().required().min( 0 ) ).min( 1 ).max( 2 ).optional(),
+  variantMaxLength:           Joi.number().integer().min( 0 ),
+  variantMinLength:           Joi.number().integer().min( 0 ),
   variantType:                Joi.string()
 
+}) // .concat(beaconRequestBodyPayload)
+
+
+const genomicVariationsPostParamsPayload = Joi.object({
+  query: Joi.object({
+    requestParameters:         genomicVariationsParamsPayload,
+    requestedGranularity:      Joi.string().valid( 'boolean', 'count', 'aggregated', 'record' ).default( beaconConfig.maxGranularity ),
+    testMode:                  Joi.boolean().default( true ).failover( true ),
+    filters:                   genomicVariationsParamsPayload.extract( 'filters' ),
+    includeResultsetResponses: Joi.string().valid( 'ALL', 'HIT', 'MISS', 'NONE' ).default( 'HIT' ),
+    pagination:                Joi.object({
+      limit:        genomicVariationsParamsPayload.extract( 'limit' ),
+      skip:         genomicVariationsParamsPayload.extract( 'skip' ),
+      currentPage:  Joi.string(),
+      nextPage:     Joi.string(),
+      previousPage: Joi.string()
+    })
+  })
 })
 
 const getBeaconGenomicVariations = async function(req){
