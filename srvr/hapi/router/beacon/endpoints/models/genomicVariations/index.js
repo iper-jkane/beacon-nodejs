@@ -92,6 +92,11 @@ const parseRequestParams = function( req ){
 
 }
 
+
+const getBeaconGenomicVariations = async function( req, reqParams ){
+
+  // const reqParams = parseRequestParams(req)
+
   // use existing mongoose / mongodb connection
   const mdb = req.server.plugins.BeaconRouter.mdb
   
@@ -101,17 +106,48 @@ const parseRequestParams = function( req ){
     beaconGenomicVariationsModel = mdb.model('beaconGenomicVariationsModel', beaconGenomicVariationsSchema, beaconGenomicVariationsSchema.options.collection)
   }
 
-  const queryFilter = {}
+  var requestedGranularity = enumBeaconGranularities[reqParams.requestedGranularity]
+  // const authedGranularity = enumBeaconGranularities[req.auth.artifacts.decoded.jwt.allowedGranularity]
+  const maxGranularity = enumBeaconGranularities[beaconConfig.maxGranularity]
+
+  console.log("mG: ", maxGranularity)
+  console.log("rGp: ", requestedGranularity)
+  // if ( requestedGranularity <= req.auth.authUser.allowedGranularity <= maxGranularity ) ){
+  if( requestedGranularity > maxGranularity ) {
+    reqParams.returnedGranularity = beaconConfig.maxGranularity
+    console.log("oi: ", reqParams.requestedGranularity )
+  }else{
+    reqParams.returnedGranularity = reqParams.requestedGranularity
+  } // or return invalid query / beaconErrorResponse ? 
+
+  // console.log("rGo: ", requestedGranularity)
+  const endpointParams = reqParams.requestParameters
+  const queryFilter = {} 
   const publicFieldsProjection = { _id: 0, variantInternalId: 1, variation: 1 }
 
-  var genomicVariationsQuery = beaconGenomicVariationsModel.find( queryFilter )
-  
-  // genomicVariationsQuery.select( publicFieldsProjection )
-  genomicVariationsQuery.count()
 
+  var genomicVariationsQuery //.find( queryFilter )
 
-  const gVariants = await genomicVariationsQuery.exec()
-  // if( beaconConfig.strictMode ){ await gVariants.validate() }
+  // reconvert to if/else
+  switch ( reqParams.returnedGranularity ){
+    case 'boolean':
+      genomicVariationsQuery = beaconGenomicVariationsModel.findOne( queryFilter )
+      break
+    case 'count':
+      genomicVariationsQuery = beaconGenomicVariationsModel.countDocuments( queryFilter )
+      break
+    case 'aggregated':
+      // page left blank
+      break
+    case 'record':
+      genomicVariationsQuery = beaconGenomicVariationsModel.find( queryFilter )
+      genomicVariationsQuery.select( publicFieldsProjection )
+      genomicVariationsQuery.limit( reqParams.limit )
+      break
+  }
+
+  const gVariants = await genomicVariationsQuery.exec() 
+  // if( beaconConfig.strictMode ){ // Query.exec().cursor().asyncEach( doc.validate() ) }
   return gVariants
 
 }
