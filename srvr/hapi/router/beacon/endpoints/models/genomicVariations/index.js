@@ -81,7 +81,13 @@ const parseRequestParams = function( req ){
     // already flattened `so-to-speak`
     if( req.method == "get" ){
       retParams.orig = Hoek.reach(req, 'query', { default: {} })
+
+      // GET doesn't define a requestedGranularity so we must set a default
+      retParams.orig.requestedGranularity = 'boolean'
+
+      // clone
       retParams.api  = Hoek.clone(retParams.orig)
+
     }
 
     return retParams
