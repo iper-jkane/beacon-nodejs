@@ -1,10 +1,14 @@
 import axios from 'axios'
 import axiosCache from 'axios-cache-plugin'
 
+const beaconProto = process.env.VUE_APP_BNJS_PROTO  ? process.env.VUE_APP_BNJS_PROTO : 'https'
+const beaconHost  = process.env.VUE_APP_BNJS_HOST   ? process.env.VUE_APP_BNJS_HOST  : 'localhost'
+const beaconPort  = process.env.VUE_APP_BNJS_PORT   ? process.env.VUE_APP_BNJS_PORT  : 9001
+
 let axiosClient = axios.create({
   withCredentials: false,
   method: 'post',
-  baseURL: 'https://localhost:9001'
+  baseURL: `${beaconProto}://${beaconHost}:${beaconPort}`
 })
 
 // axiosClient.interceptors.request.use(request => {
