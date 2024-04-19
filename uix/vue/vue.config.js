@@ -2,7 +2,7 @@ const beaconHost       = process.env.VUE_APP_BJNS_HOST ? process.env.VUE_APP_BJN
 
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  publicPath: '/api/',
+  // publicPath: '/api/',
   transpileDependencies: true,
   devServer: {
       host: `${beaconHost}`, 
