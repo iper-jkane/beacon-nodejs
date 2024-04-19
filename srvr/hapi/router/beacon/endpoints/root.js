@@ -1,10 +1,7 @@
 import Boom from '@hapi/boom'
-import { OpenAPIRequestValidator, beaconModelEndpointsJsonFile } from '../plugin/utils/openapi.js'
-
-import SwaggerParser from "@apidevtools/swagger-parser";
+import { StatusCode } from 'status-code-enum'
 
 const rootRoute = [
- 
   // minimal set of rules to keep everything hapi
   {
     // handle favicon  
