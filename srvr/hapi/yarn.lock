@@ -64,6 +64,13 @@
   dependencies:
     "@hapi/hoek" "9.x.x"
 
+"@hapi/ammo@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@hapi/ammo/-/ammo-6.0.1.tgz#1bc9f7102724ff288ca03b721854fc5393ad123a"
+  integrity sha512-pmL+nPod4g58kXrMcsGLp05O2jF4P2Q3GiL8qYV7nKYEh3cGf+rV4P5Jyi2Uq0agGhVU63GtaSAfBEZOlrJn9w==
+  dependencies:
+    "@hapi/hoek" "^11.0.2"
+
 "@hapi/b64@5.x.x":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@hapi/b64/-/b64-5.0.0.tgz#b8210cbd72f4774985e78569b77e97498d24277d"
@@ -115,7 +122,7 @@
     "@hapi/boom" "9.x.x"
     "@hapi/hoek" "9.x.x"
 
-"@hapi/bounce@^3.0.0":
+"@hapi/bounce@^3.0.0", "@hapi/bounce@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@hapi/bounce/-/bounce-3.0.1.tgz#25a51bf95733749c557c6bf948048bffa66435e4"
   integrity sha512-G+/Pp9c1Ha4FDP+3Sy/Xwg2O4Ahaw3lIZFSX+BL4uWi64CmiETuZPxhKDUD4xBMOUZbBlzvO8HjiK8ePnhBadA==
@@ -283,6 +290,18 @@
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-11.0.4.tgz#42a7f244fd3dd777792bfb74b8c6340ae9182f37"
   integrity sha512-PnsP5d4q7289pS2T2EgGz147BFJ2Jpb4yrEdkpz2IhgEUzos1S7HTl7ezWh1yfYzYlj89KzLdCRkqsP6SIryeQ==
+
+"@hapi/inert@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@hapi/inert/-/inert-7.1.0.tgz#0bcebe4c5115230f9d7b5d6e8c3bf799ca91958e"
+  integrity sha512-5X+cl/Ozm0U9uPGGX1dSKhnhTQIf161bH/kkTN9OBVAZKFG+nrj8j/NMj6S1zBBZWmQrkVRNPfCUGrXzB4fCFQ==
+  dependencies:
+    "@hapi/ammo" "^6.0.1"
+    "@hapi/boom" "^10.0.1"
+    "@hapi/bounce" "^3.0.1"
+    "@hapi/hoek" "^11.0.2"
+    "@hapi/validate" "^2.0.1"
+    lru-cache "^7.14.1"
 
 "@hapi/iron@6.x.x":
   version "6.0.0"
@@ -966,6 +985,11 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+lru-cache@^7.14.1:
+  version "7.18.3"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.18.3.tgz#f793896e0fd0e954a59dfdd82f0773808df6aa89"
+  integrity sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==
 
 make-dir@^3.1.0:
   version "3.1.0"
