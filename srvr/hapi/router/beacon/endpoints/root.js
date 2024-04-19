@@ -18,6 +18,7 @@ const rootRoute = [
   {
     // return the pre-built client
     // I predict a reverse-proxy in your future... ;)
+    // without special logic will produce 404s
     method: ['GET'],
     path: '/',
     options: {
