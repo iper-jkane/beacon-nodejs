@@ -64,8 +64,6 @@ const BeaconAuth = {
 
         }
 
-      }
-
       return { isValid: false }
 
     }
