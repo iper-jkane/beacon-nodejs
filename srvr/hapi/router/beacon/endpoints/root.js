@@ -20,7 +20,7 @@ const rootRoute = [
     // I predict a reverse-proxy in your future... ;)
     // without special logic will produce 404s
     method: ['GET'],
-    path: '/',
+    path: '/{path*}',
     options: {
       auth: false,
       files: { relativeTo: '../../uix/vue/dist' },
@@ -34,7 +34,7 @@ const rootRoute = [
 
   {
     // catchall
-    method: ['GET','POST'],
+    method: ['POST'],
     path: '/{path*}',
     handler: function( req, res ) {
       return Boom.notAcceptable('You have offended this api server! ' + req.path);
