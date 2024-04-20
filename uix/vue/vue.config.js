@@ -1,27 +1,37 @@
+const url = require('node:url')
 
 // there has to be a better way :D
 // presumably using webpack DefinePlugin to allow passing env vars not prefixed by 'VUE_APP_'
-if ( process.env.VUE_APP_BNJS_PROTO === undefined ) {
-  process.env.VUE_APP_BNJS_PROTO = process.env.BNJS_PROTO ? process.env.BNJS_PROTO : 'https'
-}
-if ( process.env.VUE_APP_BNJS_HOST === undefined ) {
-  process.env.VUE_APP_BNJS_HOST = process.env.BNJS_HOST ? process.env.BNJS_HOST : 'localhost'
-}
-if ( process.env.VUE_APP_BNJS_PORT === undefined ) {
-  process.env.VUE_APP_BNJS_PORT = process.env.BNJS_PORT ? process.env.BNJS_PORT : 8080
+if ( process.env.VUE_APP_BNJS_API_URL === undefined ) {
+  process.env.VUE_APP_BNJS_API_URL = process.env.BNJS_API_URL ? process.env.BNJS_API_URL : 'https://localhost:9001'
 }
 
-const beaconHost = process.env.VUE_APP_BNJS_HOST
+if ( process.env.VUE_APP_BNJS_UIX_URL === undefined ) {
+  process.env.VUE_APP_BNJS_UIX_URL = process.env.BNJS_UIX_URL ? process.env.BNJS_UIX_URL : 'https://localhost:8080' 
+}
+
+console.log( "BNJS_UIX_URL: ", process.env.BNJS_UIX_URL )
+console.log( "BNJS_API_URL: ", process.env.BNJS_API_URL )
+
+const beaconUixUrl   = url.parse( process.env.VUE_APP_BNJS_UIX_URL )
+
+const beaconUixHost  = beaconUixUrl.hostname
+const beaconUixPort  = beaconUixUrl.port
+const beaconUixProto = beaconUixUrl.protocol.slice(0,-1)
+
+const beaconApiHostPort = url.parse(process.env.VUE_APP_BNJS_UIX_URL)
 
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   // publicPath: '/api/',
   transpileDependencies: true,
   devServer: {
-      host: `${beaconHost}`, 
+      server: `${beaconUixProto}`,
+      host:   `${beaconUixHost}`, 
+      port:   `${beaconUixPort}`,
       client: {
-          webSocketURL: `wss://${beaconHost}/ws`,
+          webSocketURL: `wss://${beaconUixHost}/ws`, // :${beaconUixPort}/ws`,
       },
-       allowedHosts: [ 'localhost', beaconHost ]
+       allowedHosts: [ 'localhost', beaconUixHost ]
   },
 })
