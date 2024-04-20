@@ -1,12 +1,11 @@
 import Hapi from '@hapi/hapi';
-// import Boom from '@hapi/boom';
-import process from 'node:process'
 import Path from 'path'
 import fs from 'fs'
-import { BeaconRouter } from './router/beacon/plugin/BeaconRouter.js'
 
-import { fileURLToPath } from 'url';
+import { fileURLToPath, parse } from 'url';
 const __dirname = Path.dirname(fileURLToPath(import.meta.url));
+
+import { BeaconRouter } from './router/beacon/plugin/BeaconRouter.js'
 
 const hbsrv= new Hapi.Server({
   port: 9001,
