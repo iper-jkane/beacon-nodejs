@@ -6,6 +6,10 @@ services:
     image: "dept/beacon-nodejs"
     command: [ "vue" ]
     build: .
+    env_file: .env.docker
+    # environment:
+    #   BNJS_UIX_URL: https://10.128.0.2:8080
+    #   BNJS_API_URL: https://10.128.0.3:9001
     networks: 
       beacon-v2-net:
         ipv4_address: 10.128.0.2
@@ -16,6 +20,9 @@ services:
     build: .
     depends_on:
       - "mongodb"
+    env_file: .env.docker
+    # environment:
+      # BNJS_API_CORS_ORIGINS: https://10.128.0.2:8080,https://...
     networks: 
       beacon-v2-net:
         ipv4_address: 10.128.0.3
