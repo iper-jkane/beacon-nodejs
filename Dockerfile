@@ -21,6 +21,10 @@ RUN yarn config set --home enableTelemetry 0
 #---
 FROM base as build
 
+ARG BNJS_UIX_URL
+ARG BNJS_API_URL
+ARG BNJS_API_CORS_ORIGINS
+
 RUN pacman --noconfirm -Sy base-devel
 
 USER ${beaconUser}
