@@ -142,7 +142,22 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
     case 'record':
       genomicVariationsQuery = beaconGenomicVariationsModel.find( queryFilter )
       genomicVariationsQuery.select( publicFieldsProjection )
-      genomicVariationsQuery.limit( reqParams.limit )
+
+      // request limitation
+      const maxLimit = beaconConfig.maxResultsLimit
+      var   reqLimit = reqParams.limit
+
+      // if requested by user
+      if ( typeof reqLimit === 'number' ){
+
+        // enforce maxResultsLimit
+        if ( reqLimit == 0 || reqLimit > maxLimit ) {
+          reqLimit = maxLimit
+        }
+
+        genomicVariationsQuery.limit( reqLimit )
+
+      }
       break
   }
 
