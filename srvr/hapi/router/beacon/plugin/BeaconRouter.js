@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 import HapiAutoRoute from 'hapi-auto-route'
 import Path from 'path'
 import * as dotenv from 'dotenv'
+import Inert from '@hapi/inert'
 
 import { fileURLToPath } from 'url';
 const __dirname = Path.dirname(fileURLToPath(import.meta.url));
@@ -44,36 +45,17 @@ const BeaconRouter = {
       throw("...aaaAAAARRRRGH")
     }
     
-
-
     // sub-plugin called after mdb instance, but before routes, can use existing connection; lazy
     await server.register(BeaconAuth)
+    await server.register(Inert)
 
-    server.route( rootRoute )
     server.route( beaconInfoResponseRoute )
     server.route( beaconConfigurationResponseRoute )
     server.route( beaconGenomicVariationsRoute )
+    server.route( rootRoute )
 
-    // catchall -- pending tidyup ;)
-    server.route({
-      method:  ['GET'],
-      path:    '/{path*}',
-      handler: function( req, res ) {
-
-        // separate path -- make use of @hapi/inert 
-        if (req.path == "/favicon.ico"){
-          // return res.response("icon")
-          return res.response()
-          .type('image/x-icon')
-          .code(StatusCode.SuccessNoContent);
-        }
-
-        return Boom.notAcceptable('You have offended this api server! ' + req.path);
-      }
-    })
 
   } // register
 }; // plugin
-
 
 export { BeaconRouter }

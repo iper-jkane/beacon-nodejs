@@ -5,18 +5,28 @@ services:
   vue:
     image: "dept/beacon-nodejs"
     command: [ "vue" ]
+    env_file: .env
+    # environment:
+    #   BNJS_UIX_URL: https://10.128.0.2:8080
+    #   BNJS_API_URL: https://10.128.0.3:9001
     build: .
-    networks: 
+    networks:
       beacon-v2-net:
         ipv4_address: 10.128.0.2
 
   hapi:
     image: "dept/beacon-nodejs"
     command: [ "hapi" ]
-    build: .
+    env_file: .env # "abusing" compose interpolation
+    build:
+      context: .
+      args: # from `./.env` or `--env-file`; sent to Dockerfile
+        BNJS_UIX_URL: ${BNJS_UIX_URL}
+        BNJS_API_URL: ${BNJS_API_URL}
+        BNJS_API_CORS_ORIGINS: ${BNJS_API_CORS_ORIGINS}
     depends_on:
       - "mongodb"
-    networks: 
+    networks:
       beacon-v2-net:
         ipv4_address: 10.128.0.3
 
@@ -37,7 +47,7 @@ services:
 networks:
   beacon-v2-net:
     name: "beacon-v2-net"
-    driver_opts: 
+    driver_opts:
       com.docker.network.bridge.name: "beacon-v2-net"
     ipam:
       driver: default

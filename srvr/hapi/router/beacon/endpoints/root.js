@@ -1,36 +1,44 @@
 import Boom from '@hapi/boom'
-import { OpenAPIRequestValidator, beaconModelEndpointsJsonFile } from '../plugin/utils/openapi.js'
-
-import SwaggerParser from "@apidevtools/swagger-parser";
+import { StatusCode } from 'status-code-enum'
 
 const rootRoute = [
+  // minimal set of rules to keep everything hapi
   {
-    method:  ['GET','POST'],
-    path:    '/',
+    // handle favicon  
+    method: ['GET'],
+    path: '/favicon.ico', // {path*}',
+    handler: function( req, res ) {
+      // make use of @hapi/inert?
+      return res.response()
+               .type('image/x-icon')
+               .code(StatusCode.SuccessNoContent)
+    }
+  },
+  
+  {
+    // return the pre-built client
+    // I predict a reverse-proxy in your future... ;)
+    // without special logic will produce 404s
+    method: ['GET'],
+    path: '/{path*}',
     options: {
-      auth: false
+      auth: false,
+      files: { relativeTo: '../../uix/vue/dist' },
     },
-    handler: async function( req, res ) {
-      // return Boom.notAcceptable('(root) You have offended this api server!');
-      // return Vue client code as god intended...
-      if ( req.method == 'post' ){ 
-        // console.log(beaconModelEndpoints)
-        // console.log(req.payload)
-        const openApiParser = new SwaggerParser()
-        // console.log(openApiParser)
-       
-        try { 
-          // console.log( api.$refs.paths() )
-          
-          // console.log(api)
-          // console.log( "validateError: " + errors )
-        }catch(err){
-          console.log( "catch:" + err )
-        }
-        return { "youPosted": "weRecieved" } //req.payload }
-      }
-      return "VUE CLIENT"
-    },
+    handler: {
+      directory: {
+          path: '.', 
+      },
+    }
+  },
+
+  {
+    // catchall
+    method: ['POST'],
+    path: '/{path*}',
+    handler: function( req, res ) {
+      return Boom.notAcceptable('You have offended this api server! ' + req.path);
+    }
   }
 ]
 

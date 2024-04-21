@@ -9,9 +9,9 @@ then
     srvr|hapi) cd srvr/hapi;;
       uix|vue) cd uix/vue;;
   esac
-  yarn serve 
+  yarn serve
 
-else 
+else
   echo "Must Specifiy: hapi or vue" >&2
   exit 2
 fi

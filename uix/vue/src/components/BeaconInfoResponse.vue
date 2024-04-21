@@ -7,6 +7,7 @@
   import { schemaToProps } from '../composables/schema/mongoose/utils.js'
   import { axiosWrapper } from '../composables/api/apiClient.js'
 
+  // make function  
   axiosWrapper.__addFilter(/info/)
   async function fetchBeaconInfo(retry){
 
@@ -16,7 +17,6 @@
 
         console.log(sessionStorage)
         return await axiosWrapper({
-          /* url: 'https://localhost:9001/api/v2/info', */
           url: '/info',
           auth: {
             username: sessionStorage.getItem('auth.username'),

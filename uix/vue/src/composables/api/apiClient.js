@@ -1,10 +1,20 @@
 import axios from 'axios'
 import axiosCache from 'axios-cache-plugin'
 
+console.log( "VUE_APP_BNJS_UIX_URL: ", process.env.VUE_APP_BNJS_UIX_URL )
+console.log( "VUE_APP_BNJS_API_URL: ", process.env.VUE_APP_BNJS_API_URL )
+
+const beaconApiUrl   = new URL( process.env.VUE_APP_BNJS_API_URL )
+console.log("beaconApiUrl: ", beaconApiUrl)
+
+const beaconApiHost  = beaconApiUrl.hostname
+const beaconApiPort  = beaconApiUrl.port
+const beaconApiProto = beaconApiUrl.protocol.slice(0,-1)
+
 let axiosClient = axios.create({
   withCredentials: false,
   method: 'post',
-  baseURL: 'https://localhost:9001'
+  baseURL: `${beaconApiProto}://${beaconApiHost}:${beaconApiPort}`
 })
 
 // axiosClient.interceptors.request.use(request => {

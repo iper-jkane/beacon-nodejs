@@ -1,23 +1,39 @@
 import Hapi from '@hapi/hapi';
-// import Boom from '@hapi/boom';
-import process from 'node:process'
 import Path from 'path'
 import fs from 'fs'
-import { BeaconRouter } from './router/beacon/plugin/BeaconRouter.js'
 
-import { fileURLToPath } from 'url';
+import { fileURLToPath, parse } from 'url';
 const __dirname = Path.dirname(fileURLToPath(import.meta.url));
 
+import { BeaconRouter } from './router/beacon/plugin/BeaconRouter.js'
+
+import * as dotenv from 'dotenv'
+
+const nodeEnvFile = process.env.NODE_ENV ? ".env." + process.env.NODE_ENV : ".env"
+dotenv.config({ path: nodeEnvFile })
+
+const beaconApiUrlStr = process.env.BNJS_API_URL ? process.env.BNJS_API_URL : 'https://0.0.0.0:9001'
+const beaconApiUrl   = parse(beaconApiUrlStr)
+
+const beaconApiHost  = beaconApiUrl.hostname
+const beaconApiPort  = beaconApiUrl.port
+const beaconApiProto = beaconApiUrl.protocol.slice(0,-1)
+
+const corsOrigins = process.env.BNJS_API_CORS_ORIGINS ? process.env.BNJS_API_CORS_ORIGINS.split(',') : [ 'https://localhost:8080' ]
+
+// console.log( "corsOrigins: ", JSON.stringify(corsOrigins) )
+// console.log( `${beaconApiProto}://${beaconApiHost}:${beaconApiPort}` )
+
 const hbsrv= new Hapi.Server({
-  port: 9001,
-  host: '0.0.0.0',
+  port: beaconApiPort,
+  host: beaconApiHost,
   tls: {
     key:  fs.readFileSync(__dirname + '/tls/server-key.pem'),
     cert: fs.readFileSync(__dirname + '/tls/server-cert.pem'),
   },
   routes: {
     cors: {
-      origin: [ 'https://localhost:9001', 'https://localhost:8080' ],
+      origin: corsOrigins,
       maxAge: 86400,
       headers: [ 'Accept', 'Authorization', 'Content-Type', 'If-None-Match' ],
       additionalHeaders: [ 'WWW-Authenticate' ],
@@ -26,16 +42,16 @@ const hbsrv= new Hapi.Server({
       credentials: false,
     }
   },
-  router: { 
-    isCaseSensitive: true, 
-    stripTrailingSlash: true 
+  router: {
+    isCaseSensitive: true,
+    stripTrailingSlash: true
   },
   debug: { request: ['*'] }
 })
 
 const crank = async () => {
 
-  await hbsrv.register({  
+  await hbsrv.register({
     plugin: BeaconRouter,
   });
 
