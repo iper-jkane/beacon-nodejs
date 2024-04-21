@@ -17,13 +17,16 @@ services:
   hapi:
     image: "dept/beacon-nodejs"
     command: [ "hapi" ]
-    build: .
+    env_file: .env # "abusing" compose interpolation
+    build:
+      context: .
+      args: # from `./.env` or `--env-file`; sent to Dockerfile
+        BNJS_UIX_URL: ${BNJS_UIX_URL}
+        BNJS_API_URL: ${BNJS_API_URL}
+        BNJS_API_CORS_ORIGINS: ${BNJS_API_CORS_ORIGINS}
     depends_on:
       - "mongodb"
-    env_file: .env.docker
-    # environment:
-      # BNJS_API_CORS_ORIGINS: https://10.128.0.2:8080,https://...
-    networks: 
+    networks:
       beacon-v2-net:
         ipv4_address: 10.128.0.3
 
