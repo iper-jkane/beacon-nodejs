@@ -16,6 +16,7 @@ import { beaconInfoResponseRoute }          from '../endpoints/info/index.js'
 import { beaconConfigurationResponseRoute } from '../endpoints/configuration/index.js' 
 import { beaconGenomicVariationsRoute }     from '../endpoints/models/genomicVariations/index.js'
 
+
 const BeaconRouter = {
 
   pkg: {
