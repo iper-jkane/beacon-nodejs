@@ -5,12 +5,12 @@ services:
   vue:
     image: "dept/beacon-nodejs"
     command: [ "vue" ]
-    build: .
-    env_file: .env.docker
+    env_file: .env
     # environment:
     #   BNJS_UIX_URL: https://10.128.0.2:8080
     #   BNJS_API_URL: https://10.128.0.3:9001
-    networks: 
+    build: .
+    networks:
       beacon-v2-net:
         ipv4_address: 10.128.0.2
 
