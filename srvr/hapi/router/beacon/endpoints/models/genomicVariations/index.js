@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import Joi from 'joi'
 import * as Hoek from '@hapi/hoek'
+import Boom from '@hapi/boom'
 
 import { beaconGenomicVariationsSchema } from '../../../../../../../schema/mongoose/beacon/models/genomicVariations/defaultSchema.js'
 
