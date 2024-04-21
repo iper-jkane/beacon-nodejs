@@ -47,7 +47,7 @@ services:
 networks:
   beacon-v2-net:
     name: "beacon-v2-net"
-    driver_opts: 
+    driver_opts:
       com.docker.network.bridge.name: "beacon-v2-net"
     ipam:
       driver: default

@@ -7,7 +7,7 @@ if ( process.env.VUE_APP_BNJS_API_URL === undefined ) {
 }
 
 if ( process.env.VUE_APP_BNJS_UIX_URL === undefined ) {
-  process.env.VUE_APP_BNJS_UIX_URL = process.env.BNJS_UIX_URL ? process.env.BNJS_UIX_URL : 'https://localhost:8080' 
+  process.env.VUE_APP_BNJS_UIX_URL = process.env.BNJS_UIX_URL ? process.env.BNJS_UIX_URL : 'https://localhost:8080'
 }
 
 console.log( "BNJS_UIX_URL: ", process.env.BNJS_UIX_URL )
@@ -27,7 +27,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
       server: `${beaconUixProto}`,
-      host:   `${beaconUixHost}`, 
+      host:   `${beaconUixHost}`,
       port:   `${beaconUixPort}`,
       client: {
           webSocketURL: `wss://${beaconUixHost}/ws`, // :${beaconUixPort}/ws`,

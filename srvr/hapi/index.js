@@ -42,16 +42,16 @@ const hbsrv= new Hapi.Server({
       credentials: false,
     }
   },
-  router: { 
-    isCaseSensitive: true, 
-    stripTrailingSlash: true 
+  router: {
+    isCaseSensitive: true,
+    stripTrailingSlash: true
   },
   debug: { request: ['*'] }
 })
 
 const crank = async () => {
 
-  await hbsrv.register({  
+  await hbsrv.register({
     plugin: BeaconRouter,
   });
 
