@@ -10,7 +10,7 @@ const beaconConfig = {
         // maxGranularity: 'boolean',
         // maxGranularity: 'count',
         maxGranularity: 'record',
-        maxResultsLimit: 10
+        maxResultsLimit: Number.MAX_SAFE_INTEGER // refactor when you hit BigInt ;)
       }
 
 const enumBeaconGranularities = {
