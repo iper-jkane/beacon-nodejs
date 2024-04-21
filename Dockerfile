@@ -1,4 +1,4 @@
-FROM archlinux:base-devel-20240101.0.204074 as base 
+FROM archlinux:base-devel-20240101.0.204074 as base
 
 ARG beaconUser=beacon
 ARG beaconRoot=/opt/beacon
@@ -18,7 +18,7 @@ RUN corepack enable
 RUN corepack prepare yarn@stable --activate
 RUN yarn config set --home enableTelemetry 0
 
-#---
+#-
 FROM base as build
 
 ARG BNJS_UIX_URL
@@ -30,7 +30,7 @@ RUN pacman --noconfirm -Sy base-devel
 USER ${beaconUser}
 WORKDIR ${beaconRoot}
 
-COPY --chown=${beaconUser}:${beaconUser} ./schema ${beaconRoot}/schema 
+COPY --chown=${beaconUser}:${beaconUser} ./schema ${beaconRoot}/schema
 COPY --chown=${beaconUser}:${beaconUser} ./srvr   ${beaconRoot}/srvr
 COPY --chown=${beaconUser}:${beaconUser} ./uix    ${beaconRoot}/uix
 # COPY --chown=${beaconUser}:${beaconUser} ./beacon-entrypoint.sh ${beaconRoot}/
