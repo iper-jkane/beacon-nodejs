@@ -205,7 +205,14 @@ const beaconGenomicVariationsRoute = [
         options: {
           auth: 'basic',
           validate: {
-            payload: genomicVariationsPostParamsPayload
+            payload: genomicVariationsPostParamsPayload,
+            options: {
+              abortEarly: false
+            },
+            failAction: async function (req, res, err) {
+              // return informative errors in relation to paramater validation
+              return Boom.conflict(err)
+            }
           }
         },
         handler: beaconGenomicVariationsRouteHandler
