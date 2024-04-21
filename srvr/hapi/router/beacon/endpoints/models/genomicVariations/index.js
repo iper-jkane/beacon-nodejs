@@ -32,7 +32,7 @@ const genomicVariationsParamsPayload = Joi.object({
   geneId:                     Joi.string(),
   genomicAlleleShortForm:     Joi.string(),
   includeResultsetResponses:  Joi.string().valid( 'ALL', 'HIT', 'MISS', 'NONE' ),
-  limit:                      Joi.number().integer().min( 0 ).default( 10 ).max( beaconConfig.maxResultsLimit ).failover( beaconConfig.maxResultsLimit ),
+  limit:                      Joi.number().integer().min( 0 ).max( beaconConfig.maxResultsLimit ), //.messages({ 'number.max': 'foo'}),
   mateName:                   Joi.string(),
   referenceBases:             Joi.string().pattern( /^([ACGTUNRYSWKMBDHV\-\.]*)$/ ),
   referenceName:              Joi.string(),
@@ -43,7 +43,7 @@ const genomicVariationsParamsPayload = Joi.object({
   variantMinLength:           Joi.number().integer().min( 0 ),
   variantType:                Joi.string()
 
-})
+}).label('genomicVariationsEndpointParameters')
 
 
 const genomicVariationsPostParamsPayload = Joi.object({
