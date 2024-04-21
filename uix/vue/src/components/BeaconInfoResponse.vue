@@ -5,7 +5,7 @@
   // eslint-disable-next-line
   import { ref } from 'vue'
   import { schemaToProps } from '../composables/schema/mongoose/utils.js'
-  import { axiosWrapper } from '@/composables/api/apiClient.js'
+  import { axiosWrapper } from '../composables/api/apiClient.js'
 
   axiosWrapper.__addFilter(/info/)
   async function fetchBeaconInfo(retry){
