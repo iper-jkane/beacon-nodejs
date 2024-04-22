@@ -1,7 +1,8 @@
 <script setup>
-  import { ref, unref } from 'vue'
-  import { axiosWrapper } from '@/composables/api/apiClient.js'
+  import { ref, unref, inject } from 'vue'
 
+  const apiClient = inject('apiClient')
+   
   const authData = ref({
     username: "",
     password: "",
@@ -10,6 +11,7 @@
 
   const authResp = ref()
 
+  /* const requestAuth = () => {} */
   const requestAuth = function(){
     console.log(authData)
 
@@ -17,20 +19,7 @@
     sessionStorage.setItem('auth.username', authDataUnref.username)
     sessionStorage.setItem('auth.password', authDataUnref.password)
 
-    const axiosReq = axiosWrapper({
-      url: '/auth/login',
-      auth: authDataUnref
-    }).then( (r) => { 
-
-           console.log("resp: ", r); 
-           authResp.value = r.data ? "Login Successful" : "OtherWeirdness";
-           sessionStorage.setItem( 'jwt', JSON.stringify(r.data) )
-
-      }).catch( (e) => { 
-           console.log("error: ", e); authResp.value = e.response.data.message 
-        })
-
-      return axiosReq
+    return apiClient.fetch( '/auth/login', {}, { auth: 'basic' } )
   }
 
 </script>
