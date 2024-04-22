@@ -1,4 +1,4 @@
-import AuthLogin from '../../../views/AuthLogin.vue'
+import AuthLogin from '../../../../views/AuthLogin.vue'
 
 const AuthLoginRoute = {
   path: '/auth/login',

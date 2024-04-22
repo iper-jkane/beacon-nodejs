@@ -1,4 +1,4 @@
-import AuthScope from '../../../views/AuthScope.vue'
+import AuthScope from '../../../../views/AuthScope.vue'
 
 const AuthScopeRoute = {
     path: '/auth/scope',

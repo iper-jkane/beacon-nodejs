@@ -1,4 +1,4 @@
-import ModelsView from '../../../views/ModelsView.vue'
+import ModelsView from '../../../../views/ModelsView.vue'
 
 const ModelsRoute =  {
     path: '/models',

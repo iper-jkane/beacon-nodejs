@@ -1,4 +1,4 @@
-import InfoView from '../../../views/InfoView.vue'
+import InfoView from '../../../../views/InfoView.vue'
 
 const InfoRoute =  {
     path: '/info',
