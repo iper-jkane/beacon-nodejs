@@ -22,10 +22,11 @@ let axiosClient = axios.create({
 //   return request
 // })
 
-let axiosWrapper = axiosCache(axiosClient, {
+// you exported a wrapper for a wrapper
+let apiClient = axiosCache(axiosClient, {
   maxCacheSize: 15,
   ttl: 30000
 })
 
 
-export { axiosWrapper }
+export { apiClient }

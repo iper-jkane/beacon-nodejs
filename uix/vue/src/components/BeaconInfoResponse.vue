@@ -3,20 +3,20 @@
   import JsonEditor from 'json-editor-vue'
 	// import { beaconInfoResponseSchema } from '../../../../schema/mongoose/beacon/framework/responses/beaconInfoResponse.js'
   // eslint-disable-next-line
-  import { ref } from 'vue'
+  import { ref, inject } from 'vue'
   import { schemaToProps } from '../composables/schema/mongoose/utils.js'
-  import { axiosWrapper } from '../composables/api/apiClient.js'
+  const apiClient = inject('apiClient')
 
   // make function  
-  axiosWrapper.__addFilter(/info/)
+  apiClient.__addFilter(/info/)
   async function fetchBeaconInfo(retry){
 
         if( retry ){
-          axiosWrapper.__removeFilter(/info/)
+          apiClient.__removeFilter(/info/)
         }
 
         console.log(sessionStorage)
-        return await axiosWrapper({
+        return await apiClient({
           url: '/info',
           auth: {
             username: sessionStorage.getItem('auth.username'),

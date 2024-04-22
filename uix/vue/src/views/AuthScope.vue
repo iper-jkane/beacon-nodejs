@@ -1,6 +1,6 @@
 <script setup>
-  import { ref, unref } from 'vue'
-  import { axiosWrapper } from '@/composables/api/apiClient.js'
+  import { ref, unref, inject } from 'vue'
+  const apiClient = inject('apiClient')
 
   const localJwt = sessionStorage.getItem('jwt') ? JSON.parse(sessionStorage.getItem('jwt')) : { access_token: "", token_type: "" }
   const bearer = ref("")
@@ -11,7 +11,7 @@
   const requestError = ref(false) // assume the best -- positive frontend devops attitude!
 
   const requestScope = async function(){
-    const axiosReq = axiosWrapper({
+    const axiosReq = apiClient({
       url: '/auth/scope',
       headers: { 'authorization': bearer.value }
     }).then(  (r) => { scopeResp.value = r.data, console.log("scopeResp.value: ", r) } )
