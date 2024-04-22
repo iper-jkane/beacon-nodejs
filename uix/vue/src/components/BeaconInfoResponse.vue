@@ -8,37 +8,8 @@
 
   const apiClient = inject('apiClient')
 
-  // make function  
-  apiClient.__addFilter(/info/)
-  async function fetchBeaconInfo(retry){
-
-        if( retry ){
-          apiClient.__removeFilter(/info/)
-        }
-
-        console.log(sessionStorage)
-        return await apiClient({
-          url: '/info',
-          auth: {
-            username: sessionStorage.getItem('auth.username'),
-            password: sessionStorage.getItem('auth.password')
-          }
-        })
-        .then( (resp) => {
-
-            console.log(resp.data);
-            return resp.data
-
-        })
-        .catch( (err) => { console.log(err); return { } } )
-
-  }
-
-  const beaconInfoResponse = ref( await fetchBeaconInfo() )
-  // // eslint-disable-next-line
-  // const props = defineProps(
-  //   schemaToProps(beaconInfoResponseSchema)
-  // )
+  const beaconInfoResponse = ref("Fetching The Info Now...(that's a smashing blouse, btw!)")
+  beaconInfoResponse.value  = await apiClient.fetch( '/info', {}, { auth: 'basic' } ) 
 
 </script>
 
