@@ -7,14 +7,17 @@ console.log( "VUE_APP_BNJS_API_URL: ", process.env.VUE_APP_BNJS_API_URL )
 const beaconApiUrl   = new URL( process.env.VUE_APP_BNJS_API_URL )
 console.log("beaconApiUrl: ", beaconApiUrl)
 
-const beaconApiHost  = beaconApiUrl.hostname
-const beaconApiPort  = beaconApiUrl.port
-const beaconApiProto = beaconApiUrl.protocol.slice(0,-1)
+// we originally passed them in as separate values,
+// then there was the thought of possible use cases
+// now, unused
+// const beaconApiHost  = beaconApiUrl.hostname
+// const beaconApiPort  = beaconApiUrl.port
+// const beaconApiProto = beaconApiUrl.protocol.slice(0,-1)
 
 let axiosClient = axios.create({
   withCredentials: false,
   method: 'post',
-  baseURL: `${beaconApiProto}://${beaconApiHost}:${beaconApiPort}`
+  baseURL: beaconApiUrl.href //`${beaconApiProto}://${beaconApiHost}:${beaconApiPort}`
 })
 
 let axiosCache = createAxiosCache(
