@@ -3,7 +3,7 @@
 
   const apiClient = inject('apiClient')
    
-  const authData = ref({
+  const clientAuthData = ref({
     username: "",
     password: "",
     // isAuthenticated: false
@@ -15,11 +15,10 @@
 
   /* const requestAuth = () => {} */
   const requestAuth = async function(){
-    console.log(authData)
 
-    const authDataUnref = unref(authData)
-    sessionStorage.setItem('auth.username', authDataUnref.username)
-    sessionStorage.setItem('auth.password', authDataUnref.password)
+    const clientAuthDataUnref = unref(clientAuthData)
+    sessionStorage.setItem('auth.username', clientAuthDataUnref.username)
+    sessionStorage.setItem('auth.password', clientAuthDataUnref.password)
 
     const authResp = await apiClient.fetch('/auth/login', {}, { auth: 'basic' } ).then(
       (resp) => {
@@ -65,8 +64,8 @@
 <div id="AuthLogin">
   {{ authMsg }}
   <form>
-    <input v-model="authData.username" placeholder="username" /><br/>
-    <input v-model="authData.password" placeholder="password" type="password"/>
+    <input v-model="clientAuthData.username" placeholder="username" /><br/>
+    <input v-model="clientAuthData.password" placeholder="password" type="password"/>
     <button type="button" @click="requestAuth">Login</button>
   </form>
 </div>
