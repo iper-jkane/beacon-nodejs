@@ -23,37 +23,80 @@ let axiosCache = createAxiosCache(
 
 const apiClient = {
   client: axiosClient,
-  fetch: async function ( url, data, opts ){
+  parseErrorMsg: function(err) { 
+    console.log('parseErrorMsg: ', err)
+    if ( typeof err.clientError == 'undefined' ){
+      err.clientError = { message: "meta:coudln't parse error" }
+    }
+    return err.clientError.message
+  },
+  defaultInterceptor: axiosClient.interceptors.response.use(
+
+    (resp) => {
+       console.log("axios.default.resp: ", resp )
+       return { ...resp.data, status: resp.status } ?? { apiWeirdness: "see console..." }
+     },
+
+     (err) => { 
+       console.log("axios.default.err:", err )
+
+       // Custom messages for apiClient errors
+       if ( err.response ){
+         if( err.name == "AxiosError" ){
+            err.name = "ClientError: "
+            if( err.message == "Network Error" ){
+              err.message = "Check Network or Extentions"
+              err.statusCode = 418
+            }
+         }
+       }
+
+       if ( typeof err.response.data == 'undefined' ){
+         err.response.data = { // cheeky shim
+           name: err.name,
+           statusCode: 418,
+           message: err.message 
+         } 
+      }
+
+
+      if ( err.response.data.statusCode == 401 ){
+        console.log("axios.default.auth.err:", err )
+        console.log("axios.default.auth.resp.data: ", err.response.data )
+        return Promise.reject({ clientError: err.response.data })
+      }
+
+      
+       return Promise.reject({ clientError: err.response.data })
+
+     }
+   ),
+   
+
+  fetch: async function ( url, data = {}, opts = {} ){
 
     var authBasic = {}
+     // console.assert( opts.auth == 'basic' )
+     if ( opts.auth == 'basic' ) {
+       authBasic = {
+         username: sessionStorage.getItem('auth.username'),
+         password: sessionStorage.getItem('auth.password')
+       }
+     }
 
-    if ( opts.auth == 'basic' ) {
-      authBasic = {
-        username: sessionStorage.getItem('auth.username'),
-        password: sessionStorage.getItem('auth.password')
-      }
-    }
+     if ( opts.accessToken !== undefined ) {
+       this.client.config.assign(
+         {
+           headers: { 'authorization': opts.accessToken }
+         }
+       )
+       console.log("fetch.config: ", this.client.config)
+     }
 
-    if ( opts.bearer !== undefined ) {
-      this.client.config.assign(
-        {
-          headers: { 'authorization': opts.bearer }
-        }
-      )
-    }
-
-    return await this.client({
+    return this.client({
       url: url,
       auth: authBasic,
       data: data
-    }).then( (resp) => {
-         console.log("axios.resp: ", resp )
-         return resp.data ?? { apiWeirdness: "see console" }
-    }).catch( (err) => { 
-       console.log("axios.err:", err )
-       if ( err.response ){
-         return err.response.data ?? { apiClientError: "'Bad' bad; not good." }
-       }
     })
 
   }
