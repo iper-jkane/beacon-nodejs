@@ -86,7 +86,6 @@ const apiClient = {
   fetch: async function ( url, data = {}, opts = {} ){
 
     var authBasic = {}
-     // console.assert( opts.auth == 'basic' )
      if ( opts.auth == 'basic' ) {
        authBasic = {
          username: sessionStorage.getItem('auth.username'),

@@ -54,4 +54,3 @@ const clearSessionStorage = function(){
   <button type="button" @click="clearSessionStorage()">ClearSessionStorage</button>
 </div>
 </template>
-
