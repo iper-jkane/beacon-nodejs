@@ -9,7 +9,7 @@
   const apiClient = inject('apiClient')
 
   const beaconInfoResponse = ref("Fetching The Info Now...(that's a smashing blouse, btw!)")
-  beaconInfoResponse.value  = await apiClient.fetch( '/info', {}, { auth: 'basic' } ).catch( (err) => { return err } )
+  beaconInfoResponse.value  = await apiClient.fetch( '/info', {}, { auth: 'basic' } ).catch( (err) => { return apiClient.parseError(err, { }) } )
 
 </script>
 
