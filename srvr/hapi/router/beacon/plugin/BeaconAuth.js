@@ -42,15 +42,20 @@ const BeaconAuth = {
       // Guinness...good things, etc...
       if( await authValidateUser( authData, user, pass ) ) {
 
-          const jwt = HapiJwt.token.generate(
+
+          const retCreds = 
                 {
                     user: user,
                     aud: jwtClaims.aud,
                     iss: jwtClaims.iss,
                     sub: jwtClaims.sub,
                     scope: authDb.users[0].jwt.scope,
-                    group: 'bioinfos'
-                },
+                    group: 'bioinfos',
+                    beaconConfig: { maxGranularity: authDb.users[0].beaconConfig.maxGranularity }
+                }
+
+          const jwt = HapiJwt.token.generate(
+                retCreds,
                 {
                     key: authDb.users[0].jwt.key,
                     algorithms: authDb.users[0].jwt.algorithms
@@ -60,7 +65,13 @@ const BeaconAuth = {
                 }
             )
 
-          return { isValid: true, credentials: { jwt: jwt } }
+          return { isValid: true, 
+                   credentials: { 
+                     authZData: retCreds,
+                     msg: "Auth Success!",
+                     jwt: jwt,
+                   } 
+                 } 
 
         }
 
