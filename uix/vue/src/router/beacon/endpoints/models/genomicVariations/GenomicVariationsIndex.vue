@@ -8,7 +8,6 @@
   const gVars = ref("Nothing Yet...") 
   provide( 'genomicVariations', gVars )
 
-  // import Joi ??
   const query = reactive({ requestParameters: {} })
   
   query.requestParameters.limit = 2

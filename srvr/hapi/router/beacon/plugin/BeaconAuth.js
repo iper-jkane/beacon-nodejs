@@ -79,7 +79,6 @@ const BeaconAuth = {
 
     }
 
-
     const validateJwt = async function(art,req,res){
       // happens post token decode; we can do AuthZ (aka payload validation) here.
       // MUST check user 
@@ -103,7 +102,7 @@ const BeaconAuth = {
                                          validate: validateJwt })    //server.auth.default('basic')
 
     const authLoginPayload = Joi.object({
-                                          user:  Joi.string().min(4).max(9).required(),
+                                          user:  Joi.string().min(4).max(9).required(), //.messages({ 'string.pattern.base': 'Error: Bad username or password'  }),
                                           // pass:  Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
                                           pass:  Joi.string().pattern(/^foo$/).required().messages({ 'string.pattern.base': 'Error: Bad username or password'}) //|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$/,{invert: true}).required().messages({ 'string.pattern.invert.base': 'Error: Bad username or password'})
           }).label("auth-login-payload")

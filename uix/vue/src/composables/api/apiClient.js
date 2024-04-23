@@ -10,7 +10,7 @@ console.log("beaconApiUrl: ", beaconApiUrl)
 let axiosClient = axios.create({
   withCredentials: false,
   method: 'post',
-  baseURL: beaconApiUrl.href
+  baseURL: beaconApiUrl.href,
 })
 
 let axiosCache = createAxiosCache(
@@ -19,6 +19,7 @@ let axiosCache = createAxiosCache(
     ttl: 30000
   }
 )
+
 
 const apiClient = {
   client: axiosClient,
@@ -54,6 +55,7 @@ const apiClient = {
          return err.response.data ?? { apiClientError: "'Bad' bad; not good." }
        }
     })
+
   }
 }
 
