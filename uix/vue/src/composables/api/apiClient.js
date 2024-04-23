@@ -24,56 +24,64 @@ let axiosCache = createAxiosCache(
 
 
 const apiClient = {
-  client: axiosClient,
-  parseErrorMsg: function(err) { 
-    console.log('parseErrorMsg: ', err)
-    if ( typeof err.clientError == 'undefined' ){
-      err.clientError = { message: "meta:coudln't parse error" }
+  _client: axiosClient,
+
+  basicAuth: function() {},
+  parseError: function(err, opts = { messageOnly: true }) { 
+
+    var retErr = { isClientError: true }
+
+    if ( err.name == "AxiosError" ){
+
+      if( err.code == "ERR_BAD_RESPONSE" ){ 
+        retErr.statusCode = StatusCode.ServerErrorInternal
+        retErr.message = "Oh No! " + err.response.data.error // "Interal Server Error"
+      }
+
+      if( err.code == "ERR_NETWORK" ){
+        retErr.message = "Failed: Check Connection / API"
+        retErr.statusCode = StatusCode.ClientIsATeapot  }
+ 
+      if( err.code == "ERR_BAD_REQUEST" ){
+        if( err.response.status == StatusCode.ClientErrorUnauthorized ){
+          retErr.statusCode = err.response.data.statusCode           
+          switch( err.response.data.message ) {
+            case "HTTP authentication header missing username":
+            case "Bad username or password":
+              retErr.message = "Bad username or password." // "Ah. Ah. Ah. You didn't say the magic word!" 
+              break
+            case "Bad HTTP authentication header format":
+              retErr.message = "Invalid Authorization Header / JWT"
+              break
+            default:
+              retErr.message = err.response.data.message
+          }
+        } 
+      }
+    } else {
+      retErr.isClientError = false
+      retErr.statusCode = 418
+      retErr.message = `Error ${retErr.statusCode}: I'm a Teapot! (check console)`
     }
-    return err.clientError.message
+
+    if ( ! retErr.isClientError ){
+      console.log("apiClient.parseError.retErr: ", retErr )
+    }
+
+    if ( opts.messageOnly ){
+      return retErr.message
+    } else {
+      return retErr 
+    }
   },
-  defaultInterceptor: axiosClient.interceptors.response.use(
 
-    (resp) => {
-       console.log("axios.default.resp: ", resp )
-       return { ...resp.data, status: resp.status } ?? { apiWeirdness: "see console..." }
-     },
+  parseResponse: function(resp) {
+    if ( resp.status == StatusCode.SuccessOK ) {
+      return resp.data
+    }
 
-     (err) => { 
-       console.log("axios.default.err:", err )
-
-       // Custom messages for apiClient errors
-       if ( err.response ){
-         if( err.name == "AxiosError" ){
-            err.name = "ClientError: "
-            if( err.message == "Network Error" ){
-              err.message = "Check Network or Extentions"
-              err.statusCode = 418
-            }
-         }
-       }
-
-       if ( typeof err.response.data == 'undefined' ){
-         err.response.data = { // cheeky shim
-           name: err.name,
-           statusCode: 418,
-           message: err.message 
-         } 
-      }
-
-
-      if ( err.response.data.statusCode == 401 ){
-        console.log("axios.default.auth.err:", err )
-        console.log("axios.default.auth.resp.data: ", err.response.data )
-        return Promise.reject({ clientError: err.response.data })
-      }
-
-      
-       return Promise.reject({ clientError: err.response.data })
-
-     }
-   ),
-   
+    return {}
+  },
 
   fetch: async function ( url, data = {}, opts = {} ){
 
@@ -85,20 +93,19 @@ const apiClient = {
          password: sessionStorage.getItem('auth.password')
        }
      }
+    var headers = {}
+    if ( opts.accessToken !== undefined ) {
+      // tokens take precedence
+      authBasic = null
+      headers = { 'authorization': `Bearer ${opts.accessToken}` }
+    }
 
-     if ( opts.accessToken !== undefined ) {
-       this.client.config.assign(
-         {
-           headers: { 'authorization': opts.accessToken }
-         }
-       )
-       console.log("fetch.config: ", this.client.config)
-     }
-
-    return this.client({
+   // ugly; because: axios.
+    return this._client({
       url: url,
-      auth: authBasic,
-      data: data
+      auth: authBasic ? authBasic : null,
+      data: data,
+      headers: headers
     })
 
   }
