@@ -1,5 +1,7 @@
 import axios from 'axios'
 import createAxiosCache from 'axios-cache-plugin'
+import { StatusCode } from 'status-code-enum'
+
 
 console.log( "VUE_APP_BNJS_UIX_URL: ", process.env.VUE_APP_BNJS_UIX_URL )
 console.log( "VUE_APP_BNJS_API_URL: ", process.env.VUE_APP_BNJS_API_URL )
