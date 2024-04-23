@@ -2,6 +2,7 @@
   import { ref, unref, inject } from 'vue'
   import { useRouter } from 'vue-router'
 
+  const router = useRouter()
   const apiClient = inject('apiClient')
    
   const clientAuthData = ref({
