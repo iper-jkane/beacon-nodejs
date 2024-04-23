@@ -17,7 +17,7 @@
 
 // fetch the g_variants on demand
 const fetchGVars = async function() { 
-  gVars.value = await apiClient.fetch('/g_variants', { query: query }, { auth: 'basic' })
+  gVars.value = await apiClient.fetch('/g_variants', { query: query }, { auth: 'basic' }).catch( (e) => { return e.clientError.message  } )
 }
 
 </script>
@@ -28,9 +28,12 @@ const fetchGVars = async function() {
 
 <template>
 <pre>
+<div>
+  Variation Search 
   <input v-model="query.requestParameters.limit" placeholder="limit..." /><br/>
   <button type="button" @click="fetchGVars()">Fetch/Refresh</button>
 
   {{ gVars }}
+</div>
 </pre>
 </template>
