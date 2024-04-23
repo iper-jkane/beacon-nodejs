@@ -1,5 +1,6 @@
 <script setup>
   import { ref, unref, inject } from 'vue'
+  import { useRouter } from 'vue-router'
 
   const apiClient = inject('apiClient')
    
