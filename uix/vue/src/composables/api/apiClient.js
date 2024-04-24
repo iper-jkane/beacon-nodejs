@@ -37,36 +37,42 @@ const apiClient = {
   _client: axiosClient,
 
   basicAuth: function() {},
-  parseError: function(err, opts = { messageOnly: true }) { 
+  parseError: function(err, opts = { messageOnly: true }) {
 
     var retErr = { isClientError: true }
 
     if ( err.name == "AxiosError" ){
 
-      if( err.code == "ERR_BAD_RESPONSE" ){ 
+      if( err.code == "ERR_BAD_RESPONSE" ){
         retErr.statusCode = StatusCode.ServerErrorInternal
         retErr.message = "Oh No! " + err.response.data.error // "Interal Server Error"
       }
 
       if( err.code == "ERR_NETWORK" ){
-        retErr.message = "Failed: Check Connection / API"
+        retErr.message = "Network Failed: Check Connection / API"
         retErr.statusCode = StatusCode.ClientIsATeapot  }
- 
+
       if( err.code == "ERR_BAD_REQUEST" ){
+
+        retErr.statusCode = err.response.data.statusCode
         if( err.response.status == StatusCode.ClientErrorUnauthorized ){
-          retErr.statusCode = err.response.data.statusCode           
           switch( err.response.data.message ) {
             case "HTTP authentication header missing username":
             case "Bad username or password":
-              retErr.message = "Bad username or password." // "Ah. Ah. Ah. You didn't say the magic word!" 
+              retErr.message = "Bad username or password." // "Ah. Ah. Ah. You didn't say the magic word!"
               break
             case "Bad HTTP authentication header format":
               retErr.message = "Invalid Authorization Header / JWT"
               break
             default:
-              retErr.message = err.response.data.message
+              retErr.message = err.response.data.message // "** IMPROPER REQUEST **"
           }
-        } 
+        }
+        if( err.response.status == StatusCode.ClientErrorConflict ){ // 409
+          //nothing special; in fact probably merge into the outer block ERR_BAD_REQUEST
+          retErr.message = "Query Invalid: " + err.response.data.message
+          retErr.statusCode = err.response.status
+        }
       }
     } else {
       retErr.isClientError = false
@@ -74,14 +80,16 @@ const apiClient = {
       retErr.message = `Error ${retErr.statusCode}: I'm a Teapot! (check console)`
     }
 
+    // our definition of...
     if ( ! retErr.isClientError ){
+      console.log("apiClient.parseError.err: ", err )
       console.log("apiClient.parseError.retErr: ", retErr )
     }
 
     if ( opts.messageOnly ){
       return retErr.message
     } else {
-      return retErr 
+      return retErr
     }
   },
 

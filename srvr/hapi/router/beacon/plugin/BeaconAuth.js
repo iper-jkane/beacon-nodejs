@@ -51,7 +51,7 @@ const BeaconAuth = {
                     sub: jwtClaims.sub,
                     scope: authDb.users[0].jwt.scope,
                     group: 'bioinfos',
-                    beaconConfig: { maxGranularity: authDb.users[0].beaconConfig.maxGranularity }
+                    beaconConfig: { allowedGranularities: authDb.users[0].beaconConfig.allowedGranularities }
                 }
 
           const jwt = HapiJwt.token.generate(
@@ -115,6 +115,14 @@ const BeaconAuth = {
                                         }).label("auth-signup-payload")
     // console.log(authSignUpPayload.validate({ user: "foob", pass: "foo", email: "foo@dev.null" }))
 
+const authorizationCorsHeaders = function( req, res ) {
+        const r = res.response()
+        r.header('Access-Control-Allow-Headers', 'Accept,Authorization,Content-Type,If-None-Match')
+        r.header('Access-Control-Allow-Methods', 'POST,GET')
+        r.code(204)
+        return r
+      }
+
     server.route({
       method:  ['POST'],
       path:    '/auth/signup',
@@ -153,13 +161,7 @@ const BeaconAuth = {
         auth: false
       },
       path: '/auth/login',
-      handler: function( req, res ) {
-        const r = res.response()
-        r.header('Access-Control-Allow-Headers', 'Accept,Authorization,Content-Type,If-None-Match')
-        r.header('Access-Control-Allow-Methods', 'POST,GET')
-        r.code(204)
-        return r
-      }
+      handler: authorizationCorsHeaders
     })
 
     server.route({
@@ -179,6 +181,20 @@ const BeaconAuth = {
           // return res.response({ access_token: req.auth.credentials.jwt, token_type: 'Bearer' })
           return res.response( { authResponse: req.auth.credentials } )
       }
+    })
+
+    // fixes CORS pre-flight checks in firefox
+    // possible bug with hapi-basic + hapi-cors interaction?
+    server.route({
+      method: [ 'options' ],
+      options: {
+        auth: {
+          strategies: ['basic', 'jwt'],
+          mode: 'optional'
+        }
+      },
+      path: '/auth/scope',
+      handler: authorizationCorsHeaders
     })
 
     server.route({

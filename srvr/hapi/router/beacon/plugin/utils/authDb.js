@@ -25,7 +25,7 @@ const authDb = {
       user:           "bgist",
       pass:           "$2b$12$O9oo7dWbDgAPikRY8gAogeh7TRJ9ZctihsckEBKwVUexoGfjsAW1K", // foo,
       beaconConfig: {
-        maxGranularity: 'record', 
+        allowedGranularities: [ 'boolean', 'count', 'record' ], 
       },
       jwt: { // abusing jwts for fun and...
         key: 'foobar', // each user is it's own jwt-auth server. haha.
