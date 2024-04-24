@@ -27,7 +27,7 @@
 
         const parsedResp = apiClient.parseResponse(resp)
           if ( parsedResp.authResponse ){
-            sessionStorage.setItem('auth.creds', JSON.stringify(parsedResp.authResponse))
+            sessionStorage.setItem('auth.creds', JSON.stringify( parsedResp.authResponse ) )
             sessionStorage.setItem('auth.jwt', parsedResp.authResponse.jwt)
             sessionStorage.setItem('beaconConfig.allowedGranularities', JSON.stringify( parsedResp.authResponse.authZData.beaconConfig.allowedGranularities ) )
             authMsg.value = parsedResp.authResponse.msg + ' (redirecting...)'
