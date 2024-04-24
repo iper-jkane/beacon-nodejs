@@ -3,41 +3,13 @@
   import JsonEditor from 'json-editor-vue'
 	// import { beaconInfoResponseSchema } from '../../../../schema/mongoose/beacon/framework/responses/beaconInfoResponse.js'
   // eslint-disable-next-line
-  import { ref } from 'vue'
+  import { ref, inject } from 'vue'
   import { schemaToProps } from '../composables/schema/mongoose/utils.js'
-  import { axiosWrapper } from '@/composables/api/apiClient.js'
 
-  // make function  
-  axiosWrapper.__addFilter(/info/)
-  async function fetchBeaconInfo(retry){
+  const apiClient = inject('apiClient')
 
-        if( retry ){
-          axiosWrapper.__removeFilter(/info/)
-        }
-
-        console.log(sessionStorage)
-        return await axiosWrapper({
-          url: '/info',
-          auth: {
-            username: sessionStorage.getItem('auth.username'),
-            password: sessionStorage.getItem('auth.password')
-          }
-        })
-        .then( (resp) => {
-
-            console.log(resp.data);
-            return resp.data
-
-        })
-        .catch( (err) => { console.log(err); return { } } )
-
-  }
-
-  const beaconInfoResponse = ref( await fetchBeaconInfo() )
-  // // eslint-disable-next-line
-  // const props = defineProps(
-  //   schemaToProps(beaconInfoResponseSchema)
-  // )
+  const beaconInfoResponse = ref("Fetching The Info Now...(that's a smashing blouse, btw!)")
+  beaconInfoResponse.value  = await apiClient.fetch( '/info', {}, { auth: 'basic' } ).catch( (err) => { return apiClient.parseError(err, { }) } )
 
 </script>
 

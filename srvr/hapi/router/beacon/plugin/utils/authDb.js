@@ -24,6 +24,9 @@ const authDb = {
       enabled:        true, 
       user:           "bgist",
       pass:           "$2b$12$O9oo7dWbDgAPikRY8gAogeh7TRJ9ZctihsckEBKwVUexoGfjsAW1K", // foo,
+      beaconConfig: {
+        maxGranularity: 'record', 
+      },
       jwt: { // abusing jwts for fun and...
         key: 'foobar', // each user is it's own jwt-auth server. haha.
         algorithms: ['HS512'],
@@ -33,7 +36,7 @@ const authDb = {
         endpoints: [
           {
             path:               '/auth/scope',
-            granularities: [ 'boolean' ], //  , 'count', 'record' ]
+            authGranularity: [ 'boolean' ], //  , 'count', 'record' ]
             isBeacon: false
           }
         ]

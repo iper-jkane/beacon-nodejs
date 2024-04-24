@@ -1,10 +1,11 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
-import { AuthLoginRoute } from './endpoints/auth/AuthRoute.js'
-import { AuthScopeRoute } from './endpoints/auth/ScopeRoute.js'
-import { RootRoute } from './endpoints/RootRoute.js'
-import { InfoRoute } from './endpoints/info/InfoRoute.js'
-import { ModelsRoute } from './endpoints/models/ModelsRoute.js'
+import { AuthLoginRoute } from './beacon/endpoints/auth/AuthRoute.js'
+import { AuthScopeRoute } from './beacon/endpoints/auth/ScopeRoute.js'
+import { RootRoute } from './beacon/endpoints/RootRoute.js'
+import { InfoRoute } from './beacon/endpoints/info/InfoRoute.js'
+import { ModelsRoute } from './beacon/endpoints/models/ModelsRoute.js'
+import { GenomicVariationsRoute } from './beacon/endpoints/models/genomicVariations/route.js'
 
 
 const beaconRoutes =
@@ -15,6 +16,8 @@ const beaconRoutes =
   RootRoute,
   InfoRoute,
   ModelsRoute,
+  GenomicVariationsRoute,
+  
 
   // ,{
   //   path: '/about',

@@ -1,37 +1,50 @@
 <script setup>
-  import { ref, unref } from 'vue'
-  import { axiosWrapper } from '@/composables/api/apiClient.js'
+  import { ref, unref, inject } from 'vue'
+  import { useRouter } from 'vue-router'
 
-  const authData = ref({
+  const router = useRouter()
+  const apiClient = inject('apiClient')
+   
+  const clientAuthData = ref({
     username: "",
     password: "",
     // isAuthenticated: false
   })
 
   const authResp = ref()
+  const authMsg = ref("AuthBox")
+  const hasAuth = ref(false)
 
-  const requestAuth = function(){
-    console.log(authData)
+  /* const requestAuth = () => {} */
+  const requestAuth = async function(){
 
-    const authDataUnref = unref(authData)
-    sessionStorage.setItem('auth.username', authDataUnref.username)
-    sessionStorage.setItem('auth.password', authDataUnref.password)
+    const clientAuthDataUnref = unref(clientAuthData)
+    sessionStorage.setItem('auth.username', clientAuthDataUnref.username)
+    sessionStorage.setItem('auth.password', clientAuthDataUnref.password)
 
-    const axiosReq = axiosWrapper({
-      url: '/auth/login',
-      auth: authDataUnref
-    }).then( (r) => { 
+    const authResp = await apiClient.fetch('/auth/login', {}, { auth: 'basic' } ).then(
+      (resp) => {
 
-           console.log("resp: ", r); 
-           authResp.value = r.data ? "Login Successful" : "OtherWeirdness";
-           sessionStorage.setItem( 'jwt', JSON.stringify(r.data) )
+        const parsedResp = apiClient.parseResponse(resp)
+          if ( parsedResp.authResponse ){
+            sessionStorage.setItem('auth.creds', JSON.stringify(parsedResp.authResponse))
+            sessionStorage.setItem('auth.jwt', parsedResp.authResponse.jwt)
+            authMsg.value = parsedResp.authResponse.msg + ' (redirecting...)'
+            // probs switch to vue transitions 
+            setTimeout( () => { 
+              hasAuth.value = true
+              router.push( { name: 'GenomicVariationsRoute'} ) 
+            }, 1000 )
+            return parsedResp.authResponse
+          }
+      }).catch(
+        (err) => { 
+          authMsg.value = apiClient.parseError(err) //, { messageOnly:false })
+          return authMsg.value 
+     })
 
-      }).catch( (e) => { 
-           console.log("error: ", e); authResp.value = e.response.data.message 
-        })
-
-      return axiosReq
-  }
+/* authResp.value = r.data ? "Login Successful" : "OtherWeirdness"; */
+}
 
 </script>
 
@@ -49,13 +62,15 @@
 </style>
 
 <template>
+<div v-if="!hasAuth">
 <div id="AuthLogin">
-  {{ authResp }}
+  {{ authMsg }}
   <form>
-    <input v-model="authData.username" placeholder="username" /><br/>
-    <input v-model="authData.password" placeholder="password" type="password"/>
+    <input v-model="clientAuthData.username" placeholder="username" /><br/>
+    <input v-model="clientAuthData.password" placeholder="password" type="password"/>
     <button type="button" @click="requestAuth">Login</button>
   </form>
+</div>
 </div>
 </template>
 

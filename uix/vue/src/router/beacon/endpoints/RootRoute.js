@@ -1,4 +1,4 @@
-import RootView from '../../views/RootView.vue'
+import RootView from '../../../views/RootView.vue'
 
 const RootRoute = { 
     /* "Get information about the beacon" */
