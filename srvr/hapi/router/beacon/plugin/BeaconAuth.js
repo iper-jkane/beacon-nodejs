@@ -51,7 +51,7 @@ const BeaconAuth = {
                     sub: jwtClaims.sub,
                     scope: authDb.users[0].jwt.scope,
                     group: 'bioinfos',
-                    beaconConfig: { maxGranularity: authDb.users[0].beaconConfig.maxGranularity }
+                    beaconConfig: { allowedGranularities: authDb.users[0].beaconConfig.allowedGranularities }
                 }
 
           const jwt = HapiJwt.token.generate(
