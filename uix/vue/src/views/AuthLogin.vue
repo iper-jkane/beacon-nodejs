@@ -29,6 +29,7 @@
           if ( parsedResp.authResponse ){
             sessionStorage.setItem('auth.creds', JSON.stringify(parsedResp.authResponse))
             sessionStorage.setItem('auth.jwt', parsedResp.authResponse.jwt)
+            sessionStorage.setItem('beaconConfig.allowedGranularities', JSON.stringify( parsedResp.authResponse.authZData.beaconConfig.allowedGranularities ) )
             authMsg.value = parsedResp.authResponse.msg + ' (redirecting...)'
             // probs switch to vue transitions 
             setTimeout( () => { 
