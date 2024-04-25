@@ -102,12 +102,7 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
 
   // use existing mongoose / mongodb connection
   const mdb = req.server.plugins.BeaconRouter.mdb
-
   var beaconGenomicVariationsModel = mdb.models['beaconGenomicVariationsModel']
-  // move to top-lvl; i.e., register the models at srvr startup
-  if ( ! beaconGenomicVariationsModel ){
-    beaconGenomicVariationsModel = mdb.model('beaconGenomicVariationsModel', beaconGenomicVariationsSchema, beaconGenomicVariationsSchema.options.collection)
-  }
 
   // todo: make function + sort out variable passing for reqParams
   var requestedGranularity = enumBeaconGranularities[reqParams.requestedGranularity]
@@ -163,6 +158,7 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
 
   const gVariants = await genomicVariationsQuery.exec()
   // if( beaconConfig.strictMode ){ // Query.exec().cursor().asyncEach( doc.validate() ) }
+  // need to wrap the results in their appropriate "object"
   return gVariants
 
 }

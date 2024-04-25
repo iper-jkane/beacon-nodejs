@@ -16,6 +16,7 @@ import { beaconInfoResponseRoute }          from '../endpoints/info/index.js'
 import { beaconConfigurationResponseRoute } from '../endpoints/configuration/index.js' 
 import { beaconGenomicVariationsRoute }     from '../endpoints/models/genomicVariations/index.js'
 
+import { initGenomicVariationsModel } from '../endpoints/models/genomicVariations/init.js'
 
 const BeaconRouter = {
 
@@ -38,8 +39,16 @@ const BeaconRouter = {
     const mdbDbName = process.env.mdbDbName 
 
     try {
+
+      // try and establish a db connection
       const mdb = await mongoose.connect(`mongodb://${mdbHost}:${mdbPort}/${mdbDbName}?directConnection=true`, mdbOptions)
+
+      // build collections from models
+      initGenomicVariationsModel(mdb) 
+
+      //global database connection
       server.expose('mdb', mdb )
+
     }catch(err){
       console.log("ERROR_DB:", err)
       throw("...aaaAAAARRRRGH")
@@ -49,6 +58,7 @@ const BeaconRouter = {
     await server.register(BeaconAuth)
     await server.register(Inert)
 
+    // serve up the routes  
     server.route( beaconInfoResponseRoute )
     server.route( beaconConfigurationResponseRoute )
     server.route( beaconGenomicVariationsRoute )
