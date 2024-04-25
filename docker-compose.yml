@@ -17,6 +17,7 @@ services:
   hapi:
     image: "dept/beacon-nodejs"
     command: [ "hapi" ]
+    hostname: ${BNJS_HOSTNAME}
     env_file: .env # "abusing" compose interpolation
     build:
       context: .
