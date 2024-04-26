@@ -11,8 +11,8 @@ const buildIndexes = async function ( model, opts = {} ) {
     // Index All The Things! -- I mean don't really, but they are here as options for now;
     createIndexes: beaconGenomicVariationsSchema.options.collection, 
     indexes: [ 
-      { name: 'variantInternalId',  key: { 'variantInternalId':              1 } },
-      { name: 'biosampleId',        key: { 'caseLevelData.biosampleId':      1 } },
+      { name: 'variantInternalId',  key: { 'variantInternalId':              1 }, unique: true },
+      { name: 'biosampleId',        key: { 'caseLevelData.biosampleId':      1 }, partialFilterExpression: { 'caseLevelData.biosampleId': { $exists: true } } },
       { name: 'genomicHGVSId',      key: { 'identifiers.genomicHGVSId' :     1 } },
       { name: 'sequenceId',         key: { 'variation.location.sequence_id': 1 } }
     ] 
