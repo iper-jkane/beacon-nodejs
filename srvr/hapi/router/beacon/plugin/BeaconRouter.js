@@ -34,14 +34,21 @@ const BeaconRouter = {
 
     // using dotenv whilst open-sourcing this first attempt
     dotenv.config({ path: __dirname + "/.env" })
+
+    // probs switch to BNJS_MDB_URI
     const mdbHost   = process.env.mdbHost
     const mdbPort   = process.env.mdbPort
     const mdbDbName = process.env.mdbDbName 
 
+    const mdbUser = process.env.mdbUser ?? ""
+    const mdbPass = process.env.mdbPass ? `:${process.env.mdbPass}@` : ""
+
+    const mdbCreds = `${mdbUser}${mdbPass}`
+
     try {
 
       // try and establish a db connection
-      const mdb = await mongoose.connect(`mongodb://${mdbHost}:${mdbPort}/${mdbDbName}?directConnection=true`, mdbOptions)
+      const mdb = await mongoose.connect(`mongodb://${mdbCreds}${mdbHost}:${mdbPort}/${mdbDbName}?directConnection=true`, mdbOptions)
 
       // build collections from models
       initGenomicVariationsModel(mdb) 
