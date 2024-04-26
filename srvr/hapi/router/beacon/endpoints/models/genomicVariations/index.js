@@ -117,11 +117,20 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
   }
 
   const endpointParams = reqParams.requestParameters
-  const queryFilter = {}
 
-  const publicFieldsProjection = { _id: 0, variantInternalId: 1, variation: 1 }
-
-
+  var queryFilter = {}
+  var publicFieldsProjection = { _id: 0, variantInternalId: 1, variation: 1 }
+ 
+  // testing: input is verified(ish) 
+  const gVarQueries = { genomicAlleleShortForm: 'identifiers.genomicHGVSId' }
+  //alternateBases: 'variation.alternateBases'
+  if( reqParams.genomicAlleleShortForm ) {
+    Object.assign( queryFilter, { [ gVarQueries.genomicAlleleShortForm ]: reqParams.genomicAlleleShortForm } )
+    // Object.assign( publicFieldsProjection, { caseLevelData:1 } )
+    // publicFieldsProjection = {}
+  }
+ 
+  // used to build mongoose query 
   var genomicVariationsQuery
 
   switch ( reqParams.returnedGranularity ){
