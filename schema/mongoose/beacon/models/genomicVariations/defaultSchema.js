@@ -7,6 +7,14 @@ const beaconGenomicVariationsSchema = mongoose.Schema({
       required: true
     },
 
+    identifiers: {
+      type: new mongoose.Schema({
+        genomicHGVSId: {
+          type: String
+        }
+      })
+    }, 
+
     // LegacyVariation
     variation: {
       type: new mongoose.Schema({
