@@ -21,7 +21,14 @@ curl -SL https://github.com/docker/compose/releases/download/v2.11.1/docker-comp
 chmod 750 docker-compose 
 ```
 
-Then use the docker compose commands to build / run the containers;<br/>
+If running in production, you may need to modify two .env files:
+  - .env                                # configures service URLs + CORS config
+  - srvr/hapi/router/beacon/plugin/.env # configures principle databse connection settings
+
+By default they're configured to Just Work⁽™⁾ within the docker environments;
+and there is no need to modify anything.
+
+Once configured, you can then use the docker compose commands to build / run the containers;<br/>
 (this also creates a bride network using subnet: 10.128.0.0/29 ).
 
 ```
@@ -43,6 +50,9 @@ Should give output similar to:
  ⠿ Container beacon-nodejs-hapi-1     Started
  ⠿ Container beacon-nodejs-mongodb-1  Started
 ```
+
+Strictly, only the hapi + mongodb containers are required for the app to run in the test environment,
+and in production only the hapi container, and a working database connection are required, as the client is served directly via GET call to the root of the API.
 
 Test this worked:
 
