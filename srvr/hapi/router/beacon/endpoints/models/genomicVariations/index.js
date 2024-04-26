@@ -30,7 +30,7 @@ const genomicVariationsParamsPayload = Joi.object({
   entryId:                    Joi.string(),
   filters:                    Joi.array().items( Joi.string() ).default( [] ),
   geneId:                     Joi.string(),
-  genomicAlleleShortForm:     Joi.string(),
+  genomicAlleleShortForm:     Joi.string().pattern( /[{}$]/,  { invert: true } ).max(256), // not spec -- limit mongodb injection attack vectors -- HGVS nomenclature
   includeResultsetResponses:  Joi.string().valid( 'ALL', 'HIT', 'MISS', 'NONE' ),
   limit:                      Joi.number().integer().min( 0 ).max( beaconConfig.maxResultsLimit ), //.messages({ 'number.max': 'foo'}),
   mateName:                   Joi.string(),
