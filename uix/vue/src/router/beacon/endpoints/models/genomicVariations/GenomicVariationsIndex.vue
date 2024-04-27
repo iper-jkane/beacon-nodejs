@@ -114,7 +114,12 @@ input#lim {
 
 
 <template>
-<!-- using <pre></pre> blocks so to keep css shenanigans to a minimum for now -->
+<!-- 
+  using <pre></pre> blocks so to keep css shenanigans to a minimum for now 
+  also hardcoded test code whilst "storyboarding" uix
+  idea: move parameter validation to .../schema/validation/ so it can be shared between srvr and uix  
+-->
+
 <div>
 <pre>
   Variation Search {{ feedback }}<br/>
