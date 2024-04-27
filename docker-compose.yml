@@ -36,6 +36,8 @@ services:
     networks:
       beacon-v2-net:
           ipv4_address: 10.128.0.4
+    volumes:
+      - ./data:/var/data/import
 
   vault:
     image: "hashicorp/vault"
