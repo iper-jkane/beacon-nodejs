@@ -69,7 +69,14 @@ const fetchGVars = async function() {
       (err) => {
         feedback.value = "(oh no!)"
         haveError.value = true
+        
+        // use validation error to reset query.requestParameters.*
+        // can parse the error or better, move the Joi validation to .../schema and share code
+        // for now, hardcode fix...
+        query.requestParameters.limit = 10
+  
         return apiClient.parseError(err)
+
     })
 
 }
