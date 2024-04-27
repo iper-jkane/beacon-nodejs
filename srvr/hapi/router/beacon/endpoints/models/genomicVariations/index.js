@@ -30,7 +30,7 @@ const genomicVariationsParamsPayload = Joi.object({
   entryId:                    Joi.string(),
   filters:                    Joi.array().items( Joi.string() ).default( [] ),
   geneId:                     Joi.string(),
-  genomicAlleleShortForm:     Joi.string(),
+  genomicAlleleShortForm:     Joi.string().pattern( /[{}$]/,  { invert: true } ).max(256), // not spec -- limit mongodb injection attack vectors -- HGVS nomenclature
   includeResultsetResponses:  Joi.string().valid( 'ALL', 'HIT', 'MISS', 'NONE' ),
   limit:                      Joi.number().integer().min( 0 ).max( beaconConfig.maxResultsLimit ), //.messages({ 'number.max': 'foo'}),
   mateName:                   Joi.string(),
@@ -117,11 +117,20 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
   }
 
   const endpointParams = reqParams.requestParameters
-  const queryFilter = {}
 
-  const publicFieldsProjection = { _id: 0, variantInternalId: 1, variation: 1 }
-
-
+  var queryFilter = {}
+  var publicFieldsProjection = { _id: 0, variantInternalId: 1, variation: 1 }
+ 
+  // testing: input is verified(ish) 
+  const gVarQueries = { genomicAlleleShortForm: 'identifiers.genomicHGVSId' }
+  //alternateBases: 'variation.alternateBases'
+  if( reqParams.genomicAlleleShortForm ) {
+    Object.assign( queryFilter, { [ gVarQueries.genomicAlleleShortForm ]: reqParams.genomicAlleleShortForm } )
+    // Object.assign( publicFieldsProjection, { caseLevelData:1 } )
+    // publicFieldsProjection = {}
+  }
+ 
+  // used to build mongoose query 
   var genomicVariationsQuery
 
   switch ( reqParams.returnedGranularity ){
