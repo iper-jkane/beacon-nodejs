@@ -18,7 +18,8 @@
     "status-code-enum": "^1.0.0",
     "vanilla-jsoneditor": "^0.7.9",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "vue3-easy-data-table": "^1.5.47"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
