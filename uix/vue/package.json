@@ -13,6 +13,7 @@
     "axios-cache-plugin": "^0.1.0",
     "core-js": "^3.8.3",
     "json-editor-vue": "^0.6.6",
+    "lodash": "^4.17.21",
     "mongoose": "^6.3.8",
     "qs": "^6.11.0",
     "status-code-enum": "^1.0.0",

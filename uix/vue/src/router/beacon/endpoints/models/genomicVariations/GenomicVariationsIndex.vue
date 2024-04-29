@@ -1,8 +1,9 @@
 <script setup>
 
   // The definition of MVP...
-
   import { ref, reactive, inject } from 'vue'
+
+  import * as _ from 'lodash'
 
   const apiClient = inject('apiClient')
 
