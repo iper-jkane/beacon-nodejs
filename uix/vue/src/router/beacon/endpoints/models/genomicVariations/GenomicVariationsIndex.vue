@@ -32,7 +32,21 @@
 
   const hgvsId = ref()
 
-  const g_variants = ref({})
+  // fields are hardcoded to LegacyVariation; for now
+  // as are the labels
+  const gVarLegacyHeaders = [
+          { itemPivot: 'variation.variantType',                   label: 'varType'  },
+          { itemPivot: 'variation.location.interval.start.value', label: 'seqStart' },
+          { itemPivot: 'variation.location.interval.end.value',   label: 'seqEnd'   },
+          { itemPivot: 'variation.referenceBases',                label: 'refBase'  },
+          { itemPivot: 'variation.alternateBases',                label: 'altBase'  },
+          { itemPivot: 'variation.location.sequence_id',          label: 'seqId'    },
+        ]
+
+
+  const gVarHeaders = ref([])
+  const g_variants = ref([])
+
 
 // fetch the g_variants on demand
 const fetchGVars = async function() {
@@ -57,11 +71,17 @@ const fetchGVars = async function() {
       //  maybe some possible vue logic; use switch for now...
       switch(  resp.data.meta.returnedGranularity ) {
         case 'boolean':
+          gVarHeaders.value = [ { itemPivot: "exists", label: "Exists" } ] 
+          g_variants.value = [ parsedResp.responseSummary ]
+          return "Existential Query!"
         case 'count':
-          g_variants.value = parsedResp.responseSummary
-          return g_variants.value
+          gVarHeaders.value = [ { itemPivot: "numTotalResults", label: "Count" } ]   
+          g_variants.value = [ parsedResp.responseSummary ]
+          return "Cardenal Query!"
         case 'record':
-          g_variants.value = parsedResp.response.resultSets[0].results
+          // type == LegacyVariation
+         gVarHeaders.value = gVarLegacyHeaders
+         g_variants.value = parsedResp.response.resultSets[0].results
           return `ResultSet: ${parsedResp.response.resultSets[0].id}`
       }
 
@@ -120,15 +140,7 @@ input#lim {
 }
 </style>
 
-
 <template>
-<!-- 
-  using <pre></pre> blocks so to keep css shenanigans to a minimum for now 
-  also hardcoded test code whilst "storyboarding" uix
-  idea: move parameter validation to .../schema/validation/ so it can be shared between srvr and uix  
--->
-
-<div>
 <pre>
   Variation Search {{ feedback }}<br/>
   HGVS-Id: <input @click="hgvsId='NC_000022.11:g.16054454C>T'" v-model="hgvsId" placeholder="e.g., NC_000022.11:g.16054454C>T"/>
@@ -139,18 +151,21 @@ input#lim {
 
 <div v-if="apiResp">{{ apiResp }}</div>
 </pre>
-<div v-if="retGranularity=='record' && g_variants.length > 0" class="records">
-<table>
-  <tr><th>Row</th><th>SequenceId</th></tr>
-  <tr v-for="(variant, ind) in g_variants" :key="variant.variantInternalId">
-    <td>{{ ind+1 }}</td><td>{{ variant.variation.location.sequence_id }}</td>
-  </tr>
-</table>
-</div>
-<div v-else>
-<pre v-if="g_variants.length > 0">
-{{ g_variants }}
-</pre>
-</div>
+<div>
+ <table>
+  <thead v-if="gVarHeaders.length > 0">
+   <tr>
+    <th v-for="( hI ) of gVarHeaders" :key="hI.itemPivot">{{ hI.label }}</th>
+   </tr>
+  </thead>
+  <tbody v-if="gVarHeaders.length > 0 && g_variants.length > 0">
+   <tr v-for="( gV ) of g_variants" :key="gV">
+    <td v-for="( hI ) of gVarHeaders" :key="hI.itemPivot">
+      {{ _.get( gV, hI.itemPivot, "N/A" ) }}
+    </td>
+   </tr>
+  </tbody>
+ </table>
 </div>
 </template>
+
