@@ -1,18 +1,20 @@
 import mongoose from 'mongoose'
-const authUser = mongoose.Schema.({
+
+// naming scheme is Consistently Awful!⁽™⁾
+const beaconAuthUsersSchema = new mongoose.Schema({
 
   uid: {
-    type: Number
+    type: Number,
     required: true,
   },
 
   gid: {
-    type: Number
+    type: Number,
     required: true,
   },
 
   client_id: {
-    type: Number
+    type: Number,
     required: true,
   },
 
@@ -36,18 +38,22 @@ const authUser = mongoose.Schema.({
     required: true, 
   },
 
-  beaconConfig: mongoose.Schema({
-    allowedGranularities: {
-      type: [String],
-      required: true
-      validate: {
-        validator: function(v) {
-          return Set(v).issubset(Set(['boolean','count','aggregated','record']))
+  beaconConfig: {
+    default: {},
+    required: true,
+    type: new mongoose.Schema({
+      _id: false,
+      allowedGranularities: {
+        type: [String],
+        required: true,
+        validate: {
+          validator: function(v) {
+            return Set(v).issubset(Set(['boolean','count','aggregated','record']))
+          }
         }
       }
-    }
-
-  }, required: true ),
+    })
+  },
 
   given_name: {
     type: String,
@@ -62,37 +68,42 @@ const authUser = mongoose.Schema.({
     default: false
   },
 
-  jwt: mongoose.Schema({
+  jwt: {
+    default: {},
+    type: new mongoose.Schema({
 
-    key: {
-      type: String,
-      required: true
-    },
+      _id: false,
 
-    algorithms: { 
-      type: [String],
-      required: true,
-      default: ['HS512']
-    },
+      key: {
+        type: String,
+        required: true
+      },
 
-    aud: { 
-      type: String,
-      required: true,
-      default: 'urn:audience:bioinfo' 
-    },
+      algorithms: { 
+        type: [String],
+        required: true,
+        default: ['HS512']
+      },
 
-    iss: {
-      type: String,
-      required: true,
-      default: 'urn:issuer:reverseBeaconUri'
-    },
+      aud: { 
+        type: String,
+        required: true,
+        default: 'urn:audience:bioinfo' 
+      },
 
-    sub: {
-      type: String,
-      required: true,
-      default: 'urn:subject:<email>'
-    }
+      iss: {
+        type: String,
+        required: true,
+        default: 'urn:issuer:reverseBeaconUri'
+      },
+
+      sub: {
+        type: String,
+        required: true,
+        default: 'urn:subject:<email>'
+      }
+    })
   }
 })
 
-export { authUser } 
+export { beaconAuthUsersSchema } 
