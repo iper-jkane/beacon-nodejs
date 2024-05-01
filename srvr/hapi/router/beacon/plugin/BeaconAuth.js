@@ -1,5 +1,3 @@
-import HapiBasic from '@hapi/basic'
-import HapiJwt from '@hapi/jwt'
 import * as Hoek from '@hapi/hoek'
 import Boom from '@hapi/boom'
 import Joi from 'joi'
@@ -13,6 +11,7 @@ import { authDb, authFetchCreds, authValidateUser } from './utils/authDb.js'
 import { fileURLToPath } from 'url'
 const __dirname = Path.dirname(fileURLToPath(import.meta.url))
 
+import { beaconAuthUsersSchema } from '../../../../../schema/mongoose/beacon/auth/users.js'
 const BeaconAuth = {
 
   pkg: {
@@ -25,9 +24,21 @@ const BeaconAuth = {
     // register this plugin
     console.log("Registering: BeaconAuth")
 
-    // register hapi basic auth plugin, and/or others perhaps, depending on node.ENV / config, etc...
-    await server.register(HapiBasic)
-    await server.register(HapiJwt)
+    server.dependency('BeaconMongo')
+    server.dependency('HapiBasic')
+    server.dependency('HapiJwt')
+
+    const mdb = server.plugins.BeaconMongo.mdb
+    // move to function and separate file
+    try {
+      var beaconAuthUsersModel = undefined // mdb.models['beaconAuthUsersModel']
+      if ( beaconAuthUsersModel === undefined ){
+         beaconAuthUsersModel = mdb.model('beaconAuthUsersModel', beaconAuthUsersSchema, beaconAuthUsersSchema.options.collection )
+      }
+    } catch( err ){
+      console.log( err )  
+      // throw("BeaconAuth: A serious misconfiguration or db error: ", err )
+    }
 
     const jwtClaims = {
       aud: 'urn:audience:bioinfo',

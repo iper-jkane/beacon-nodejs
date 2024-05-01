@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import { beaconAuthUsersSchema } from '../../../../../../schema/mongoose/beacon/auth/users.js'
 
 const authDb = {
 
