@@ -6,13 +6,14 @@ import { StatusCode } from 'status-code-enum'
 import Path from 'path'
 import {inspect} from 'util'
 
+import { initAuthUsersModel } from '../endpoints/auth/init.js'
+
 // incremental steps toward db integration...
 import { authDb, authFetchCreds, authValidateUser } from './utils/authDb.js' 
 
 import { fileURLToPath } from 'url'
 const __dirname = Path.dirname(fileURLToPath(import.meta.url))
 
-import { beaconAuthUsersSchema } from '../../../../../schema/mongoose/beacon/auth/users.js'
 const BeaconAuth = {
 
   pkg: {
@@ -30,15 +31,15 @@ const BeaconAuth = {
     server.dependency('@hapi/jwt')
 
     const mdb = server.plugins.BeaconMongo.mdb
-    // move to function and separate file
     try {
-      var beaconAuthUsersModel = undefined // mdb.models['beaconAuthUsersModel']
-      if ( beaconAuthUsersModel === undefined ){
-         beaconAuthUsersModel = mdb.model('beaconAuthUsersModel', beaconAuthUsersSchema, beaconAuthUsersSchema.options.collection )
-      }
+
+      initAuthUsersModel(mdb)
+
     } catch( err ){
+
       console.log( err )  
       // throw("BeaconAuth: A serious misconfiguration or db error: ", err )
+
     }
 
     const jwtClaims = {
@@ -50,7 +51,7 @@ const BeaconAuth = {
     const validateCreds = async (req, user, pass, res) => {
 
       // server knows best...
-      const authData = authFetchCreds( server, user )
+      const authData = await authFetchCreds( server, user )
       // Guinness...good things, etc...
       if( await authValidateUser( authData, user, pass ) ) {
 
