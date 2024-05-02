@@ -96,6 +96,7 @@ const beaconConfigurationSchema = mongoose.Schema({
   securityAttributes: {
     default: {}, //must be empty for default-cascade
     type: new mongoose.Schema({
+      _id: false,
 
       defaultGranularity: {
         type: String,
@@ -107,8 +108,8 @@ const beaconConfigurationSchema = mongoose.Schema({
           }
         }
       }
-    }, { _id: false })
 
+    })
   },
 
   securityLevels: {

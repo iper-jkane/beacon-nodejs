@@ -47,8 +47,8 @@ const beaconAuthUsersSchema = new mongoose.Schema({
         type: [String],
         required: true,
         validate: {
-          validator: function(v) {
-            return Set(v).issubset(Set(['boolean','count','aggregated','record']))
+          validator: function( v ) {
+            return new Set( v ).issubset( new Set( ['boolean', 'count', 'aggregated', 'record' ] ) )
           }
         }
       }
@@ -104,6 +104,6 @@ const beaconAuthUsersSchema = new mongoose.Schema({
       }
     })
   }
-})
+}, { collection: 'beaconAuthUsers' })
 
 export { beaconAuthUsersSchema } 
