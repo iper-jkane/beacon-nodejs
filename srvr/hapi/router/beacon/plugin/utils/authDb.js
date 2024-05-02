@@ -55,7 +55,6 @@ const authFetchCreds = function( server, user, opts = {} ){
     if( foundUser !== undefined ){
 
       foundUser.isValid = true
-      console.log(foundUser)
       return foundUser
 
     }else{
