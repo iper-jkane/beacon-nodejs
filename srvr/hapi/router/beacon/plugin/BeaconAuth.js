@@ -62,16 +62,16 @@ const BeaconAuth = {
                     aud: jwtClaims.aud,
                     iss: jwtClaims.iss,
                     sub: jwtClaims.sub,
-                    scope: authDb.users[0].jwt.scope,
+                    scope: authData.jwt.scope,
                     group: 'bioinfos',
-                    beaconConfig: { allowedGranularities: authDb.users[0].beaconConfig.allowedGranularities }
+                    beaconConfig: { allowedGranularities: authData.beaconConfig.allowedGranularities }
                 }
 
           const jwt = HapiJwt.token.generate(
                 retCreds,
                 {
-                    key: authDb.users[0].jwt.key,
-                    algorithms: authDb.users[0].jwt.algorithms
+                    key: authData.jwt.key,
+                    algorithms: authData.jwt.algorithms
                 },
                 {
                     ttlSec: 3*3600 // 3-hours should be enough for anybody...
