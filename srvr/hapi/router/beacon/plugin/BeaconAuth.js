@@ -1,4 +1,5 @@
 import * as Hoek from '@hapi/hoek'
+import HapiJwt from '@hapi/jwt'
 import Boom from '@hapi/boom'
 import Joi from 'joi'
 import { StatusCode } from 'status-code-enum'
@@ -16,7 +17,7 @@ const BeaconAuth = {
 
   pkg: {
     name: 'BeaconAuth',
-    version: '0.2.1'
+    version: '0.3.0'
   },
 
   register: async function (server, options) {
@@ -25,8 +26,8 @@ const BeaconAuth = {
     console.log("Registering: BeaconAuth")
 
     server.dependency('BeaconMongo')
-    server.dependency('HapiBasic')
-    server.dependency('HapiJwt')
+    server.dependency('@hapi/basic')
+    server.dependency('@hapi/jwt')
 
     const mdb = server.plugins.BeaconMongo.mdb
     // move to function and separate file
@@ -100,7 +101,6 @@ const BeaconAuth = {
     // we have to compile an array of enabled accounts:
     const validJwtKeys = authDb.users.map( (user) => { if (user.enabled) { return { key: user.jwt.key, algorithms: user.jwt.algorithms, kid: `${user.uid}` } } } )
     validJwtKeys.push({ key: 'foo', algorithms: ['HS512'], kid: 'hostJwtKid' })
-    console.log(validJwtKeys)
 
     server.auth.strategy('basic', 'basic', { validate: validateCreds })
     server.auth.strategy('jwt', 'jwt', { keys: validJwtKeys,
