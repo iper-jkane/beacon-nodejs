@@ -1,0 +1,24 @@
+[
+  {
+    "uid": 1000,
+    "gid": 1000,
+    "client_id": 900,
+    "given_name":     "Biolo",
+    "family_name":    "Gist",
+    "email":          "null@dev.null",
+    "email_verified": true,
+    "enabled":        true, 
+    "user":           "bgist",
+    "pass":           "$2b$12$O9oo7dWbDgAPikRY8gAogeh7TRJ9ZctihsckEBKwVUexoGfjsAW1K", 
+    "beaconConfig": {
+      "allowedGranularities": [ "boolean", "count", "record" ] 
+    },
+    "jwt": { 
+      "key": "foobar", 
+      "algorithms": ["HS512"],
+      "aud": "urn:audience:bioinfo",
+      "iss": "urn:issuer:reverseBeaconUri", 
+      "sub": "urn:subject:<email>"
+    }
+  }
+]
