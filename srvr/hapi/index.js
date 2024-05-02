@@ -54,6 +54,9 @@ const hbsrv= new Hapi.Server({
   debug: { request: ['*'] }
 })
 
+// useful; perhaps make optional
+hbsrv.events.on('route', (r) => { console.log(`  routeAdded: (${r.method}) -> ${r.path}` ) } )
+
 const crank = async () => {
 
   await hbsrv.register([
