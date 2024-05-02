@@ -1,6 +1,9 @@
 import Boom from '@hapi/boom'
 import { StatusCode } from 'status-code-enum'
 
+// move to plugin, build at startup and/or throw errors (if missing)
+const uixSrcPath = '../../uix/vue/dist'
+
 const rootRoute = [
   // minimal set of rules to keep everything hapi
   {
@@ -23,7 +26,7 @@ const rootRoute = [
     path: '/{path*}',
     options: {
       auth: false,
-      files: { relativeTo: '../../uix/vue/dist' },
+      files: { relativeTo: uixSrcPath },
     },
     handler: {
       directory: {
