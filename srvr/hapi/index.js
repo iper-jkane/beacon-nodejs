@@ -59,15 +59,17 @@ hbsrv.events.on('route', (r) => { console.log(`  routeAdded: (${r.method}) -> ${
 
 const crank = async () => {
 
+  // register plugins
   await hbsrv.register([
+    HapiBasic,   // '@hapi/basic'
+    HapiJwt,     // '@hapi/jwt'
+    HapiInert,   // '@hapi/inert'
     BeaconMongo,
     BeaconAuth,
     BeaconRouter,
-    HapiBasic,
-    HapiJwt,
-    HapiInert
   ])
 
+  // spin-up
   await hbsrv.start();
   console.log('Server running on %s', hbsrv.info.uri)
 
