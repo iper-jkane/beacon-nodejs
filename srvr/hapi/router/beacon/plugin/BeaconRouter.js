@@ -14,32 +14,25 @@ import { beaconInfoResponseRoute }          from '../endpoints/info/index.js'
 import { beaconConfigurationResponseRoute } from '../endpoints/configuration/index.js' 
 import { beaconGenomicVariationsRoute }     from '../endpoints/models/genomicVariations/index.js'
 
-import { initGenomicVariationsModel } from '../endpoints/models/genomicVariations/init.js'
-
-
-const foo = function() {
-  console.log("gihfgjhf" )
-}
-
 const BeaconRouter = {
 
   pkg: {
     name: 'BeaconRouter',
-    version: '0.5.0'
+    version: '0.6.0'
   },
 
   register: async function (server, options) {
- 
-    server.dependency('BeaconMongo')
-    server.dependency('BeaconAuth', foo )
-    
-    // sub-plugin called after mdb instance, but before routes, can use existing connection; lazy
 
+    console.log( "Registering: BeaconRouter" )
+   
+    server.dependency( 'BeaconMongo' )
+    server.dependency( 'BeaconAuth' )
+    
     // serve up the routes  
+    server.route( rootRoute )
     server.route( beaconInfoResponseRoute )
     server.route( beaconConfigurationResponseRoute )
     server.route( beaconGenomicVariationsRoute )
-    server.route( rootRoute )
 
 
   } // register
