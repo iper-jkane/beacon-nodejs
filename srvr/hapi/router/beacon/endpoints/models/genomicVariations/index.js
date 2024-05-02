@@ -101,7 +101,7 @@ const getBeaconGenomicVariations = async function( req, reqParams ){
   // const reqParams = parseRequestParams(req)
 
   // use existing mongoose / mongodb connection
-  const mdb = req.server.plugins.BeaconRouter.mdb
+  const mdb = req.server.plugins.BeaconMongo.mdb
   var beaconGenomicVariationsModel = mdb.models['beaconGenomicVariationsModel']
 
   // todo: make function + sort out variable passing for reqParams
