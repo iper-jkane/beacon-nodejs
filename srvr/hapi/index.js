@@ -8,9 +8,9 @@ import fs from 'fs'
 import { fileURLToPath, parse } from 'url';
 const __dirname = Path.dirname(fileURLToPath(import.meta.url));
 
+import { BeaconMongo  } from './router/beacon/plugin/BeaconMongo.js'
 import { BeaconAuth   } from './router/beacon/plugin/BeaconAuth.js'
 import { BeaconRouter } from './router/beacon/plugin/BeaconRouter.js'
-import { BeaconMongo  } from './router/beacon/plugin/BeaconMongo.js'
 
 import * as dotenv from 'dotenv'
 
