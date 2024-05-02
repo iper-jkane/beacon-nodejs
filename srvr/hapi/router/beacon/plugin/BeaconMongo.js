@@ -38,7 +38,7 @@ const BeaconMongo = {
       // try and establish a db connection
       const mdb = await mongoose.connect(`mongodb://${mdbCreds}${mdbHost}:${mdbPort}/${mdbDbName}?directConnection=true`, mdbOptions)
 
-      // build collections from models
+      // build collections from models -- maybe move to BeaconRouter or perhaps as a server.dependency hook?
       initGenomicVariationsModel(mdb) 
 
       //global database connection

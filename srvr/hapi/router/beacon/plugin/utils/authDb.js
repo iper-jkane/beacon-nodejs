@@ -46,12 +46,22 @@ const authDb = {
   ]
 }
 
-// hapi plugin helper methods; it makes sense they have access to `server`
-const authFetchCreds = function( server, user, opts = {} ){
 
+
+const authFetchCredsMongo = async function( mdb, user, opt = {} ){
+
+  var beaconAuthUsersModel = mdb.models['beaconAuthUsersModel']
+  return await beaconAuthUsersModel.findOne( { user: user } )
+  
+}
+
+// hapi plugin helper methods; it makes sense they have access to `server`
+const authFetchCreds = async function( server, user, opts = {} ){
+
+  const mdb = server.plugins.BeaconMongo.mdb 
   // check authCache and conditionally pull from db (and fill cache), then null, or error
   try {
-    const foundUser = authDb.users.find( (u) => { return u.user == user } )
+    const foundUser = await authFetchCredsMongo( mdb, user ) // authDb.users.find( (u) => { return u.user == user } )
     if( foundUser !== undefined ){
 
       foundUser.isValid = true
