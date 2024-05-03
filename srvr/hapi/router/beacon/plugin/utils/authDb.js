@@ -62,7 +62,7 @@ const authFetchCreds = async function( server, user, opts = {} ){
   // check authCache and conditionally pull from db (and fill cache), then null, or error
   try {
     const foundUser = await authFetchCredsMongo( mdb, user ) // authDb.users.find( (u) => { return u.user == user } )
-    if( foundUser !== undefined ){
+    if( foundUser !== undefined && foundUser !== null ){
 
       foundUser.isValid = true
       return foundUser
