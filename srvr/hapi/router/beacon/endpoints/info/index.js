@@ -4,9 +4,10 @@ import { beaconInfoResponseSchema } from '../../../../../../schema/mongoose/beac
 const getBeaconInfoResponse = async function(req){
 
   // use existing mongoose / mongodb connection
-  const mdb = req.server.plugins.BeaconRouter.mdb
+  const mdb = req.server.plugins.BeaconMongo.mdb
   
   // use existing model; or create one if not found in this connection 
+  // now we have init stage, we might assume missing models are an error?
   var beaconInfoResponseModel = mdb.models['beaconInfoResponseModel']
   if ( ! beaconInfoResponseModel ){
     // possible bug in Schema; have to pass in 'beaconInfoResponseSchema.options.collection'
