@@ -1,52 +1,14 @@
+import HapiJwt from '@hapi/jwt'
 import bcrypt from 'bcrypt'
+
 import { beaconAuthUsersSchema } from '../../../../../../schema/mongoose/beacon/auth/users.js'
 
-const authDb = {
-
-  clients: [
-    {
-      client_id: 900,
-      client_name: "BioInst1",
-      client_secret: "c20fd1ae-8eb8-49d3-9a17-56c617546616", // uuid returned as jti (jwt id)
-      // remoteAddress, X-Forwarded-For, X-Real-Ip
-      ips_allowed: [ "10.10.10.1/32", "127.0.0.1/24", "10.128.0.0/24" ]
-    }
-  ],
-
-  users: [
-    {
-      uid: 1000,
-      gid: 1000,
-      client_id: 900,
-      given_name:     "Biolo",
-      family_name:    "Gist",
-      email:          "null@dev.null",
-      email_verified: true,
-      enabled:        true, 
-      user:           "bgist",
-      pass:           "$2b$12$O9oo7dWbDgAPikRY8gAogeh7TRJ9ZctihsckEBKwVUexoGfjsAW1K", // foo,
-      beaconConfig: {
-        allowedGranularities: [ 'boolean', 'count', 'record' ], 
-      },
-      jwt: { // abusing jwts for fun and...
-        key: 'foobar', // each user is it's own jwt-auth server. haha.
-        algorithms: ['HS512'],
-        aud: 'urn:audience:bioinfo',
-        iss: 'urn:issuer:reverseBeaconUri', // + req.server.info,
-        sub: 'urn:subject:<email>',
-        endpoints: [
-          {
-            path:               '/auth/scope',
-            authGranularity: [ 'boolean' ], //  , 'count', 'record' ]
-            isBeacon: false
-          }
-        ]
-      }
-    }
-  ]
+// global settings, because: jwt plugin registration 
+const jwtClaims = {
+  aud: 'urn:audience:bioinfo',
+  iss: 'urn:issuer:thisServer', // + req.server.info,
+  sub: 'urn:subject:<uuid>'
 }
-
-
 
 const authFetchCredsMongo = async function( mdb, user, opt = {} ){
 
@@ -61,7 +23,7 @@ const authFetchCreds = async function( server, user, opts = {} ){
   const mdb = server.plugins.BeaconMongo.mdb 
   // check authCache and conditionally pull from db (and fill cache), then null, or error
   try {
-    const foundUser = await authFetchCredsMongo( mdb, user ) // authDb.users.find( (u) => { return u.user == user } )
+    const foundUser = await authFetchCredsMongo( mdb, user )
     if( foundUser !== undefined && foundUser !== null ){
 
       foundUser.isValid = true
@@ -90,4 +52,76 @@ const authValidateUser = async function( authUser, user, pass ){
   return false
 }
 
-export { authDb, authFetchCreds, authValidateUser } 
+const authValidateCreds = async (req, user, pass, res) => {
+
+  // server knows best...
+  const authData = await authFetchCreds( req.server, user )
+  // Guinness...good things, etc...
+  if( await authValidateUser( authData, user, pass ) ) {
+
+    // basic auth validation return payload 
+    return authGenUserJwtReturnPayload(authData)
+
+  } // endif
+
+  return { isValid: false }
+
+}
+
+const authValidateJwt = async function(art,req,res){
+  // happens post token decode; we can do AuthZ (aka payload validation) here.
+  // MUST check user 
+  return { isValid: true, credentials: { tokenPayload: art.decoded.payload } }
+}
+
+
+const authGenUserJwtReturnPayload = function(authData) {
+
+  const retCreds = {
+    user: authData.user,
+    aud: jwtClaims.aud,
+    iss: jwtClaims.iss,
+    sub: jwtClaims.sub,
+    scope: authData.jwt.scope,
+    group: 'bioinfos',
+    beaconConfig: { allowedGranularities: authData.beaconConfig.allowedGranularities }
+  }
+
+  const retJwtToken = HapiJwt.token.generate(
+
+    retCreds,
+
+    {
+        key: authData.jwt.key,
+        algorithms: authData.jwt.algorithms
+    },
+
+    {
+        ttlSec: 3*3600 // 3-hours should be enough for anybody...
+    }
+  )
+
+  return { 
+    isValid: true, 
+    credentials: { 
+      authZData: retCreds,
+      msg: "Auth Success!",
+      jwt: retJwtToken,
+    } 
+  } 
+}
+
+
+// as we're using the inbuilt jwt "plugin" and simultaneously abusing jwt tokens as session authorizers
+// we have to compile an array of enabled accounts / users:
+
+const authGenUserJwtKeys = async function(mdb) {
+
+  const beaconAuthUsersModel = mdb.models['beaconAuthUsersModel']
+  var enabledUsers = await beaconAuthUsersModel.find( { enabled: true }, { _id: 0, uid: 1, user: 1, enabled: 1, jwt: 1 } )
+  return enabledUsers.map( ( user ) => { if ( user.enabled ) { return { key: user.jwt.key, algorithms: user.jwt.algorithms, kid: `${user.uid}` } } } ) 
+// validJwtKeys.push({ key: 'foo', algorithms: ['HS511'], kid: 'hostJwtKid' })
+}
+
+export { authFetchCreds, authValidateUser, authValidateJwt, authValidateCreds, authGenUserJwtReturnPayload, authGenUserJwtKeys, jwtClaims } 
+
