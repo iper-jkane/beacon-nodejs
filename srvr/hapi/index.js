@@ -26,8 +26,6 @@ const beaconApiProto = beaconApiUrl.protocol.slice(0,-1)
 
 const corsOrigins = process.env.BNJS_API_CORS_ORIGINS ? process.env.BNJS_API_CORS_ORIGINS.split(',') : [ 'https://localhost:8080' ]
 
-// console.log( "corsOrigins: ", JSON.stringify(corsOrigins) )
-// console.log( `${beaconApiProto}://${beaconApiHost}:${beaconApiPort}` )
 const beaconSrvrOptions = {
 
   port: beaconApiPort,
@@ -90,4 +88,3 @@ process.on('unhandledRejection', (err) => {
 
 /* crank up the server */
 crank();
-
