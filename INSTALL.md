@@ -5,7 +5,7 @@ Docker Compose
 
 A docker compose environment is available for testing the implementation
 
-Clone the repo and cd into the root directory:
+Clone the repo and cd into the newly created project directory:
 
 ```shell
 git clone https://gitlab.com/xisc/beacon-nodejs
