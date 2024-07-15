@@ -53,21 +53,32 @@ const BeaconAuth = {
 
     }
 
-
+    // basic auth strategy 
     server.auth.strategy('basic', 'basic', { validate: authValidateCreds })
-    server.auth.strategy('jwt', 'jwt', { keys: validJwtKeys,
-      // verify: false,
-                                         verify: {
-                                          aud: jwtClaims.aud,
-                                          iss: jwtClaims.iss,
-                                          sub: jwtClaims.sub
-                                         },
-                                         validate: authValidateJwt })    //server.auth.default('basic')
-
+    // routes
     server.route( authSignUpRoute )
     server.route( authLoginRoute )
-    server.route( authScopeRoute )
 
+    // jwt auth strategy and routes
+    if ( validJwtKeys.length > 0 ) {
+  
+      server.auth.strategy('jwt', 'jwt', { keys: validJwtKeys,
+      // verify: false,
+                                           verify: {
+                                            aud: jwtClaims.aud,
+                                            iss: jwtClaims.iss,
+                                            sub: jwtClaims.sub
+                                           },
+
+                                           validate: authValidateJwt })    //server.auth.default('basic')
+
+
+      server.route( authScopeRoute )
+
+    } else {
+      console.log("Warning| NoValidJWTKeys (check users in db)")
+      console.log("Warning| Disabling some routes: [ authScopeRoute ]")
+    }
   }
 }
 
