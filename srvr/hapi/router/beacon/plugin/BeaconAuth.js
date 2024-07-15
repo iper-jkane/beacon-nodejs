@@ -48,7 +48,6 @@ const BeaconAuth = {
 
     } catch( err ){
 
-      // console.log( err )  
       throw("BeaconAuth: A serious misconfiguration or db error: ", err )
 
     }
