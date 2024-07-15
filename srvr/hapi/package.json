@@ -24,6 +24,7 @@
     "ajv-openapi": "^2.0.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.0.2",
+    "glob": "^11.0.0",
     "hapi-auto-route": "^3.0.4",
     "joi": "^17.12.2",
     "mongoose": "^6.4.0",
@@ -32,6 +33,5 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
-  },
-  "packageManager": "yarn@1.22.1"
+  }
 }

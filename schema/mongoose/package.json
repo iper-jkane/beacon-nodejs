@@ -5,6 +5,5 @@
   "private": true,
   "dependencies": {
     "mongoose": "^6.4.0"
-  },
-  "packageManager": "yarn@1.22.1"
+  }
 }
