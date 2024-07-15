@@ -118,8 +118,19 @@ const authGenUserJwtReturnPayload = function(authData) {
 const authGenUserJwtKeys = async function(mdb) {
 
   const beaconAuthUsersModel = mdb.models['beaconAuthUsersModel']
-  var enabledUsers = await beaconAuthUsersModel.find( { enabled: true }, { _id: 0, uid: 1, user: 1, enabled: 1, jwt: 1 } )
-  return enabledUsers.map( ( user ) => { if ( user.enabled ) { return { key: user.jwt.key, algorithms: user.jwt.algorithms, kid: `${user.uid}` } } } ) 
+  var enabledUsers = []
+  try {
+    var enabledUsers = await beaconAuthUsersModel.find( { enabled: true }, { _id: 0, uid: 1, user: 1, enabled: 1, jwt: 1 } )
+    if (enabledUsers.length > 0) {
+      enabledUsers = enabledUsers.map( ( user ) => { if ( user.enabled ) { return { key: user.jwt.key, algorithms: user.jwt.algorithms, kid: `${user.uid}` } } } ) 
+    } else {
+      console.log("Warning: No Enabled Users Found!")
+    } 
+  } catch(err) {
+    console.log("Error| authGenUserJwtKeys: ", err)
+  }
+  console.log(enabledUsers)
+  return enabledUsers
 // validJwtKeys.push({ key: 'foo', algorithms: ['HS511'], kid: 'hostJwtKid' })
 }
 
