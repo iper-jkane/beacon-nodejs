@@ -1,7 +1,7 @@
 import Boom from '@hapi/boom' 
 import { BeaconAuth } from './BeaconAuth.js'
 import { StatusCode } from 'status-code-enum'
-import glob from 'glob'
+import { glob } from 'glob'
 import HapiAutoRoute from 'hapi-auto-route'
 import * as dotenv from 'dotenv'
 
