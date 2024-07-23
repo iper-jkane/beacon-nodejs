@@ -1,4 +1,4 @@
-FROM node:22-alpine3.19 as base
+FROM node:20-alpine3.19 as base
 
 ARG beaconUser=node
 ARG beaconRoot=/opt/beacon
@@ -9,7 +9,7 @@ RUN chown ${beaconUser}:${beaconUser} ${beaconRoot}
 USER ${beaconUser}
 WORKDIR ${beaconRoot}
 
-ENV YARN_VERSION 1.22.22 
+ENV YARN_VERSION 4.1.1
 
 RUN yarn policies set-version $YARN_VERSION
 RUN rm -f yarn.lock package.json
