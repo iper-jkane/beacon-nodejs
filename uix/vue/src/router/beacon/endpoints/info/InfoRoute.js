@@ -2,7 +2,7 @@ import InfoView from '../../../../views/InfoView.vue'
 
 const InfoRoute =  {
     path: '/info',
-    name: 'getBeaconInfoRoot',
+    name: 'getBeaconInfoRoute',
     component: InfoView
 }
 

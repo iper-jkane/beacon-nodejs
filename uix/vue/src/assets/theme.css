@@ -1,0 +1,9 @@
+  :root {
+    background-color: var(--color-pale-grey);
+  }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    background-color: var(--color-almost-black);
+  }
+}

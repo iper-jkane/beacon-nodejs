@@ -1,72 +1,89 @@
 <script setup>
-  import AxiosSpinner from '@/components/AxiosSpinner.vue'
 </script>
 
 <template>
-  <router-link to="/auth/login">Login</router-link>
-  <router-view name="AuthLogin"></router-view>
   <nav>
-    <router-link to="/">BeaconRoot</router-link> |
-    <router-link to="/info">BeaconInfo</router-link> |
-    <router-link to="/models">Models</router-link> |
-    <router-link to="/auth/scope">AuthScope</router-link>
-
-<Suspense>
-<router-view name="AuthScope" v-slot="{ Component }">
-  <keep-alive>
-    <component :is="Component" />
-  </keep-alive>
-</router-view>
-</Suspense>
-
+    <!-- <div v-if="!hasAuthed"> -->
+    <!-- <div v-else> -->
+    <!-- </div> -->
+    <router-link :to="{ name: 'authLogin' }">Login</router-link> |
+    <router-link :to="{ name: 'getBeaconRoot' }">Home</router-link> |
+    <router-link :to="{ name: 'getBeaconInfoRoute' }">BeaconInfo</router-link> |
+    <router-link :to="{ name: 'getBeaconModels' }">Models</router-link>
   </nav>
 
 <Suspense>
-  <template #default>
-    <router-view v-slot="{ Component }">
-      <keep-alive>
-        <component :is="Component" />
-      </keep-alive>
-    </router-view>
-  </template>
-  <template #fallback>
-    <AxiosSpinner />
-  </template>
+  <router-view id="app-view">
+  </router-view>
 </Suspense>
 
 </template>
 
 <style>
-
-  body {
-    background-color: #0f0f0f;
-    color: #f0f0ff;
+  
+  @font-face {
+    font-family: 'montserrat';
+    src: local('../assets/font-montserrat-thin.woff2') format("woff2"); 
   }
 
-div {
-    color: #2c3e50;
-}
+  :root {
+    /* theme colors */
+    --color-almost-black: #0f0f0f;
+    --color-pale-grey:    #e8e8e8;
+    --color-ice-blue:     #c5e3ea;
 
+    /* INDP */
+    --color-bluegrey: #b0cedc;
+    --color-dark-grey-blue: #405a74;
+    --color-silver: #cee1e6;
+    /* GA4GH */
+    --color-cool-blue : #4faedc;
+    --color-bluish:     #1b75bb;
+    --color-leaf:       #8bc53f;
+    --color-mango:      #f9a533;
+    --color-coral:      #e34a3b;
+    --color-dark-lilac: #9f7ab0;
+  }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-/*  text-align: center; */
-  color: #2c3e50;
-}
+  body, #app {
+    background-color: var(--color-almost-black);
+    color:            var(--color-pale-grey);
+    font-family: 'montserrat', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  @media (max-width: 960px) {
+    #app-view {
+      max-width: 88%;
+      font-size: 74%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  @media (min-width: 960px) {
+    #app-view {
+      max-width: 45%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
 
 nav {
-  padding: 30px;
+  padding: 24px;
   text-align: center;
 }
 
-nav a {
+a {
   font-weight: bold;
-  color: #2c3e50;
+  color: var(--color-dark-grey-blue);
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+a.router-link-exact-active {
+  /* color: var(--color-ice-blue); */
+color:            var(--color-pale-grey);
 }
 </style>
