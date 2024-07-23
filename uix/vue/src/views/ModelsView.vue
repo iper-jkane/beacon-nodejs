@@ -17,7 +17,6 @@
   <div class="listHolder">
     <li v-for="model in beaconModels" v-bind:key="model.id">
           <router-link to="/g_variants">Genomic Variations</router-link> 
-
     </li>
   </div>
 </template>

@@ -47,7 +47,7 @@ const beaconInfoResponseRoute = {
       method:  ['GET','POST'],
       path:    '/info',
       options: {
-        auth: 'basic'
+        auth: false // 'basic'
       },
       handler: beaconInfoResponseRouteHandler
 }
